@@ -1,8 +1,10 @@
 # "Play Song" Alfred Workflow
-*Copyright 2013 Caleb Evans*  
+*Copyright 2014 Caleb Evans*  
 *Released under the MIT license*
 
 ## Usage
+
+*Play Song* is an Alfred workflow designed to make playing a song in iTunes extremely quick and convenient.
 
 Type the `play` keyword, followed by a space and a song name, artist, album, or genre. Songs matching your query will automatically populate Alfred's list of results. Choosing a result from the list will play the selected song in iTunes.
 
