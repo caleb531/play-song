@@ -16,7 +16,7 @@ set cacheFolder to (libraryFolder & "Caches:")
 set workflowDataFolder to (cacheFolder & "com.runningwithcrayons.Alfred-2:Workflow Data:")
 set artworkFolderName to "com.calebevans.playsong"
 set artworkFolderPath to (workflowDataFolder & artworkFolderName & ":")
-set songArtworkNameSep to " - "
+set songArtworkNameSep to " | "
 
 -- replace substring in string with another substring
 on replace(replaceThis, replaceWith, originalStr)
