@@ -61,7 +61,7 @@ end createItem
 
 -- get path to album art for the given song
 on getSongArtworkPath(theSong, songArtist, songAlbum)
-	global albumArtEnabled, artworkFolderPath, artworkFolderName, songArtworkNameSep
+	global albumArtEnabled, artworkFolderPath, artworkFolderName, songArtworkNameSep, defaultIconName
 	
 	if albumArtEnabled is false then
 		set songArtworkPath to defaultIconName
@@ -78,7 +78,7 @@ on getSongArtworkPath(theSong, songArtist, songAlbum)
 			-- cache artwork if it's not already cached
 			if not (songArtworkPath exists) then
 				tell application "iTunes"
-					set songArtworks to artworks of eachSong
+					set songArtworks to artworks of theSong
 					-- only save artwork if artwork exists for this song
 					if (length of songArtworks) is 0 then
 						-- use default iTunes icon if song has no artwork
