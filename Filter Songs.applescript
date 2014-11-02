@@ -39,15 +39,11 @@ end escapeXmlChars
 on createItem(uid, arg, valid, title, subtitle, icon)
 	global homeFolder, defaultIconName
 	
-	-- recognize file paths for the icon
-	if icon begins with homeFolder then
-		set icon to POSIX path of icon
-	end if
-	
 	-- escape reserved XML characters
 	set title to escapeXmlChars(title)
 	set subtitle to escapeXmlChars(subtitle)
 	if icon is not defaultIconName then
+		set icon to POSIX path of icon
 		set icon to escapeXmlChars(icon)
 	end if
 	
