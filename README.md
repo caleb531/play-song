@@ -2,19 +2,29 @@
 *Copyright 2014 Caleb Evans*  
 *Released under the MIT license*
 
-*Play Song* is an Alfred workflow designed to make playing a song in iTunes extremely quick and convenient.
+*Play Song* is an Alfred workflow designed to make playing songs in iTunes extremely quick and convenient.
+
+This latest v2.0 release is a major release, adding the ability to play not only individual songs, but artists, albums, and genres as well.
 
 ## Usage
 
-Type the `play` keyword, followed by a space and a song name, artist, album, or genre. Songs matching your query will automatically populate Alfred's list of results. Choosing a result from the list will play the selected song in iTunes.
+The workflow enables four keywords which allow you to search your iTunes library quickly and easily.
 
-Additionally, more actions can be taken using modifier keys:
+### Playing a song
 
-* Holding down the **Command** key will reveal the selected song in iTunes.
+To play an individual song, use the `play` keyword. Songs matching your query will appear in the results list. Choosing a song from the list will play that song once.
 
-* Holding down the **Option** key will reveal the selected song in the Finder.
+### Playing an artist
 
-* Holding down the **Control** key will search the selected song on Google.
+To play all songs by a particular artist, use the `playartist` keyword. Choosing a artist from the list will play all songs by that artist (ordered by album).
+
+### Playing an album
+
+To play all songs from a particular album, use the `playalbum` keyword. Choosing an album from the list will play all songs from that album (ordered by track number).
+
+### Playing a genre
+
+To play all songs within a particular genre, use the `playgenre` keyword. Choosing a genre from the list will play all songs within that genre (ordered by album).
 
 ## Support
 
