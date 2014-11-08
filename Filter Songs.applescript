@@ -97,7 +97,7 @@ end getSongArtworkPath
 
 -- create album artwork cache
 on createArtworkCache()
-	global albumArtEnabled, artworkFolderPath, workflowDataFolder
+	global albumArtEnabled, artworkFolderPath, workflowDataFolder, artworkFolderName
 	-- create album artwork folder if it does not exist
 	if albumArtEnabled is true then
 		tell application "Finder"
