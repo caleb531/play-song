@@ -1,20 +1,35 @@
-# "Play Song" Alfred Workflow
+# Play Song (Alfred Workflow)
+
 *Copyright 2014 Caleb Evans*  
 *Released under the MIT license*
 
-*Play Song* is an Alfred workflow designed to make playing a song in iTunes extremely quick and convenient.
+Play Song is an Alfred 2 workflow designed to make playing songs in iTunes extremely quick and convenient.
+
+Play Song v2 is a major release, adding the ability to play not only individual songs, but albums, artists, and genres as well.
 
 ## Usage
 
-Type the `play` keyword, followed by a space and a song name, artist, album, or genre. Songs matching your query will automatically populate Alfred's list of results. Choosing a result from the list will play the selected song in iTunes.
+Play Song enables five keywords which allow you to search for and play songs in your iTunes library.
 
-Additionally, more actions can be taken using modifier keys:
+In order for Play Song to function properly, it requires access to assistive devices. You can enable this for Alfred via the *Security & Privacy* pane of System Preferences.
 
-* Holding down the **Command** key will reveal the selected song in iTunes.
+### Playing a song
 
-* Holding down the **Option** key will reveal the selected song in the Finder.
+To play an individual song, use the `play` keyword. Songs which match your query will populate the list of results. Choosing a song from the list will play that song once.
 
-* Holding down the **Control** key will search the selected song on Google.
+Alternatively, for a more refined search, use the `playsong` keyword. Songs *whose names* match your query will populate the list of results. Choosing a song from the list will also play that song once.
+
+### Playing an album
+
+To play all songs from a particular album, use the `playalbum` keyword. Albums whose names match your query will populate the list of results. Choosing an album from the list will play all songs from that album (ordered by track number).
+
+### Playing an artist
+
+To play all songs by a particular artist, use the `playartist` keyword. Artists whose names match your query will populate the list of results. Choosing a artist from the list will play all songs by that artist (grouped by album)
+
+### Playing a genre
+
+To play all songs within a particular genre, use the `playgenre` keyword. Genres whose names match your query will populate the list of results. Choosing a genre from the list will play all songs within that genre (grouped by artist).
 
 ## Support
 
