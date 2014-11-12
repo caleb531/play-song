@@ -1,11 +1,11 @@
-# Play Song v2 (Alfred Workflow)
+# Play Song (Alfred Workflow)
 
 *Copyright 2014 Caleb Evans*  
 *Released under the MIT license*
 
 Play Song is an Alfred 2 workflow designed to make playing songs in iTunes extremely quick and convenient.
 
-Play Song v2 is a major release, adding the ability to play not only individual songs, but artists, albums, and genres as well.
+Play Song v2 is a major release, adding the ability to play not only individual songs, but albums, artists, and genres as well.
 
 ## Usage
 
@@ -15,7 +15,7 @@ In order for Play Song to function properly, it requires access to assistive dev
 
 ### Playing a song
 
-To play an individual song, use the `play` keyword. Songs matching your query will populate the list of results. Choosing a song from the list will play that song once.
+To play an individual song, use the `play` keyword. Songs which match your query will populate the list of results. Choosing a song from the list will play that song once.
 
 Alternatively, for a more refined search, use the `playsong` keyword. Songs *whose names* match your query will populate the list of results. Choosing a song from the list will also play that song once.
 
