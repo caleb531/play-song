@@ -25,7 +25,7 @@ To play all songs from a particular album, use the `playalbum` keyword. Albums w
 
 ### Playing an artist
 
-To play all songs by a particular artist, use the `playartist` keyword. Artists whose names match your query will populate the list of results. Choosing a artist from the list will play all songs by that artist (grouped by album)
+To play all songs by a particular artist, use the `playartist` keyword. Artists whose names match your query will populate the list of results. Choosing a artist from the list will play all songs by that artist (grouped by album).
 
 ### Playing a genre
 
