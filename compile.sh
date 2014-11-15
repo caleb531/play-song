@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# If compiled configuration script exists
+if [ ! -f ./Configuration.scpt ]; then
 
-f=./Configuration.scpt
-plaintext=$(osadecompile "$f")
-echo "$plaintext" | osacompile -o "$f"
+	# Retrieve configuration file as plain text
+	PLAINTEXT=$(cat ./Configuration.applescript)
+	echo "$PLAINTEXT" | osacompile -o "./Configuration.scpt"
 
-echo 'Recompiled scripts!'
+	echo "Compiled configuration."
+
+else
+
+	echo "Configuration already compiled."
+
+fi
