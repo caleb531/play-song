@@ -29,7 +29,7 @@ on getResultListXml(query)
 			repeat with theSong in theSongs
 				
 				-- limit number of results
-				if songIndex is greater than (songLimit of config) then exit repeat
+				if songIndex is greater than (resultLimit of config) then exit repeat
 				
 				-- get song information
 				set songId to (get database ID of theSong)

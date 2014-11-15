@@ -14,20 +14,19 @@ on getResultListXml(query)
 		-- search Music playlist for songs whose album matches query
 		set theSongs to (get every track of playlist 2 whose album contains query and kind contains (songDescriptor of config))
 		set theAlbums to {}
-		set songIndex to 1
+		set theIndex to 1
 		
 		-- retrieve list of albums matching query
 		repeat with theSong in theSongs
 			
 			-- limit number of results
-			if songIndex is greater than (songLimit of config) then exit repeat
+			if theIndex is greater than (resultLimit of config) then exit repeat
 			
 			-- add album to list if not already present
 			if album of theSong is not in theAlbums then
 				set theAlbums to theAlbums & (album of theSong)
+				set theIndex to theIndex + 1
 			end if
-			
-			set songIndex to songIndex + 1
 			
 		end repeat
 		
@@ -41,23 +40,16 @@ on getResultListXml(query)
 			
 		else
 			
-			set songIndex to 1
-			
 			-- loop through the results to create the XML data
 			repeat with albumName in theAlbums
 				
 				set albumName to albumName as text
 				set theSong to (first track whose album is albumName and kind contains (songDescriptor of config))
 				
-				-- limit number of results
-				if songIndex is greater than (songLimit of config) then exit repeat
-				
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 				
 				-- add song information to XML
 				set xml to xml & createXmlItem(("album-" & albumName), albumName, "yes", albumName, artist of theSong, songArtworkPath) of config
-				
-				set songIndex to songIndex + 1
 				
 			end repeat
 			
