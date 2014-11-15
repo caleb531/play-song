@@ -33,4 +33,4 @@ To play all songs within a particular genre, use the `playgenre` keyword. Genres
 
 ## Support
 
-If you have a bug to report or a feature to request, please [submit an issue on GitHub](https://github.com/caleb531/alfred-playsong/issues).
+If you have a bug to report or a feature to request, please [submit an issue on GitHub](https://github.com/caleb531/play-song/issues).
