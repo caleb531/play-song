@@ -11,7 +11,7 @@ on getResultListXml(query)
 	-- search iTunes library for the given query
 	tell application "iTunes"
 		
-		set thePlaylists to (get user playlists whose special kind is none and size is not 0 and name is not (workflowPlaylistName of config))
+		set thePlaylists to (get user playlists whose name contains query and special kind is none and size is not 0 and name is not (workflowPlaylistName of config))
 		
 		-- create initial XML string
 		set xml to createXmlHeader() of config
@@ -32,13 +32,20 @@ on getResultListXml(query)
 				if theIndex is greater than (resultLimit of config) then exit repeat
 				
 				set playlistName to (get name of thePlaylist) as text
-				set songCount to number of tracks in thePlaylist
 				
 				set theSong to (first track in user playlist playlistName whose kind contains (songDescriptor of config))
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 				
+				-- determine number of songs in playlist
+				set songCount to number of tracks in thePlaylist
+				if songCount is 1 then
+					set itemSubtitle to "1 song"
+				else
+					set itemSubtitle to (songCount & " songs") as text
+				end if
+				
 				-- add song information to XML
-				set xml to xml & createXmlItem(("playlist-" & playlistName), playlistName, "yes", playlistName, songCount as text, songArtworkPath) of config
+				set xml to xml & createXmlItem(("playlist-" & playlistName), playlistName, "yes", playlistName, itemSubtitle, songArtworkPath) of config
 				
 				set theIndex to theIndex + 1
 				

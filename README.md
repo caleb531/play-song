@@ -5,7 +5,7 @@
 
 Play Song is an Alfred 2 workflow designed to make playing songs in iTunes extremely quick and convenient.
 
-Play Song v2 is a major release, adding the ability to play not only individual songs, but albums, artists, and genres as well.
+Play Song v2 is a major release, adding the ability to play not only individual songs, but albums, artists, genres, and playlists as well.
 
 ## Usage
 
@@ -30,6 +30,10 @@ To play all songs by a particular artist, use the `playartist` keyword. Artists 
 ### Playing a genre
 
 To play all songs within a particular genre, use the `playgenre` keyword. Genres whose names match your query will populate the list of results. Choosing a genre from the list will play all songs within that genre (grouped by artist).
+
+### Playing a playlist
+
+To play all songs within a playlist, use the `playplaylist` keyword. Playlists whose names match your query will populate the list of results. Choosing a playlist from the list will play all songs within that playlist (according to playlist order).
 
 ## Support
 
