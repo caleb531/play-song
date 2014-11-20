@@ -1,4 +1,4 @@
-# Play Song (Alfred Workflow)
+# Play Song
 
 *Copyright 2014 Caleb Evans*  
 *Released under the MIT license*
@@ -33,7 +33,7 @@ To play all songs within a particular genre, use the `playgenre` keyword. Genres
 
 ### Playing a playlist
 
-To play all songs within a playlist, use the `playplaylist` keyword. Playlists whose names match your query will populate the list of results. Choosing a playlist from the list will play all songs within that playlist (according to playlist order).
+To play all songs within a particular playlist, use the `playplaylist` keyword. Non-empty playlists whose names match your query will populate the list of results. Choosing a playlist from the list will play all songs within that playlist (according to playlist order).
 
 ## Support
 
