@@ -6,13 +6,13 @@ alfred_plist=~/Library/Preferences/com.runningwithcrayons.Alfred-Preferences.pli
 # Path to directory in which Alfred preferences are synced
 alfred_prefs_dir=$(defaults read "$alfred_plist" syncfolder 2> /dev/null)
 
-# Expand ~ to $HOME
-alfred_prefs_dir="${alfred_prefs_dir/#\~/$HOME}"
-
 # If no sync folder is set
-if [[ -z $alfred_prefs_dir ]]; then
+if [ -z $alfred_prefs_dir ]; then
 	# Use default location for preferences
 	alfred_prefs_dir=~/Library/"Application Support/Alfred 2"
+else
+	# Expand ~ to home folder path
+	alfred_prefs_dir="${alfred_prefs_dir/#\~/$HOME}"
 fi
 
 # Installed Alfred workflows
@@ -54,7 +54,7 @@ do
 done
 
 # If workflow directory exists
-if [[ ! -d $workflow_dir ]]; then
+if [ ! -d $workflow_dir ]; then
 	# Stop script here
 	echo "Workflow directory could not be found."
 	exit 1
