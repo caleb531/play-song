@@ -4,8 +4,8 @@
 if [ ! -f ./Configuration.scpt ]; then
 
 	# Retrieve configuration file as plain text
-	PLAINTEXT=$(cat ./Configuration.applescript)
-	echo "$PLAINTEXT" | osacompile -o "./Configuration.scpt"
+	plaintext=$(cat ./Configuration.applescript)
+	echo "$plaintext" | osacompile -o "./Configuration.scpt"
 
 	echo "Compiled configuration."
 
