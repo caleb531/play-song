@@ -6,6 +6,9 @@ alfred_plist=~/Library/Preferences/com.runningwithcrayons.Alfred-Preferences.pli
 # Path to directory in which Alfred preferences are synced
 alfred_prefs_dir=$(defaults read "$alfred_plist" syncfolder 2> /dev/null)
 
+# Expand ~ to $HOME
+alfred_prefs_dir="${alfred_prefs_dir/#\~/$HOME}"
+
 # If no sync folder is set
 if [[ -z $alfred_prefs_dir ]]; then
 	# Use default location for preferences
