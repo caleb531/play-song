@@ -7,13 +7,13 @@ alfred_plist=~/Library/Preferences/com.runningwithcrayons.Alfred-Preferences.pli
 alfred_prefs_dir=$(defaults read "$alfred_plist" syncfolder 2> /dev/null)
 
 # If no sync folder is set
-if [[ $alfred_prefs_dir == '' ]]; then
+if [[ -z $alfred_prefs_dir ]]; then
 	# Use default location for preferences
-	alfred_prefs_dir="~/Library/Application Support/Alfred 2"
+	alfred_prefs_dir=~/Library/"Application Support/Alfred 2"
 fi
 
 # Installed Alfred workflows
-workflows=$(eval echo "$alfred_prefs_dir"/Alfred.alfredpreferences/workflows/user.workflow.*/)
+workflows=("$alfred_prefs_dir"/Alfred.alfredpreferences/workflows/user.workflow.*/)
 
 # Directory for installed workflow
 workflow_dir=""
@@ -25,7 +25,7 @@ workflow_name="Play Song"
 bundle_id="com.calebevans.playsong"
 
 # Path to project repository
-project_dir=$(dirname $0)
+project_dir=$(dirname "$0")
 
 # Path to plain-text workflow configuration
 project_config="$project_dir/Configuration.applescript"
@@ -41,7 +41,7 @@ workflow_file="$project_dir/$workflow_name.alfredworkflow"
 
 # Locate workflow directory from bundle ID
 echo "Locating workflow directory..."
-for workflow in $workflows
+for workflow in "${workflows[@]}"
 do
 	# If workflow PLIST lists the bundle ID
 	if plutil -extract bundleid xml1 "$workflow/info.plist" -o - | grep "$bundle_id" &> /dev/null; then
@@ -51,7 +51,7 @@ do
 done
 
 # If workflow directory exists
-if [ ! -d "$workflow_dir" ]; then
+if [[ ! -d $workflow_dir ]]; then
 	# Stop script here
 	echo "Workflow directory could not be found."
 	exit 1
@@ -59,10 +59,10 @@ fi
 
 # Copy over latest workflow configuration
 echo "Updating configuration..."
-cp $project_config $workflow_dir
+cp "$project_config" "$workflow_dir"
 # Copy over latest configuration compilation script
 echo "Updating configuration compiler..."
-cp $project_config_compile $workflow_dir
+cp "$project_config_compile" "$workflow_dir"
 
 # Zip all workflow files except compiled configuration
 echo "Zipping workflow files..."
