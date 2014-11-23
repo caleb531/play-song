@@ -2,7 +2,7 @@
 
 -- load workflow configuration
 do shell script "bash ./compile-config.sh"
-set config to load script POSIX file (((do shell script "pwd") as text) & "/config.scpt")
+set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs song result list as XML string
 on getResultListXml(query)

@@ -1,7 +1,7 @@
 -- Play selected album in iTunes --
 
 -- load workflow configuration
-set config to load script POSIX file (((do shell script "pwd") as text) & "/config.scpt")
+set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- plays songs belonging to the given album
 on playAlbum(albumName)
