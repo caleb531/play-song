@@ -65,7 +65,7 @@ cp "$project_dir/applescripts/config.applescript" "$workflow_dir"
 echo "Updating configuration compiler..."
 cp "$project_dir/utilities/compile-config.sh" "$workflow_dir"
 
-# Copy over latest configuration compilation script
+# Copy over latest icons
 echo "Updating icons..."
 cp "$project_dir/images/icon.png" "$workflow_dir"
 cp "$project_dir/images/icon-noartwork.png" "$workflow_dir"
