@@ -28,13 +28,10 @@ workflow_name="Play Song"
 bundle_id="com.calebevans.playsong"
 
 # Path to project repository
-project_dir=$(dirname "$0")
+project_dir=$(dirname $(dirname "$0"))
 
 # Path to plain-text workflow configuration
-project_config="$project_dir/Configuration.applescript"
-
-# Path to script used for compiling configuration
-project_config_compile="$project_dir/compile.sh"
+project_config="$project_dir/applescripts/config.applescript"
 
 # Path to zip file used to create workflow file
 workflow_zip_file="$project_dir/$workflow_name.zip"
@@ -48,7 +45,7 @@ for workflow in "${workflows[@]}"
 do
 	# If workflow PLIST lists the bundle ID
 	if plutil -extract bundleid xml1 "$workflow/info.plist" -o - | grep "$bundle_id" &> /dev/null; then
-		workflow_dir="$workflow"
+		workflow_dir="${workflow%/}"
 		break
 	fi
 done
@@ -62,14 +59,26 @@ fi
 
 # Copy over latest workflow configuration
 echo "Updating configuration..."
-cp "$project_config" "$workflow_dir"
+cp "$project_dir/applescripts/config.applescript" "$workflow_dir"
+
 # Copy over latest configuration compilation script
 echo "Updating configuration compiler..."
-cp "$project_config_compile" "$workflow_dir"
+cp "$project_dir/utilities/compile-config.sh" "$workflow_dir"
 
-# Zip all workflow files except compiled configuration
+# Copy over latest icons
+echo "Updating icons..."
+cp "$project_dir/images/icon.png" "$workflow_dir"
+cp "$project_dir/images/icon-noartwork.png" "$workflow_dir"
+
+# Remove compiled configuration
+workflow_config_compiled="$workflow_dir/config.scpt"
+if [ -f "$workflow_config_compiled" ]; then
+	rm "$workflow_config_compiled"
+fi
+
+# Zip all workflow files
 echo "Zipping workflow files..."
-zip -rj "$workflow_zip_file" "$workflow_dir"* -x *Configuration.scpt
+zip -rj "$workflow_zip_file" "$workflow_dir"*
 
 # Convert zip file to workflow file
 echo "Converting zip file to workflow..."

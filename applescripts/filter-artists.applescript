@@ -1,8 +1,8 @@
 ---- Filter artists by the typed query ----
 
 -- load workflow configuration
-do shell script "bash ./compile.sh"
-set config to load script POSIX file (((do shell script "pwd") as text) & "/Configuration.scpt")
+do shell script "bash ./compile-config.sh"
+set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs artist result list as XML string
 on getResultListXml(query)
@@ -39,12 +39,12 @@ on getResultListXml(query)
 			set xml to xml & createXmlItem("no-results", "null", "no", "No Artists Found", ("No artists matching '" & query & "'"), defaultIconName of config) of config
 			
 		else
-						
+			
 			-- loop through the results to create the XML data
 			repeat with artistName in theArtists
 				
 				set artistName to artistName as text
-				set theSong to (first track whose artist is artistName and kind contains (songDescriptor of config))
+				set theSong to (first track of playlist 2 whose artist is artistName and kind contains (songDescriptor of config))
 				
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 				

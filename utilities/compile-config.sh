@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # If compiled configuration script exists
-if [ ! -f ./Configuration.scpt ]; then
+if [ ! -f ./config.scpt ]; then
 
 	# Retrieve configuration file as plain text
-	plaintext=$(cat ./Configuration.applescript)
-	echo "$plaintext" | osacompile -o "./Configuration.scpt"
+	plaintext=$(cat ./config.applescript)
+	echo "$plaintext" | osacompile -o "./config.scpt"
 
 	echo "Compiled configuration."
 

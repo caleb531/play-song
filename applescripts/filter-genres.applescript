@@ -1,8 +1,8 @@
 ---- Filter genres by the typed query ----
 
 -- load workflow configuration
-do shell script "bash ./compile.sh"
-set config to load script POSIX file (((do shell script "pwd") as text) & "/Configuration.scpt")
+do shell script "bash ./compile-config.sh"
+set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs genre result list as XML string
 on getResultListXml(query)
@@ -25,7 +25,7 @@ on getResultListXml(query)
 			-- add genre to list if not already present
 			if genre of theSong is not in theGenres then
 				set theGenres to theGenres & (genre of theSong)
-			set theIndex to theIndex + 1
+				set theIndex to theIndex + 1
 			end if
 			
 		end repeat
@@ -44,7 +44,7 @@ on getResultListXml(query)
 			repeat with genreName in theGenres
 				
 				set genreName to genreName as text
-				set theSong to (first track whose genre is genreName and kind contains (songDescriptor of config))
+				set theSong to (first track of playlist 2 whose genre is genreName and kind contains (songDescriptor of config))
 				
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 				

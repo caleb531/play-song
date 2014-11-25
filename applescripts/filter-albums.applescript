@@ -1,8 +1,8 @@
 ---- Filter albums by the typed query ----
 
 -- load workflow configuration
-do shell script "bash ./compile.sh"
-set config to load script POSIX file (((do shell script "pwd") as text) & "/Configuration.scpt")
+do shell script "bash ./compile-config.sh"
+set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs album result list as XML string
 on getResultListXml(query)
@@ -44,7 +44,7 @@ on getResultListXml(query)
 			repeat with albumName in theAlbums
 				
 				set albumName to albumName as text
-				set theSong to (first track whose album is albumName and kind contains (songDescriptor of config))
+				set theSong to (first track of playlist 2 whose album is albumName and kind contains (songDescriptor of config))
 				
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 				
