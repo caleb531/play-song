@@ -1,4 +1,4 @@
-#!/bin/bash
+## Compiles configuration as AppleScript
 
 # If compiled configuration script exists
 if [ ! -f ./config.scpt ]; then

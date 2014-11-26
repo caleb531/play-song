@@ -1,4 +1,4 @@
----- Filter artists by the typed query ----
+---- Filters artists by the typed query ----
 
 -- load workflow configuration
 do shell script "bash ./compile-config.sh"
