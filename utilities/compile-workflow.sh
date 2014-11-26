@@ -1,4 +1,4 @@
-#!/bin/bash
+## Updates workflow components and exports workflow to project directory
 
 # Path to Alfred preferences PLIST file
 alfred_plist=~/Library/Preferences/com.runningwithcrayons.Alfred-Preferences.plist

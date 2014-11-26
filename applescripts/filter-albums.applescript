@@ -1,4 +1,4 @@
----- Filter albums by the typed query ----
+---- Filters albums by the typed query ----
 
 -- load workflow configuration
 do shell script "bash ./compile-config.sh"

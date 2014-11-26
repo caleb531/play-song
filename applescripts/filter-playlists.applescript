@@ -1,4 +1,4 @@
----- Filter playlists by the typed query ----
+---- Filters playlists by the typed query ----
 
 -- load workflow configuration
 do shell script "bash ./compile-config.sh"
