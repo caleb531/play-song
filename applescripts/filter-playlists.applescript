@@ -31,7 +31,8 @@ on getResultListXml(query)
 				-- limit number of results
 				if theIndex is greater than (resultLimit of config) then exit repeat
 
-				set playlistName to (get name of thePlaylist) as text
+				set playlistName to name of thePlaylist
+				set playlistId to id of thePlaylist
 
 				set theSong to (first track in user playlist playlistName whose kind contains (songDescriptor of config))
 				set songArtworkPath to getSongArtworkPath(theSong) of config
@@ -45,7 +46,7 @@ on getResultListXml(query)
 				end if
 
 				-- add song information to XML
-				set xml to xml & createXmlItem(("playlist-" & playlistName), playlistName, "yes", playlistName, itemSubtitle, songArtworkPath) of config
+				set xml to xml & createXmlItem(("playlist-" & playlistId) as text, playlistId as text, "yes", playlistName, itemSubtitle, songArtworkPath) of config
 
 				set theIndex to theIndex + 1
 
