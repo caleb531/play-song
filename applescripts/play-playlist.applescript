@@ -4,14 +4,16 @@
 set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- plays songs in the given playlist
-on playPlaylist(playlistName)
+on playPlaylist(playlistId)
 	global config
 
 	createWorkflowPlaylist() of config
 	disableShuffle() of config
 
-	set playlistName to decodeXmlChars(playlistName) of config
-	tell application "iTunes" to play playlist playlistName
+	tell application "iTunes"
+		set thePlaylist to first user playlist whose id is playlistId
+		play thePlaylist
+	end tell
 
 end playPlaylist
 

@@ -179,7 +179,7 @@ end createArtworkCache
 on createWorkflowPlaylist()
 	tell application "iTunes"
 		if not (playlist workflowPlaylistName exists) then
-			make new playlist with properties {name:workflowPlaylistName, shuffle:false}
+			make new user playlist with properties {name:workflowPlaylistName, shuffle:false}
 		end if
 	end tell
 end createWorkflowPlaylist
@@ -209,7 +209,7 @@ on disableShuffle()
 	end tell
 end disableShuffle
 
--- retrieve list of artist names for the given genre
+-- retrieves list of artist names for the given genre
 on getGenreArtists(genreName)
 
 	tell application "iTunes"
@@ -225,7 +225,7 @@ on getGenreArtists(genreName)
 
 end getGenreArtists
 
--- retrieve list of songs within the given genre, sorted by artist
+-- retrieves list of songs within the given genre, sorted by artist
 on getGenreSongs(genreName)
 
 	set artistNames to getGenreArtists(genreName) of me
@@ -237,7 +237,7 @@ on getGenreSongs(genreName)
 
 end getGenreSongs
 
--- retrieve list of album names for the given artist
+-- retrieves list of album names for the given artist
 on getArtistAlbums(artistName)
 
 	tell application "iTunes"
@@ -253,7 +253,7 @@ on getArtistAlbums(artistName)
 
 end getArtistAlbums
 
--- retrieve list of songs by the given artist, sorted by album
+-- retrieves list of songs by the given artist, sorted by album
 on getArtistSongs(artistName)
 
 	tell application "iTunes"
@@ -269,7 +269,7 @@ on getArtistSongs(artistName)
 
 end getArtistSongs
 
--- retrieve list of songs in the given album
+-- retrieves list of songs in the given album
 on getAlbumSongs(albumName)
 	tell application "iTunes"
 		set theSongs to every track of playlist 2 whose album is albumName and kind contains songDescriptor
