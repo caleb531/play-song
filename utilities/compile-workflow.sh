@@ -39,6 +39,10 @@ workflow_zip_file="$project_dir/$workflow_name.zip"
 # Path to resulting workflow file
 workflow_file="$project_dir/$workflow_name.alfredworkflow"
 
+# Remove trailing whitespace from workflow scripts
+echo "Removing trailing whitespace...";
+sed -Ei '' "s/[[:space:]]+$//g" "$project_dir"/applescripts/*
+
 # Locate workflow directory from bundle ID
 echo "Locating workflow directory..."
 for workflow in "${workflows[@]}"
