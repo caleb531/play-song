@@ -55,7 +55,7 @@ end decodeXmlChars
 
 -- builds Alfred result item as XML
 on createXmlItem(itemUid, itemArg, itemValid, itemTitle, itemSubtitle, itemIcon)
-	
+
 	-- encode reserved XML characters
 	set itemUid to encodeXmlChars(itemUid)
 	set itemArg to encodeXmlChars(itemArg)
@@ -65,13 +65,13 @@ on createXmlItem(itemUid, itemArg, itemValid, itemTitle, itemSubtitle, itemIcon)
 		set itemIcon to POSIX path of itemIcon
 		set itemIcon to encodeXmlChars(itemIcon)
 	end if
-	
+
 	return tab & "<item uid='" & itemUid & "' arg='" & itemArg & "' valid='" & itemValid & "'>
 		<title>" & itemTitle & "</title>
 		<subtitle>" & itemSubtitle & "</subtitle>
 		<icon>" & itemIcon & "</icon>
 	</item>" & return & return
-	
+
 end createXmlItem
 
 -- creates XML declaration for Alfred results
@@ -131,7 +131,7 @@ on getSongArtworkPath(theSong)
 			set songArtworkName to replace(".", "", songArtworkName) of me
 			set songArtworkPath to (artworkCachePath & songArtworkName & ".jpg")
 		end tell
-		
+
 		tell application "Finder"
 			-- cache artwork if it's not already cached
 			if not (songArtworkPath exists) then
@@ -151,7 +151,7 @@ on getSongArtworkPath(theSong)
 		end tell
 	end if
 	return songArtworkPath
-	
+
 end getSongArtworkPath
 
 -- creates folder for workflow data if it does not exist
@@ -209,9 +209,9 @@ on disableShuffle()
 	end tell
 end disableShuffle
 
--- retrieve list of artist names for the given genre 
+-- retrieve list of artist names for the given genre
 on getGenreArtists(genreName)
-	
+
 	tell application "iTunes"
 		set theSongs to every track of playlist 2 whose genre is genreName and kind contains songDescriptor
 		set artistNames to {}
@@ -222,24 +222,24 @@ on getGenreArtists(genreName)
 		end repeat
 	end tell
 	return artistNames
-	
+
 end getGenreArtists
 
 -- retrieve list of songs within the given genre, sorted by artist
 on getGenreSongs(genreName)
-	
+
 	set artistNames to getGenreArtists(genreName) of me
 	set theSongs to {}
 	repeat with artistName in artistNames
 		set theSongs to theSongs & getArtistSongs(artistName) of me
 	end repeat
 	return theSongs
-	
+
 end getGenreSongs
 
--- retrieve list of album names for the given artist 
+-- retrieve list of album names for the given artist
 on getArtistAlbums(artistName)
-	
+
 	tell application "iTunes"
 		set theSongs to every track of playlist 2 whose artist is artistName and kind contains songDescriptor
 		set albumNames to {}
@@ -250,12 +250,12 @@ on getArtistAlbums(artistName)
 		end repeat
 	end tell
 	return albumNames
-	
+
 end getArtistAlbums
 
 -- retrieve list of songs by the given artist, sorted by album
 on getArtistSongs(artistName)
-	
+
 	tell application "iTunes"
 		set albumNames to getArtistAlbums(artistName) of me
 		set theSongs to {}
@@ -266,7 +266,7 @@ on getArtistSongs(artistName)
 		end repeat
 	end tell
 	return theSongs
-	
+
 end getArtistSongs
 
 -- retrieve list of songs in the given album
