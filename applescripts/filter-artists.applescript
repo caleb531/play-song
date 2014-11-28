@@ -5,7 +5,7 @@ do shell script "bash ./compile-config.sh"
 set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs artist result list as XML string
-on getResultListXml(query)
+on getArtistResultListXml(query)
 	global config
 
 	-- search iTunes library for the given query
@@ -30,13 +30,10 @@ on getResultListXml(query)
 
 		end repeat
 
-		-- create initial XML string
-		set xml to createXmlHeader() of config
-
 		-- inform user that no results were found (prompt to switch to iTunes instead)
 		if length of theSongs is 0 then
 
-			set xml to xml & createXmlItem("no-results", "null", "no", "No Artists Found", ("No artists matching '" & query & "'"), defaultIconName of config) of config
+			addResult({uid:"no-results", arg:"null", valid:"no", title:"No Artists Found", subtitle:("No artists matching '" & query & "'"), icon:defaultIconName of config}) of config
 
 		else
 
@@ -49,19 +46,17 @@ on getResultListXml(query)
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
 				-- add song information to XML
-				set xml to xml & createXmlItem(("artist-" & artistName), artistName, "yes", artistName, "Artist", songArtworkPath) of config
+				addResult({uid:("artist-" & artistName), arg:artistName, valid:"yes", title:artistName, subtitle:"Artist", icon:songArtworkPath}) of config
 
 			end repeat
 
 		end if
 
-		set xml to xml & createXmlFooter() of config
-
 	end tell
 
-	return xml
+	return getResultListXml() of config
 
-end getResultListXml
+end getArtistResultListXml
 
 createArtworkCache() of config
-getResultListXml("{query}")
+getArtistResultListXml("{query}")

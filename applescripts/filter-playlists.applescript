@@ -5,7 +5,7 @@ do shell script "bash ./compile-config.sh"
 set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs playlist result list as XML string
-on getResultListXml(query)
+on getPlaylistResultListXml(query)
 	global config
 
 	-- search iTunes library for the given query
@@ -13,13 +13,10 @@ on getResultListXml(query)
 
 		set thePlaylists to (get user playlists whose name contains query and special kind is none and size is not 0 and name is not (workflowPlaylistName of config))
 
-		-- create initial XML string
-		set xml to createXmlHeader() of config
-
 		-- inform user that no results were found (prompt to switch to iTunes instead)
 		if length of thePlaylists is 0 then
 
-			set xml to xml & createXmlItem("no-results", "null", "no", "No Playlists Found", ("No playlists matching '" & query & "'"), defaultIconName of config) of config
+			addResult({uid:"no-results", arg:"null", valid:"no", title:"No Playlists Found", subtitle:("No playlists matching '" & query & "'"), icon:defaultIconName of config}) of config
 
 		else
 
@@ -46,7 +43,7 @@ on getResultListXml(query)
 				end if
 
 				-- add song information to XML
-				set xml to xml & createXmlItem(("playlist-" & playlistId) as text, playlistId as text, "yes", playlistName, itemSubtitle, songArtworkPath) of config
+				addResult({uid:("playlist-" & playlistId) as text, arg:playlistId as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
 
 				set theIndex to theIndex + 1
 
@@ -54,13 +51,11 @@ on getResultListXml(query)
 
 		end if
 
-		set xml to xml & createXmlFooter() of config
-
 	end tell
 
-	return xml
+	return getResultListXml() of config
 
-end getResultListXml
+end getPlaylistResultListXml
 
 createArtworkCache() of config
-getResultListXml("{query}")
+getPlaylistResultListXml("{query}")
