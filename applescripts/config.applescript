@@ -58,7 +58,7 @@ end decodeXmlChars
 
 -- add result to result list
 on addResult(theResult)
-	copy theResult to end of resultList
+	copy theResult to the end of resultList
 end addResult
 
 -- builds Alfred result item as XML
@@ -76,32 +76,22 @@ on getResultXml(theResult)
 		set resultIcon to icon of theResult
 	end if
 
-	return tab & "<item uid='" & resultUid & "' arg='" & resultArg & "' valid='" & resultValid & "'>
+	return "<item uid='" & resultUid & "' arg='" & resultArg & "' valid='" & resultValid & "'>
 		<title>" & resultTitle & "</title>
 		<subtitle>" & resultSubtitle & "</subtitle>
 		<icon>" & resultIcon & "</icon>
-	</item>" & return & return
+	</item>"
 
 end getResultXml
-
--- retrieves XML declaration for Alfred results
-on getXmlHeader()
-	return "<?xml version='1.0'?>" & return & "<items>" & return & return
-end getXmlHeader
-
--- retrieves XML footer for Alfred results
-on getXmlFooter()
-	return "</items>"
-end getXmlFooter
 
 -- retrieves XML document for Alfred results
 on getResultListXml()
 	set xml to ""
-	set xml to xml & getXmlHeader()
+	set xml to xml & "<?xml version='1.0'?>" & "<items>"
 	repeat with theResult in resultList
 		set xml to xml & getResultXml(theResult)
 	end repeat
-	set xml to xml & getXmlFooter()
+	set xml to xml & "</items>"
 end getResultListXml
 
 -- reads the given file
