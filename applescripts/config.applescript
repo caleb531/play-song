@@ -302,6 +302,6 @@ end sortSongsByAlbumOrder
 -- retrieves the song with the given ID
 on getSong(songId)
 	tell application "iTunes"
-		get first track whose database ID is songId and kind contains songDescriptor
+		get first track of playlist 2 whose database ID is songId and kind contains songDescriptor
 	end tell
 end getSong

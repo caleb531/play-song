@@ -10,11 +10,8 @@ on playSong(songId)
 	createWorkflowPlaylist() of config
 	disableShuffle() of config
 
-	try
-		set songId to songId as integer
-		set theSong to getSong(songId) of config
-		playSongs({theSong}) of config
-	end try
+	set theSong to getSong(songId) of config
+	playSongs({theSong}) of config
 
 end playSong
 
