@@ -5,7 +5,7 @@
 
 Play Song is an [Alfred 2](http://www.alfredapp.com/) workflow designed to make playing songs in iTunes extremely quick and convenient.
 
-This workflow requires the [Alfred 2 powerpack](http://www.alfredapp.com/powerpack/).
+![Play Song in action](screenshot.png)
 
 ## Usage
 
