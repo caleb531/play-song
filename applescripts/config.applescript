@@ -25,6 +25,9 @@ property workflowPlaylistName : "Alfred Play Song"
 -- the text used to determine if a track is an audio file
 property songDescriptor : "audio"
 
+-- list of Alfred results
+property resultList : {}
+
 -- replaces substring in string with another substring
 on replace(replaceThis, replaceWith, originalStr)
 	set AppleScript's text item delimiters to replaceThis
@@ -53,36 +56,43 @@ on decodeXmlChars(str)
 	return str
 end decodeXmlChars
 
+-- add result to result list
+on addResult(theResult)
+	copy theResult to the end of resultList
+end addResult
+
 -- builds Alfred result item as XML
-on createXmlItem(itemUid, itemArg, itemValid, itemTitle, itemSubtitle, itemIcon)
+on getResultXml(theResult)
 
 	-- encode reserved XML characters
-	set itemUid to encodeXmlChars(itemUid)
-	set itemArg to encodeXmlChars(itemArg)
-	set itemTitle to encodeXmlChars(itemTitle)
-	set itemSubtitle to encodeXmlChars(itemSubtitle)
-	if itemIcon contains ":" then
-		set itemIcon to POSIX path of itemIcon
-		set itemIcon to encodeXmlChars(itemIcon)
+	set resultUid to encodeXmlChars(uid of theResult)
+	set resultArg to encodeXmlChars(arg of theResult)
+	set resultValid to (valid of theResult) as text
+	set resultTitle to encodeXmlChars(title of theResult)
+	set resultSubtitle to encodeXmlChars(subtitle of theResult)
+	if (icon of theResult) contains ":" then
+		set resultIcon to encodeXmlChars(POSIX path of icon of theResult)
+	else
+		set resultIcon to icon of theResult
 	end if
 
-	return tab & "<item uid='" & itemUid & "' arg='" & itemArg & "' valid='" & itemValid & "'>
-		<title>" & itemTitle & "</title>
-		<subtitle>" & itemSubtitle & "</subtitle>
-		<icon>" & itemIcon & "</icon>
-	</item>" & return & return
+	return "<item uid='" & resultUid & "' arg='" & resultArg & "' valid='" & resultValid & "'>
+		<title>" & resultTitle & "</title>
+		<subtitle>" & resultSubtitle & "</subtitle>
+		<icon>" & resultIcon & "</icon>
+	</item>"
 
-end createXmlItem
+end getResultXml
 
--- creates XML declaration for Alfred results
-on createXmlHeader()
-	return "<?xml version='1.0'?>" & return & "<items>" & return & return
-end createXmlHeader
-
--- creates XML footer for Alfred results
-on createXmlFooter()
-	return "</items>"
-end createXmlFooter
+-- retrieves XML document for Alfred results
+on getResultListXml()
+	set xml to ""
+	set xml to xml & "<?xml version='1.0'?>" & "<items>"
+	repeat with theResult in resultList
+		set xml to xml & getResultXml(theResult)
+	end repeat
+	set xml to xml & "</items>"
+end getResultListXml
 
 -- reads the given file
 on fileRead(theFile)
@@ -139,7 +149,7 @@ on getSongArtworkPath(theSong)
 					set songArtworks to artworks of theSong
 					-- only save artwork if artwork exists for this song
 					if (length of songArtworks) is 0 then
-						-- use default iTunes itemIcon if song has no artwork
+						-- use default iTunes icon if song has no artwork
 						set songArtworkPath to defaultIconName
 					else
 						-- save artwork to file
@@ -281,19 +291,20 @@ end getAlbumSongs
 -- Sort songs from the same album by track number
 on sortSongsByAlbumOrder(theSongs)
 	tell application "iTunes"
-		set theSongsSorted to {} as list
+		set theSongsSorted to theSongs
 		if length of theSongs is greater than 1 then
 			set trackCount to track count of (item 1 of theSongs)
-			repeat with songIndex from 1 to trackCount
-				repeat with theSong in theSongs
-					if track number of theSong is songIndex then
-						set nextSong to theSong
-						copy nextSong to the end of theSongsSorted
-					end if
+			if trackCount is not 0 then
+				set theSongsSorted to {} as list
+				repeat with songIndex from 1 to trackCount
+					repeat with theSong in theSongs
+						if track number of theSong is songIndex then
+							set nextSong to theSong
+							copy nextSong to the end of theSongsSorted
+						end if
+					end repeat
 				end repeat
-			end repeat
-		else
-			set theSongsSorted to theSongs
+			end if
 		end if
 	end tell
 	return theSongsSorted
