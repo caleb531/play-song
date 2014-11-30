@@ -33,9 +33,6 @@ project_dir=$(dirname $(dirname "$0"))
 # Path to plain-text workflow configuration
 project_config="$project_dir/applescripts/config.applescript"
 
-# Path to zip file used to create workflow file
-workflow_zip_file="$project_dir/$workflow_name.zip"
-
 # Path to resulting workflow file
 workflow_file="$project_dir/$workflow_name.alfredworkflow"
 
@@ -71,8 +68,7 @@ cp "$project_dir/utilities/compile-config.sh" "$workflow_dir"
 
 # Copy over latest icons
 echo "Updating icons..."
-cp "$project_dir/images/icon.png" "$workflow_dir"
-cp "$project_dir/images/icon-noartwork.png" "$workflow_dir"
+cp "$project_dir/images"/* "$workflow_dir"
 
 # Remove compiled configuration
 workflow_config_compiled="$workflow_dir/config.scpt"
@@ -80,12 +76,8 @@ if [ -f "$workflow_config_compiled" ]; then
 	rm "$workflow_config_compiled"
 fi
 
-# Zip all workflow files
-echo "Zipping workflow files..."
-zip -rj "$workflow_zip_file" "$workflow_dir"*
-
-# Convert zip file to workflow file
-echo "Converting zip file to workflow..."
-mv "$workflow_zip_file" "$workflow_file"
+# Zip together files into workflow
+echo "Exporting workflow..."
+zip -rj "$workflow_file" "$workflow_dir"
 
 echo "Workflow successfully exported."
