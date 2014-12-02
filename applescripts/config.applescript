@@ -188,7 +188,7 @@ end createArtworkCache
 -- creates album artwork cache
 on createWorkflowPlaylist()
 	tell application "iTunes"
-		if not (playlist workflowPlaylistName exists) then
+		if not (user playlist workflowPlaylistName exists) then
 			make new user playlist with properties {name:workflowPlaylistName, shuffle:false}
 		end if
 	end tell
@@ -198,14 +198,14 @@ end createWorkflowPlaylist
 on playSongs(theSongs)
 	tell application "iTunes"
 		-- empty workflow playlist
-		delete tracks of playlist workflowPlaylistName
+		delete tracks of user playlist workflowPlaylistName
 		-- add songs to playlist
 		repeat with theSong in theSongs
-			duplicate theSong to playlist workflowPlaylistName
+			duplicate theSong to user playlist workflowPlaylistName
 		end repeat
 		-- beginning playing songs in playlist if not empty
-		if number of tracks in playlist workflowPlaylistName is greater than 0 then
-			play playlist workflowPlaylistName
+		if number of tracks in user playlist workflowPlaylistName is not 0 then
+			play user playlist workflowPlaylistName
 		end if
 	end tell
 end playSongs
