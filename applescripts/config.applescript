@@ -194,20 +194,49 @@ on createWorkflowPlaylist()
 	end tell
 end createWorkflowPlaylist
 
--- plays the given songs in the workflow playlist
-on playSongs(theSongs)
+-- empty song queue
+on emptyQueue()
 	tell application "iTunes"
-		-- empty workflow playlist
+		-- empty queue
 		delete tracks of user playlist workflowPlaylistName
-		-- add songs to playlist
+	end tell
+end emptyQueue
+
+-- add songs to queue
+on queueSongs(theSongs)
+	tell application "iTunes"
 		repeat with theSong in theSongs
 			duplicate theSong to user playlist workflowPlaylistName
 		end repeat
+	end tell
+end queueSongs
+
+-- play the queued songs
+on playQueue()
+	tell application "iTunes"
 		-- beginning playing songs in playlist if not empty
 		if number of tracks in user playlist workflowPlaylistName is not 0 then
 			play user playlist workflowPlaylistName
 		end if
 	end tell
+end playQueue
+
+-- bring queue into view in iTunes window
+on focusQueue()
+	tell application "iTunes"
+		-- update iTunes view to show queue
+			if view of front browser window is not user playlist workflowPlaylistName then
+				set view of front browser window to user playlist workflowPlaylistName
+		end if
+	end tell
+end focusQueue
+
+-- plays the given songs in the queue
+on playSongs(theSongs)
+	emptyQueue()
+	queueSongs(theSongs)
+	focusQueue()
+	playQueue()
 end playSongs
 
 -- disables shuffle mode for songs
