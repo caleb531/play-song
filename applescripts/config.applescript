@@ -224,10 +224,7 @@ end playQueue
 -- bring queue into view in iTunes window
 on focusQueue()
 	tell application "iTunes"
-		-- update iTunes view to show queue
-			if view of front browser window is not user playlist workflowPlaylistName then
-				set view of front browser window to user playlist workflowPlaylistName
-		end if
+		reveal user playlist workflowPlaylistName
 	end tell
 end focusQueue
 
