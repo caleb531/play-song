@@ -6,6 +6,7 @@ set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs artist result list as XML string
 on getArtistResultListXml(query)
+
 	global config
 
 	-- search iTunes library for the given query
@@ -24,8 +25,10 @@ on getArtistResultListXml(query)
 
 			-- add artist to list if not already present
 			if artist of theSong is not in theArtists then
+
 				set theArtists to theArtists & (artist of theSong)
 				set theIndex to theIndex + 1
+
 			end if
 
 		end repeat

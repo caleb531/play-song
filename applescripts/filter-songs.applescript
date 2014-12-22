@@ -6,6 +6,7 @@ set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs song result list as XML string
 on getSongResultListXml(query)
+
 	global config
 
 	-- search iTunes library for the given query
@@ -23,6 +24,7 @@ on getSongResultListXml(query)
 
 			-- loop through the results to create the XML data
 			set songIndex to 1
+
 			repeat with theSong in theSongs
 
 				-- limit number of results

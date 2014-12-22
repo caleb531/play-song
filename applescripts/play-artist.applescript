@@ -5,6 +5,7 @@ set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- plays all songs by the given artist
 on playArtist(artistName)
+
 	global config
 
 	createWorkflowPlaylist() of config

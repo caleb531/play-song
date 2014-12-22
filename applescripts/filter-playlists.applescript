@@ -6,6 +6,7 @@ set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs playlist result list as XML string
 on getPlaylistResultListXml(query)
+
 	global config
 
 	-- search iTunes library for the given query
@@ -36,10 +37,15 @@ on getPlaylistResultListXml(query)
 
 				-- determine number of songs in playlist
 				set songCount to number of tracks in thePlaylist
+
 				if songCount is 1 then
+
 					set itemSubtitle to "1 song"
+
 				else
+
 					set itemSubtitle to (songCount & " songs") as text
+
 				end if
 
 				-- add song information to XML

@@ -6,6 +6,7 @@ set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs genre result list as XML string
 on getGenreResultListXml(query)
+
 	global config
 
 	-- search iTunes library for the given query
@@ -24,8 +25,10 @@ on getGenreResultListXml(query)
 
 			-- add genre to list if not already present
 			if genre of theSong is not in theGenres then
+
 				set theGenres to theGenres & (genre of theSong)
 				set theIndex to theIndex + 1
+
 			end if
 
 		end repeat
