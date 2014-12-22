@@ -7,7 +7,7 @@ property resultLimit : 9
 -- whether or not to retrieve album artwork for each result
 property albumArtEnabled : true
 
--- Script parameters (do not change these) --
+-- Workflow parameters (do not change these) --
 
 -- paths to important directories
 property homeFolder : (path to home folder as text)
@@ -30,10 +30,13 @@ property resultList : {}
 
 -- replaces substring in string with another substring
 on replace(replaceThis, replaceWith, originalStr)
+	set oldDelims to AppleScript's text item delimiters
 	set AppleScript's text item delimiters to replaceThis
 	set strItems to text items of originalStr
 	set AppleScript's text item delimiters to replaceWith
-	return strItems as text
+	set newStr to strItems as text
+	set AppleScript's text item delimiters to oldDelims
+	return newStr
 end replace
 
 -- encodes XML reserved characters in the given string
@@ -63,7 +66,6 @@ end addResult
 
 -- builds Alfred result item as XML
 on getResultXml(theResult)
-
 	-- encode reserved XML characters
 	set resultUid to encodeXmlChars(uid of theResult)
 	set resultArg to encodeXmlChars(arg of theResult)
@@ -75,32 +77,23 @@ on getResultXml(theResult)
 	else
 		set resultIcon to icon of theResult
 	end if
-
-	return "<item uid='" & resultUid & "' arg='" & resultArg & "' valid='" & resultValid & "'>
-		<title>" & resultTitle & "</title>
-		<subtitle>" & resultSubtitle & "</subtitle>
-		<icon>" & resultIcon & "</icon>
-	</item>"
-
+	set xml to "<item uid='" & resultUid & "' arg='" & resultArg & "' valid='" & resultValid & "'>"
+	set xml to xml & "<title>" & resultTitle & "</title>"
+	set xml to xml & "<subtitle>" & resultSubtitle & "</subtitle>"
+	set xml to xml & "<icon>" & resultIcon & "</icon>"
+	set xml to xml & "</item>"
+	return xml
 end getResultXml
 
 -- retrieves XML document for Alfred results
 on getResultListXml()
-	set xml to ""
-	set xml to xml & "<?xml version='1.0'?>" & "<items>"
+	set xml to "<?xml version='1.0'?><items>"
 	repeat with theResult in resultList
 		set xml to xml & getResultXml(theResult)
 	end repeat
 	set xml to xml & "</items>"
+	return xml
 end getResultListXml
-
--- reads the given file
-on fileRead(theFile)
-	set fileRef to open for access theFile
-	set theContent to (read theFile)
-	close access fileRef
-	return theContent
-end fileRead
 
 -- writes the given content to the given file
 on fileWrite(theFile, theContent)
@@ -114,54 +107,39 @@ on fileWrite(theFile, theContent)
 	end try
 end fileWrite
 
--- appends the given content to the given file
-on fileAppend(theFile, theContent)
-	try
-		set fileRef to open for access theFile with write permission
-		write theContent to fileRef starting at eof
-		close access fileRef
-	on error
-		close access fileRef
-	end try
-end fileAppend
-
 -- builds path to album art for the given song
 on getSongArtworkPath(theSong)
-	if albumArtEnabled is false then
-		set songArtworkPath to defaultIconName
-	else
-		tell application "iTunes"
-			set songArtist to artist of theSong
-			set songAlbum to album of theSong
-			-- generate a unique identifier for that album
-			set songArtworkName to (songArtist & songArtworkNameSep & songAlbum) as text
-			-- remove forbidden path characters
-			set songArtworkName to replace(":", "", songArtworkName) of me
-			set songArtworkName to replace("/", "", songArtworkName) of me
-			set songArtworkName to replace(".", "", songArtworkName) of me
-			set songArtworkPath to (artworkCachePath & songArtworkName & ".jpg")
-		end tell
+	if albumArtEnabled is false then return defaultIconName
+	tell application "iTunes"
+		set songArtist to artist of theSong
+		set songAlbum to album of theSong
+		-- generate a unique identifier for that album
+		set songArtworkName to (songArtist & songArtworkNameSep & songAlbum) as text
+		-- remove forbidden path characters
+		set songArtworkName to replace(":", "", songArtworkName) of me
+		set songArtworkName to replace("/", "", songArtworkName) of me
+		set songArtworkName to replace(".", "", songArtworkName) of me
+		set songArtworkPath to (artworkCachePath & songArtworkName & ".jpg")
+	end tell
 
-		tell application "Finder"
-			-- cache artwork if it's not already cached
-			if not (songArtworkPath exists) then
-				tell application "iTunes"
-					set songArtworks to artworks of theSong
-					-- only save artwork if artwork exists for this song
-					if (length of songArtworks) is 0 then
-						-- use default iTunes icon if song has no artwork
-						set songArtworkPath to defaultIconName
-					else
-						-- save artwork to file
-						set songArtwork to data of (item 1 of songArtworks)
-						fileWrite(songArtworkPath, songArtwork) of me
-					end if
-				end tell
-			end if
-		end tell
-	end if
+	tell application "Finder"
+		-- cache artwork if it's not already cached
+		if not (songArtworkPath exists) then
+			tell application "iTunes"
+				set songArtworks to artworks of theSong
+				-- only save artwork if artwork exists for this song
+				if (length of songArtworks) is 0 then
+					-- use default iTunes icon if song has no artwork
+					set songArtworkPath to defaultIconName
+				else
+					-- save artwork to file
+					set songArtwork to data of (item 1 of songArtworks)
+					fileWrite(songArtworkPath, songArtwork) of me
+				end if
+			end tell
+		end if
+	end tell
 	return songArtworkPath
-
 end getSongArtworkPath
 
 -- creates folder for workflow data if it does not exist
@@ -247,7 +225,6 @@ end disableShuffle
 
 -- retrieves list of artist names for the given genre
 on getGenreArtists(genreName)
-
 	tell application "iTunes"
 		set theSongs to every track of playlist 2 whose genre is genreName and kind contains songDescriptor
 		set artistNames to {}
@@ -258,24 +235,20 @@ on getGenreArtists(genreName)
 		end repeat
 	end tell
 	return artistNames
-
 end getGenreArtists
 
 -- retrieves list of songs within the given genre, sorted by artist
 on getGenreSongs(genreName)
-
 	set artistNames to getGenreArtists(genreName) of me
 	set theSongs to {}
 	repeat with artistName in artistNames
 		set theSongs to theSongs & getArtistSongs(artistName) of me
 	end repeat
 	return theSongs
-
 end getGenreSongs
 
 -- retrieves list of album names for the given artist
 on getArtistAlbums(artistName)
-
 	tell application "iTunes"
 		set theSongs to every track of playlist 2 whose artist is artistName and kind contains songDescriptor
 		set albumNames to {}
@@ -286,23 +259,20 @@ on getArtistAlbums(artistName)
 		end repeat
 	end tell
 	return albumNames
-
 end getArtistAlbums
 
 -- retrieves list of songs by the given artist, sorted by album
 on getArtistSongs(artistName)
-
 	tell application "iTunes"
 		set albumNames to getArtistAlbums(artistName) of me
 		set theSongs to {}
 		repeat with albumName in albumNames
-			set albumSongs to (every track of playlist 2 whose artist is artistName and album is albumName)
+			set albumSongs to (every track of playlist 2 whose artist is artistName and album is albumName and kind contains songDescriptor)
 			set albumSongs to sortSongsByAlbumOrder(albumSongs) of me
 			set theSongs to theSongs & albumSongs
 		end repeat
 	end tell
 	return theSongs
-
 end getArtistSongs
 
 -- retrieves list of songs in the given album
@@ -314,7 +284,7 @@ on getAlbumSongs(albumName)
 	return theSongs
 end getAlbumSongs
 
--- Sort songs from the same album by track number
+-- sorts songs from the same album by track number
 on sortSongsByAlbumOrder(theSongs)
 	tell application "iTunes"
 		set theSongsSorted to theSongs
