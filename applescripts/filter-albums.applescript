@@ -1,4 +1,4 @@
----- Filters albums by the typed query ----
+-- filters albums by the typed query --
 
 -- load workflow configuration
 do shell script "bash ./compile-config.sh"
@@ -6,6 +6,7 @@ set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs album result list as XML string
 on getAlbumResultListXml(query)
+
 	global config
 
 	-- search iTunes library for the given query
@@ -24,8 +25,10 @@ on getAlbumResultListXml(query)
 
 			-- add album to list if not already present
 			if album of theSong is not in theAlbums then
+
 				set theAlbums to theAlbums & (album of theSong)
 				set theIndex to theIndex + 1
+
 			end if
 
 		end repeat
