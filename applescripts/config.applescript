@@ -1,6 +1,6 @@
----- Core configuration ----
+-- core configuration --
 
--- Configurable options --
+-- configurable options --
 
 -- limit number of songs to improve efficiency
 property resultLimit : 9

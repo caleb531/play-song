@@ -1,4 +1,4 @@
----- Filters genres by the typed query ----
+-- filters genres by the typed query --
 
 -- load workflow configuration
 do shell script "bash ./compile-config.sh"

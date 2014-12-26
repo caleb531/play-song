@@ -1,4 +1,4 @@
----- Plays selected playlist in iTunes ----
+-- plays selected playlist in iTunes --
 
 -- load workflow configuration
 set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")

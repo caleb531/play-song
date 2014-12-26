@@ -1,4 +1,4 @@
----- Filters songs by the typed query ----
+-- filters songs by the typed query --
 
 -- load workflow configuration
 do shell script "bash ./compile-config.sh"
