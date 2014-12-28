@@ -12,31 +12,12 @@ on getAlbumResultListXml(query)
 	-- search iTunes library for the given query
 	tell application "iTunes"
 
-		-- search Music playlist for songs whose album matches query
-		set theSongs to (get every track of playlist 2 whose album contains query and kind contains (songDescriptor of config))
-		set theAlbums to {}
-		set theIndex to 1
+		set theAlbums to getResultsFromQuery(query, "album") of config
 
-		-- retrieve list of albums matching query
-		repeat with theSong in theSongs
-
-			-- limit number of results
-			if theIndex is greater than (resultLimit of config) then exit repeat
-
-			-- add album to list if not already present
-			if album of theSong is not in theAlbums then
-
-				set theAlbums to theAlbums & (album of theSong)
-				set theIndex to theIndex + 1
-
-			end if
-
-		end repeat
-
-		-- inform user that no results were found (prompt to switch to iTunes instead)
+		-- inform user that no results were found
 		if length of theAlbums is 0 then
 
-			addResult({uid:"no-results", arg:"null", valid:"no", title:"No Albums Found", subtitle:("No albums matching '" & query & "'"), icon:defaultIconName of config}) of config
+			addNoResultsItem("album") of config
 
 		else
 

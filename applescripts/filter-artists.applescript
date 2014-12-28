@@ -12,31 +12,12 @@ on getArtistResultListXml(query)
 	-- search iTunes library for the given query
 	tell application "iTunes"
 
-		-- search Music playlist for songs whose artist matches query
-		set theSongs to (get every track of playlist 2 whose artist contains query and kind contains (songDescriptor of config))
-		set theArtists to {}
-		set theIndex to 1
+		set theArtists to getResultsFromQuery(query, "artist") of config
 
-		-- retrieve list of artists matching query
-		repeat with theSong in theSongs
+		-- inform user that no results were found
+		if length of theArtists is 0 then
 
-			-- limit number of results
-			if theIndex is greater than (resultLimit of config) then exit repeat
-
-			-- add artist to list if not already present
-			if artist of theSong is not in theArtists then
-
-				set theArtists to theArtists & (artist of theSong)
-				set theIndex to theIndex + 1
-
-			end if
-
-		end repeat
-
-		-- inform user that no results were found (prompt to switch to iTunes instead)
-		if length of theSongs is 0 then
-
-			addResult({uid:"no-results", arg:"null", valid:"no", title:"No Artists Found", subtitle:("No artists matching '" & query & "'"), icon:defaultIconName of config}) of config
+			addNoResultsItem("artist") of config
 
 		else
 

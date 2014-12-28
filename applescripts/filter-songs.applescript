@@ -15,20 +15,18 @@ on getSongResultListXml(query)
 		-- search Music playlist for songs matching query
 		set theSongs to (search playlist 2 for query)
 
-		-- inform user that no results were found (prompt to switch to iTunes instead)
+		-- inform user that no results were found
 		if length of theSongs is 0 then
 
-			addResult({uid:"no-results", arg:"null", valid:"no", title:"No Songs Found", subtitle:("No songs matching '" & query & "'"), icon:defaultIconName of config}) of config
+			addNoResultsItem("song") of config
 
 		else
 
 			-- loop through the results to create the XML data
-			set songIndex to 1
-
 			repeat with theSong in theSongs
 
 				-- limit number of results
-				if songIndex is greater than (resultLimit of config) then exit repeat
+				if config's resultListIsFull() then exit repeat
 
 				-- get song information
 				set songId to (get database ID of theSong)
@@ -44,8 +42,6 @@ on getSongResultListXml(query)
 
 					-- add song information to XML
 					addResult({uid:("song-" & songId), arg:songId as text, valid:"yes", title:songName, subtitle:songArtist, icon:songArtworkPath}) of config
-
-					set songIndex to songIndex + 1
 
 				end if
 
