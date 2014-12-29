@@ -6,7 +6,6 @@ set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
 
 -- constructs song result list as XML string
 on getSongResultListXml(query)
-
 	global config
 
 	-- search iTunes library for the given query
