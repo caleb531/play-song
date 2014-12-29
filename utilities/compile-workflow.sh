@@ -30,15 +30,8 @@ bundle_id="com.calebevans.playsong"
 # Path to project repository
 project_dir=$(dirname $(dirname "$0"))
 
-# Path to plain-text workflow configuration
-project_config="$project_dir/applescripts/config.applescript"
-
 # Path to resulting workflow file
 workflow_file="$project_dir/$workflow_name.alfredworkflow"
-
-# Remove trailing whitespace from workflow scripts
-echo "Removing trailing whitespace...";
-sed -Ei '' "s/[[:space:]]+$//g" "$project_dir"/applescripts/*
 
 # Locate workflow directory from bundle ID
 echo "Locating workflow directory..."
@@ -58,17 +51,9 @@ if [ ! -d "$workflow_dir" ]; then
 	exit 1
 fi
 
-# Copy over latest workflow configuration
-echo "Updating configuration..."
-cp "$project_dir/applescripts/config.applescript" "$workflow_dir"
-
-# Copy over latest configuration compilation script
-echo "Updating configuration compiler..."
-cp "$project_dir/utilities/compile-config.sh" "$workflow_dir"
-
-# Copy over latest icons
-echo "Updating icons..."
-cp "$project_dir/images"/* "$workflow_dir"
+# Copy over latest workflow resources
+echo "Updating workflow resources..."
+cp "$project_dir/resources"/* "$workflow_dir"
 
 # Remove compiled configuration
 workflow_config_compiled="$workflow_dir/config.scpt"
