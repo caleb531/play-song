@@ -12,7 +12,11 @@ on getPlaylistResultListXml(query)
 	-- search iTunes library for the given query
 	tell application "iTunes"
 
-		set thePlaylists to (get user playlists whose name contains query and special kind is none and size is not 0 and name is not (workflowPlaylistName of config))
+		-- retrieve list of playlists matching query (ordered by relevance)
+		set thePlaylists to {}
+		set thePlaylists to thePlaylists & (get user playlists whose name starts with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+		set thePlaylists to thePlaylists & (get user playlists whose name contains (space & query) and name does not start with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+		set thePlaylists to thePlaylists & (get user playlists whose name contains query and name does not start with query and name does not contain (space & query) and name is not config's workflowPlaylistName and special kind is none and size is not 0)
 
 		-- inform user that no results were found (prompt to switch to iTunes instead)
 		if length of thePlaylists is 0 then
