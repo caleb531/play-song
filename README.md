@@ -38,3 +38,7 @@ To play all songs within a particular playlist, use the `playplaylist` keyword. 
 ## Support
 
 If you have a bug to report or a feature to request, please [submit an issue on GitHub](https://github.com/caleb531/play-song/issues).
+
+## Credits
+
+Special thanks to [Asger Drewsen](https://github.com/Tyilo) for his invaluable feedback and code contributions.
