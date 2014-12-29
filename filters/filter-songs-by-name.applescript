@@ -18,7 +18,7 @@ on getSongResultListXml(query)
 		-- inform user that no results were found (prompt to switch to iTunes instead)
 		if length of theSongs is 0 then
 
-			addNoResultsItem("song") of config
+			addNoResultsItem(query, "song") of config
 
 		else
 

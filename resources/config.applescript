@@ -73,7 +73,7 @@ on addResult(theResult)
 end addResult
 
 -- add item for "No Results" message
-on addNoResultsItem(queryType)
+on addNoResultsItem(query, queryType)
 
 	addResult({uid:"no-results", arg:"null", valid:"no", title:"No Results Found", subtitle:("No " & queryType & "s matching '" & query & "'"), icon:defaultIconName})
 

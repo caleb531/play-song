@@ -18,7 +18,7 @@ on getSongResultListXml(query)
 		-- inform user that no results were found
 		if length of theSongs is 0 then
 
-			addNoResultsItem("song") of config
+			addNoResultsItem(query, "song") of config
 
 		else
 

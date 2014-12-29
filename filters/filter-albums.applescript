@@ -17,7 +17,7 @@ on getAlbumResultListXml(query)
 		-- inform user that no results were found
 		if length of theAlbums is 0 then
 
-			addNoResultsItem("album") of config
+			addNoResultsItem(query, "album") of config
 
 		else
 

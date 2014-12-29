@@ -17,7 +17,7 @@ on getGenreResultListXml(query)
 		-- inform user that no results were found
 		if length of theGenres is 0 then
 
-			addNoResultsItem("genre") of config
+			addNoResultsItem(query, "genre") of config
 
 		else
 

@@ -21,7 +21,7 @@ on getPlaylistResultListXml(query)
 		-- inform user that no results were found (prompt to switch to iTunes instead)
 		if length of thePlaylists is 0 then
 
-			addResult({uid:"no-results", arg:"null", valid:"no", title:"No Playlists Found", subtitle:("No playlists matching '" & query & "'"), icon:defaultIconName of config}) of config
+			addNoResultsItem(query, "playlist") of config
 
 		else
 

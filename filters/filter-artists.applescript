@@ -17,7 +17,7 @@ on getArtistResultListXml(query)
 		-- inform user that no results were found
 		if length of theArtists is 0 then
 
-			addNoResultsItem("artist") of config
+			addNoResultsItem(query, "artist") of config
 
 		else
 
