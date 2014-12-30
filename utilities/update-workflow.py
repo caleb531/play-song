@@ -10,6 +10,7 @@ import subprocess
 import glob
 import hashlib
 import binascii
+import re
 
 DEVNULL = os.open(os.devnull, os.O_RDWR)
 
@@ -27,18 +28,34 @@ def action_path(connected_keywords):
 
 		f = 'actions/play-{}.applescript'.format(k)
 		if os.path.exists(f):
-		return f
+			return f
 
 	raise IOError('Action script not found for keywords: {}'.format(connected_keywords))
 
 # Given a config dictionary and a file path updates the config with the file contents
 # Returns wether the file was updated
 def update_script(config, path):
+	config_script = config['script']
+
+	alias = None
+	m = re.match(r'(--\s*@ALIAS@\s*(\S+))', config_script)
+	if m:
+		alias_line, alias = m.groups()
+		path = filter_path(alias)
+
 	with open(path, 'r') as f:
 		contents = f.read()
-		if config['script'] != contents:
+
+		if alias:
+			contents = alias_line + '\n' + contents
+
+		if config_script != contents:
 			config['script'] = contents
-			print 'Updated {}'.format(path)
+
+			if alias:
+				print 'Updated alias {} for {}'.format(config['keyword'], alias)
+			else:
+				print 'Updated {}'.format(path)
 
 			return True
 		else:
