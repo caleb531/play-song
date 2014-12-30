@@ -59,6 +59,11 @@ def get_installation_dir(bundle_id):
 		# We need to read the plist with defaults
 		# as plistlib can't handle binary plists before Python 3.4
 		preference_dir = subprocess.check_output(['defaults', 'read', ALFRED_PLIST, 'syncfolder'], stderr=DEVNULL)
+
+		# Ensure ~ is expanded to full home folder path
+		# Also remove leading and trailing whitespace
+		preference_dir = os.path.expanduser(preference_dir.strip())
+
 	except subprocess.CalledProcessError:
 		# If syncfolder couldn't be read use the default preference dir
 		preference_dir = DEFAULT_ALFRED_PREFERENCE_DIR
