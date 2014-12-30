@@ -22,13 +22,14 @@ def filter_path(keyword):
 # Returns the path to the action script based on a list keywords
 # for which the filter scripts are connected with the action script
 def action_path(connected_keywords):
-	if len(connected_keywords) > 1:
-		connected_keywords = list(reversed(sorted(connected_keywords)))
+	for keyword in connected_keywords:
+		k = keyword[4:]
 
-	keyword = connected_keywords[0]
-	k = keyword[4:]
+		f = 'actions/play-{}.applescript'.format(k)
+		if os.path.exists(f):
+		return f
 
-	return 'actions/play-{}.applescript'.format(k)
+	raise IOError('Action script not found for keywords: {}'.format(connected_keywords))
 
 # Given a config dictionary and a file path updates the config with the file contents
 # Returns wether the file was updated
