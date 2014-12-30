@@ -12,8 +12,7 @@ on getSongResultListXml(query)
 	-- search iTunes library for the given query
 	tell application "iTunes"
 
-		-- search Music playlist for songs matching query
-		set theSongs to (search playlist 2 for query)
+		set theSongs to getResultsFromQuery(query, "name") of config
 
 		-- inform user that no results were found
 		if length of theSongs is 0 then
@@ -35,15 +34,10 @@ on getSongResultListXml(query)
 				set songAlbum to album of theSong
 				set songKind to kind of theSong
 
-				-- exclude digital booklets from results
-				if songKind contains (songDescriptor of config) then
+				set songArtworkPath to getSongArtworkPath(theSong) of config
 
-					set songArtworkPath to getSongArtworkPath(theSong) of config
-
-					-- add song information to XML
-					addResult({uid:("song-" & songId), arg:songId as text, valid:"yes", title:songName, subtitle:songArtist, icon:songArtworkPath}) of config
-
-				end if
+				-- add song information to XML
+				addResult({uid:("song-" & songId), arg:songId as text, valid:"yes", title:songName, subtitle:songArtist, icon:songArtworkPath}) of config
 
 			end repeat
 

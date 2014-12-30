@@ -18,7 +18,7 @@ on getPlaylistResultListXml(query)
 		set thePlaylists to thePlaylists & (get user playlists whose name contains (space & query) and name does not start with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
 		set thePlaylists to thePlaylists & (get user playlists whose name contains query and name does not start with query and name does not contain (space & query) and name is not config's workflowPlaylistName and special kind is none and size is not 0)
 
-		-- inform user that no results were found (prompt to switch to iTunes instead)
+		-- inform user that no results were found
 		if length of thePlaylists is 0 then
 
 			addNoResultsItem(query, "playlist") of config

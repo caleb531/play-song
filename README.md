@@ -9,15 +9,13 @@ Play Song is an [Alfred 2](http://www.alfredapp.com/) workflow designed to make 
 
 ## Usage
 
-Play Song enables six keywords which allow you to search for and play songs in your iTunes library.
+Play Song includes five keyword filters which allow you to search for and play songs in your iTunes library.
 
 In order for Play Song to function properly, it requires access to assistive devices. You can enable this for Alfred via the *Security & Privacy* pane of System Preferences.
 
 ### Playing a song
 
-To play an individual song, use the `play` keyword. Songs which match your query will populate the list of results. Choosing a song from the list will play that song once.
-
-Alternatively, for a more refined search, use the `playsong` keyword. Songs *whose names* match your query will populate the list of results. Choosing a song from the list will also play that song once.
+To play an individual song, use the `playsong` keyword. Songs whose names match your query will populate the list of results. Choosing a song from the list will play that song once.
 
 ### Playing an album
 
