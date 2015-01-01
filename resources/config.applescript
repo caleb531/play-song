@@ -472,9 +472,11 @@ on getSong(songId)
 
 	tell application "iTunes"
 
-		get first track of playlist 2 whose database ID is songId and kind contains songDescriptor
+		set theSong to first track of playlist 2 whose database ID is songId and kind contains songDescriptor
 
 	end tell
+
+	return theSong
 
 end getSong
 

@@ -1,8 +1,13 @@
 -- filters songs by the typed query --
 
--- load workflow configuration
-do shell script "bash ./compile-config.sh"
-set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
+-- loads workflow configuration
+on loadConfig()
+
+	do shell script "bash ./compile-config.sh"
+	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-2:Workflow Data:com.calebevans.playsong:config.scpt")
+	return config
+
+end loadConfig
 
 -- constructs song result list as XML string
 on getSongResultListXml(query)
@@ -49,5 +54,6 @@ on getSongResultListXml(query)
 
 end getSongResultListXml
 
+set config to loadConfig()
 createArtworkCache() of config
 getSongResultListXml("{query}")

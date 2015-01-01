@@ -1,8 +1,13 @@
 -- filters albums by the typed query --
 
--- load workflow configuration
-do shell script "bash ./compile-config.sh"
-set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
+-- loads workflow configuration
+on loadConfig()
+
+	do shell script "bash ./compile-config.sh"
+	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-2:Workflow Data:com.calebevans.playsong:config.scpt")
+	return config
+
+end loadConfig
 
 -- constructs album result list as XML string
 on getAlbumResultListXml(query)
@@ -42,5 +47,6 @@ on getAlbumResultListXml(query)
 
 end getAlbumResultListXml
 
+set config to loadConfig()
 createArtworkCache() of config
 getAlbumResultListXml("{query}")

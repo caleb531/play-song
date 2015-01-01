@@ -1,16 +1,23 @@
-## Compiles configuration as AppleScript
+# Compiles configuration as AppleScript
 
-# If compiled configuration script exists
-if [ ! -f ./config.scpt ]; then
+# Create workflow cache directory if it doesn't exist
+cache_dir="$HOME/Library/Caches/com.runningwithcrayons.Alfred-2/Workflow Data/com.calebevans.playsong"
+mkdir -p "$cache_dir"
 
-	# Retrieve configuration file as plain text
-	plaintext=$(cat ./config.applescript)
-	echo "$plaintext" | osacompile -o "./config.scpt"
+# Get paths to configuration file
+installed_config="./config.applescript"
+cached_config="$cache_dir/config.applescript"
+compiled_config="$cache_dir/config.scpt"
 
-	echo "Compiled configuration."
+# Retrieve contents of config files
+installed_config_contents="$(cat "$installed_config" 2> /dev/null)"
+cached_config_contents="$(cat "$cached_config" 2> /dev/null)"
 
-else
+# If cached config does not match installed config
+if [ "$installed_config_contents" != "$cached_config_contents" ]; then
 
-	echo "Configuration already compiled."
+	# Cache installed config
+	cp "$installed_config" "$cached_config"
+	echo "$installed_config_contents" | osacompile -o "$compiled_config"
 
 fi

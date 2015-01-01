@@ -1,7 +1,12 @@
 -- plays selected song in iTunes --
 
--- load workflow configuration
-set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
+-- loads workflow configuration
+on loadConfig()
+
+	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-2:Workflow Data:com.calebevans.playsong:config.scpt")
+	return config
+
+end loadConfig
 
 -- plays the song with the given ID
 on playSong(songId)
@@ -16,4 +21,5 @@ on playSong(songId)
 
 end playSong
 
+set config to loadConfig()
 playSong("{query}")
