@@ -10,40 +10,52 @@ import subprocess
 import glob
 import hashlib
 import binascii
+import re
 
 DEVNULL = os.open(os.devnull, os.O_RDWR)
 
 # Returns the path to the filter script corresponding to a keyword
 def filter_path(keyword):
-	k = keyword[4:]
-	if k == '':
-		k = 'songs'
-	elif k == 'song':
-		k = 'songs-by-name'
-	else:
-		k += 's'
+	k = keyword[4:] + 's'
 
 	return 'filters/filter-{}.applescript'.format(k)
 
 # Returns the path to the action script based on a list keywords
 # for which the filter scripts are connected with the action script
 def action_path(connected_keywords):
-	if len(connected_keywords) > 1:
-		connected_keywords = list(reversed(sorted(connected_keywords)))
+	for keyword in connected_keywords:
+		k = keyword[4:]
 
-	keyword = connected_keywords[0]
-	k = keyword[4:]
+		f = 'actions/play-{}.applescript'.format(k)
+		if os.path.exists(f):
+			return f
 
-	return 'actions/play-{}.applescript'.format(k)
+	raise IOError('Action script not found for keywords: {}'.format(connected_keywords))
 
 # Given a config dictionary and a file path updates the config with the file contents
 # Returns wether the file was updated
 def update_script(config, path):
+	config_script = config['script']
+
+	alias = None
+	m = re.match(r'(--\s*@ALIAS@\s*(\S+))', config_script)
+	if m:
+		alias_line, alias = m.groups()
+		path = filter_path(alias)
+
 	with open(path, 'r') as f:
 		contents = f.read()
-		if config['script'] != contents:
+
+		if alias:
+			contents = alias_line + '\n' + contents
+
+		if config_script != contents:
 			config['script'] = contents
-			print 'Updated {}'.format(path)
+
+			if alias:
+				print 'Updated alias {} for {}'.format(config['keyword'], alias)
+			else:
+				print 'Updated {}'.format(path)
 
 			return True
 		else:
@@ -175,12 +187,12 @@ for fname in resource_files - old_resource_files:
 for fname in resource_files & old_resource_files:
 	fpath = resources_path + '/' + fname
 
+
+	# Always copy the file even if it hasn't changed
+	shutil.copy(fpath, tmp_dir)
+
 	with open(fpath, 'r') as f:
 		contents = f.read()
-
-		# Always copy the file even if it hasn't changed
-		with open(tmp_dir + '/' + fname, 'w') as f2:
-			f2.write(contents)
 
 		crc = binascii.crc32(contents) & 0xffffffff
 		if crc != file_hashes[fname]:

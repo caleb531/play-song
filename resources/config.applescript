@@ -72,6 +72,18 @@ on addResult(theResult)
 
 end addResult
 
+-- add item for "No Results" message
+on addNoResultsItem(query, queryType)
+
+	addResult({uid:"no-results", arg:"null", valid:"no", title:"No Results Found", subtitle:("No " & queryType & "s matching '" & query & "'"), icon:defaultIconName})
+
+end
+
+-- indicates if the result list is full
+on resultListIsFull()
+	return (length of resultList is resultLimit)
+end
+
 -- builds Alfred result item as XML
 on getResultXml(theResult)
 
@@ -460,8 +472,67 @@ on getSong(songId)
 
 	tell application "iTunes"
 
-		get first track of playlist 2 whose database ID is songId and kind contains songDescriptor
+		set theSong to first track of playlist 2 whose database ID is songId and kind contains songDescriptor
 
 	end tell
 
+	return theSong
+
 end getSong
+
+on getResultsFromQuery(query, queryType)
+
+	set evalScript to run script "
+	script
+
+		on findResults(query, queryType, resultLimit)
+
+			tell application \"iTunes\"
+
+				set theSongs to {}
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " starts with query)
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query)
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query))
+
+				if queryType equals \"name\" then
+
+					if length of theSongs > resultLimit then
+
+						set theSongs to items 1 thru resultLimit of theSongs
+
+					end if
+
+					set theResults to theSongs
+
+				else
+
+					set theResults to {}
+
+					repeat with theSong in theSongs
+
+						if length of theResults is resultLimit then exit repeat
+
+						set theResult to " & queryType & " of theSong
+
+						if theResult is not in theResults then
+
+							set theResults to theResults & theResult
+
+						end if
+
+					end repeat
+
+				end if
+
+			end tell
+
+			return theResults
+
+		end findResults
+
+	end script
+	"
+
+	evalScript's findResults(query, queryType, resultLimit)
+
+end getResultsFromQuery

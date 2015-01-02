@@ -1,8 +1,13 @@
 -- filters genres by the typed query --
 
--- load workflow configuration
-do shell script "bash ./compile-config.sh"
-set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
+-- loads workflow configuration
+on loadConfig()
+
+	do shell script "./compile-config.sh"
+	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-2:Workflow Data:com.calebevans.playsong:config.scpt")
+	return config
+
+end loadConfig
 
 -- constructs genre result list as XML string
 on getGenreResultListXml(query)
@@ -12,31 +17,12 @@ on getGenreResultListXml(query)
 	-- search iTunes library for the given query
 	tell application "iTunes"
 
-		-- search Music playlist for songs whose genre matches query
-		set theSongs to (get every track of playlist 2 whose genre contains query and kind contains (songDescriptor of config))
-		set theGenres to {}
-		set theIndex to 1
+		set theGenres to getResultsFromQuery(query, "genre") of config
 
-		-- retrieve list of genres matching query
-		repeat with theSong in theSongs
+		-- inform user that no results were found
+		if length of theGenres is 0 then
 
-			-- limit number of results
-			if theIndex is greater than (resultLimit of config) then exit repeat
-
-			-- add genre to list if not already present
-			if genre of theSong is not in theGenres then
-
-				set theGenres to theGenres & (genre of theSong)
-				set theIndex to theIndex + 1
-
-			end if
-
-		end repeat
-
-		-- inform user that no results were found (prompt to switch to iTunes instead)
-		if length of theSongs is 0 then
-
-			addResult({uid:"no-results", arg:"null", valid:"no", title:"No Genres Found", subtitle:("No genres matching '" & query & "'"), icon:defaultIconName of config}) of config
+			addNoResultsItem(query, "genre") of config
 
 		else
 
@@ -61,5 +47,6 @@ on getGenreResultListXml(query)
 
 end getGenreResultListXml
 
+set config to loadConfig()
 createArtworkCache() of config
 getGenreResultListXml("{query}")

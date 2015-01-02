@@ -1,8 +1,13 @@
 -- filters playlists by the typed query --
 
--- load workflow configuration
-do shell script "bash ./compile-config.sh"
-set config to load script POSIX file ((do shell script "pwd") & "/config.scpt")
+-- loads workflow configuration
+on loadConfig()
+
+	do shell script "./compile-config.sh"
+	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-2:Workflow Data:com.calebevans.playsong:config.scpt")
+	return config
+
+end loadConfig
 
 -- constructs playlist result list as XML string
 on getPlaylistResultListXml(query)
@@ -12,12 +17,16 @@ on getPlaylistResultListXml(query)
 	-- search iTunes library for the given query
 	tell application "iTunes"
 
-		set thePlaylists to (get user playlists whose name contains query and special kind is none and size is not 0 and name is not (workflowPlaylistName of config))
+		-- retrieve list of playlists matching query (ordered by relevance)
+		set thePlaylists to {}
+		set thePlaylists to thePlaylists & (get user playlists whose name starts with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+		set thePlaylists to thePlaylists & (get user playlists whose name contains (space & query) and name does not start with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+		set thePlaylists to thePlaylists & (get user playlists whose name contains query and name does not start with query and name does not contain (space & query) and name is not config's workflowPlaylistName and special kind is none and size is not 0)
 
-		-- inform user that no results were found (prompt to switch to iTunes instead)
+		-- inform user that no results were found
 		if length of thePlaylists is 0 then
 
-			addResult({uid:"no-results", arg:"null", valid:"no", title:"No Playlists Found", subtitle:("No playlists matching '" & query & "'"), icon:defaultIconName of config}) of config
+			addNoResultsItem(query, "playlist") of config
 
 		else
 
@@ -63,5 +72,6 @@ on getPlaylistResultListXml(query)
 
 end getPlaylistResultListXml
 
+set config to loadConfig()
 createArtworkCache() of config
 getPlaylistResultListXml("{query}")
