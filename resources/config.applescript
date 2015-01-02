@@ -24,7 +24,6 @@ property defaultIconName : "icon-noartwork.png"
 property workflowPlaylistName : "Alfred Play Song"
 -- the text used to determine if a track is an audio file
 property songDescriptor : "audio"
-
 -- list of Alfred results
 property resultList : {}
 
