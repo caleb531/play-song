@@ -16,6 +16,7 @@ cached_config_md5sum=$(< "$cached_config_md5file")
 
 # If cached md5sum does not match installed config's md5sum
 if [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then
+
 	# Cache installed config's md5sum
 	echo "$installed_config_md5sum" > "$cached_config_md5file"
 	osacompile -o "$compiled_config" "$installed_config"
