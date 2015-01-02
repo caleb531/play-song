@@ -5,19 +5,18 @@ cache_dir="$HOME/Library/Caches/com.runningwithcrayons.Alfred-2/Workflow Data/co
 mkdir -p "$cache_dir"
 
 # Get paths to configuration file
-installed_config="./config.applescript"
-cached_config="$cache_dir/config.applescript"
+installed_config="config.applescript"
 compiled_config="$cache_dir/config.scpt"
+cached_config_shafile="$cache_dir/config.applescript.shasum"
 
-# Retrieve contents of config files
-installed_config_contents="$(cat "$installed_config" 2> /dev/null)"
-cached_config_contents="$(cat "$cached_config" 2> /dev/null)"
+# Retrieve shasum of config files
+installed_config_shasum=$(shasum "$installed_config" 2> /dev/null)
+cached_config_shasum=$(< "$cached_config_shafile")
 
-# If cached config does not match installed config
-if [ "$installed_config_contents" != "$cached_config_contents" ]; then
-
-	# Cache installed config
-	cp "$installed_config" "$cached_config"
-	echo "$installed_config_contents" | osacompile -o "$compiled_config"
+# If cached shasum does not match installed config's shasum
+if [ "$installed_config_shasum" != "$cached_config_shasum" ]; then
+	# Cache installed config's shasum
+	echo "$installed_config_shasum" > "$cached_config_shafile"
+	osacompile -o "$compiled_config" "$installed_config"
 
 fi
