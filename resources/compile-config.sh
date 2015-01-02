@@ -1,12 +1,17 @@
 #!/bin/bash
 # Compiles configuration as AppleScript
 
+# Change directory to one containing this file
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+installed_config_dir="."
+
 # Create workflow cache directory if it doesn't exist
 cache_dir="$HOME/Library/Caches/com.runningwithcrayons.Alfred-2/Workflow Data/com.calebevans.playsong"
 mkdir -p "$cache_dir"
 
 # Get paths to configuration file
-installed_config="config.applescript"
+installed_config="$installed_config_dir/config.applescript"
 compiled_config="$cache_dir/config.scpt"
 cached_config_md5file="$cache_dir/config.applescript.md5"
 
@@ -20,5 +25,7 @@ if [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then
 	# Cache installed config's md5sum
 	echo "$installed_config_md5sum" > "$cached_config_md5file"
 	osacompile -o "$compiled_config" "$installed_config"
+
+	echo "Updated config.scpt"
 
 fi
