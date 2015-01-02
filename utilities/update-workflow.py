@@ -187,12 +187,12 @@ for fname in resource_files - old_resource_files:
 for fname in resource_files & old_resource_files:
 	fpath = resources_path + '/' + fname
 
+
+	# Always copy the file even if it hasn't changed
+	shutil.copy(fpath, tmp_dir)
+
 	with open(fpath, 'r') as f:
 		contents = f.read()
-
-		# Always copy the file even if it hasn't changed
-		with open(tmp_dir + '/' + fname, 'w') as f2:
-			f2.write(contents)
 
 		crc = binascii.crc32(contents) & 0xffffffff
 		if crc != file_hashes[fname]:
