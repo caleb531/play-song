@@ -449,16 +449,16 @@ on getResultsFromQuery(query, queryType)
 	set evalScript to run script "
 	script
 
-		on findResults(query, queryType, resultLimit)
+		on findResults(query, queryType, resultLimit, songDescriptor)
 
 			tell application \"iTunes\"
 
 				set theSongs to {}
-				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " starts with query)
-				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query)
-				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query))
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " starts with query and kind contains songDescriptor)
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query and kind contains songDescriptor)
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query) and kind contains songDescriptor)
 
-				if queryType equals \"name\" then
+				if queryType is \"name\" then
 
 					if length of theSongs > resultLimit then
 
@@ -497,6 +497,6 @@ on getResultsFromQuery(query, queryType)
 	end script
 	"
 
-	evalScript's findResults(query, queryType, resultLimit)
+	evalScript's findResults(query, queryType, resultLimit, songDescriptor)
 
 end getResultsFromQuery
