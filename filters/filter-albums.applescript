@@ -48,5 +48,4 @@ on getAlbumResultListXml(query)
 end getAlbumResultListXml
 
 set config to loadConfig()
-createArtworkCache() of config
 getAlbumResultListXml("{query}")

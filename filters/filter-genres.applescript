@@ -48,5 +48,4 @@ on getGenreResultListXml(query)
 end getGenreResultListXml
 
 set config to loadConfig()
-createArtworkCache() of config
 getGenreResultListXml("{query}")

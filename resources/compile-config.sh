@@ -6,9 +6,10 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 installed_config_dir="."
 
-# Create workflow cache directory if it doesn't exist
+# Create necessary workflow cache directories if they don't exist
 cache_dir="$HOME/Library/Caches/com.runningwithcrayons.Alfred-2/Workflow Data/com.calebevans.playsong"
 mkdir -p "$cache_dir"
+mkdir -p "$cache_dir/Album Artwork"
 
 # Get paths to configuration file
 installed_config="$installed_config_dir/config.applescript"
@@ -17,7 +18,7 @@ cached_config_md5file="$cache_dir/config.applescript.md5"
 
 # Retrieve md5sum of config files
 installed_config_md5sum=$(md5 "$installed_config" 2> /dev/null)
-cached_config_md5sum=$(< "$cached_config_md5file")
+cached_config_md5sum=$(2> /dev/null < "$cached_config_md5file")
 
 # If cached md5sum does not match installed config's md5sum
 if [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then

@@ -7,17 +7,16 @@ property resultLimit : 9
 -- whether or not to retrieve album artwork for each result
 property albumArtEnabled : true
 
--- Workflow parameters (do not change these) --
+-- workflow parameters --
 
--- paths to important directories
 property homeFolder : (path to home folder as text)
 property libraryFolder : (path to library folder from user domain as text)
 property cacheFolder : (libraryFolder & "Caches:")
 property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred-2:Workflow Data:")
 property bundleId : "com.calebevans.playsong"
-property workflowDataFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
+property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 property artworkCacheFolderName : "Album Artwork"
-property artworkCachePath : (workflowDataFolder & artworkCacheFolderName & ":")
+property artworkCachePath : (workflowCacheFolder & artworkCacheFolderName & ":")
 property songArtworkNameSep : " | "
 property defaultIconName : "icon-noartwork.png"
 -- the name of the playlist this workflow uses for playing songs
@@ -64,14 +63,14 @@ on decodeXmlChars(str)
 
 end decodeXmlChars
 
--- add result to result list
+-- adds result to result list
 on addResult(theResult)
 
 	copy theResult to the end of resultList
 
 end addResult
 
--- add item for "No Results" message
+-- adds item for "No Results" message
 on addNoResultsItem(query, queryType)
 
 	addResult({uid:"no-results", arg:"null", valid:"no", title:"No Results Found", subtitle:("No " & queryType & "s matching '" & query & "'"), icon:defaultIconName})
@@ -132,6 +131,7 @@ end getResultListXml
 on fileWrite(theFile, theContent)
 
 	try
+
 		set fileRef to open for access theFile with write permission
 		set eof of fileRef to 0
 		write theContent to fileRef starting at eof
@@ -196,42 +196,6 @@ on getSongArtworkPath(theSong)
 
 end getSongArtworkPath
 
--- creates folder for workflow data if it does not exist
-on createWorkflowDataFolder()
-
-	tell application "Finder"
-
-		if not (alias workflowDataFolder exists) then
-
-			make new folder in alfredWorkflowDataFolder with properties {name:bundleId}
-
-		end if
-
-	end tell
-
-end createWorkflowDataFolder
-
--- creates folder for album artwork cache if it does not exist
-on createArtworkCache()
-
-	createWorkflowDataFolder()
-
-	if albumArtEnabled is true then
-
-		tell application "Finder"
-
-			if not (alias artworkCachePath exists) then
-
-				make new folder in workflowDataFolder with properties {name:artworkCacheFolderName}
-
-			end if
-
-		end tell
-
-	end if
-
-end createArtworkCache
-
 -- creates album artwork cache
 on createWorkflowPlaylist()
 
@@ -247,7 +211,7 @@ on createWorkflowPlaylist()
 
 end createWorkflowPlaylist
 
--- empty song queue
+-- empties song queue
 on emptyQueue()
 
 	tell application "iTunes"
@@ -259,7 +223,7 @@ on emptyQueue()
 
 end emptyQueue
 
--- add songs to queue
+-- adds songs to queue
 on queueSongs(theSongs)
 
 	tell application "iTunes"
@@ -274,7 +238,7 @@ on queueSongs(theSongs)
 
 end queueSongs
 
--- play the queued songs
+-- plays the queued songs
 on playQueue()
 
 	tell application "iTunes"
@@ -290,7 +254,7 @@ on playQueue()
 
 end playQueue
 
--- bring queue into view in iTunes window
+-- brings queue into view in iTunes window
 on focusQueue()
 
 	tell application "iTunes"
@@ -479,6 +443,7 @@ on getSong(songId)
 
 end getSong
 
+-- retrieves a list of objects or names matching the given query and type
 on getResultsFromQuery(query, queryType)
 
 	set evalScript to run script "

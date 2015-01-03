@@ -55,5 +55,4 @@ on getSongResultListXml(query)
 end getSongResultListXml
 
 set config to loadConfig()
-createArtworkCache() of config
 getSongResultListXml("{query}")

@@ -73,5 +73,4 @@ on getPlaylistResultListXml(query)
 end getPlaylistResultListXml
 
 set config to loadConfig()
-createArtworkCache() of config
 getPlaylistResultListXml("{query}")
