@@ -14,6 +14,8 @@ on getGenreResultListXml(query)
 
 	global config
 
+	set query to trimWhitespace(query) of config
+
 	-- search iTunes library for the given query
 	tell application "iTunes"
 

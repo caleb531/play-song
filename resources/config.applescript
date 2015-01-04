@@ -27,39 +27,39 @@ property songDescriptor : "audio"
 property resultList : {}
 
 -- replaces substring in string with another substring
-on replace(replaceThis, replaceWith, originalStr)
+on replace(replaceThis, replaceWith, theString)
 
 	set oldDelims to AppleScript's text item delimiters
 	set AppleScript's text item delimiters to replaceThis
-	set strItems to text items of originalStr
+	set strItems to text items of theString
 	set AppleScript's text item delimiters to replaceWith
-	set newStr to strItems as text
+	set newString to strItems as text
 	set AppleScript's text item delimiters to oldDelims
-	return newStr
+	return newString
 
 end replace
 
 -- encodes XML reserved characters in the given string
-on encodeXmlChars(str)
+on encodeXmlChars(theString)
 
-	set str to replace("&", "&amp;", str)
-	set str to replace("<", "&lt;", str)
-	set str to replace(">", "&gt;", str)
-	set str to replace("\"", "&quot;", str)
-	set str to replace("'", "&apos;", str)
-	return str
+	set theString to replace("&", "&amp;", theString)
+	set theString to replace("<", "&lt;", theString)
+	set theString to replace(">", "&gt;", theString)
+	set theString to replace("\"", "&quot;", theString)
+	set theString to replace("'", "&apos;", theString)
+	return theString
 
 end encodeXmlChars
 
 -- decodes XML reserved characters in the given string
-on decodeXmlChars(str)
+on decodeXmlChars(theString)
 
-	set str to replace("&amp;", "&", str)
-	set str to replace("&lt;", "<", str)
-	set str to replace("&gt;", ">", str)
-	set str to replace("&quot;", "\"", str)
-	set str to replace("&apos;", "'", str)
-	return str
+	set theString to replace("&amp;", "&", theString)
+	set theString to replace("&lt;", "<", theString)
+	set theString to replace("&gt;", ">", theString)
+	set theString to replace("&quot;", "\"", theString)
+	set theString to replace("&apos;", "'", theString)
+	return theString
 
 end decodeXmlChars
 
@@ -500,3 +500,25 @@ on getResultsFromQuery(query, queryType)
 	evalScript's findResults(query, queryType, resultLimit, songDescriptor)
 
 end getResultsFromQuery
+
+-- returns the given string with leading and trailing whitespace removed
+on trimWhitespace(theString)
+
+	-- trim leading whitespace
+	repeat while theString begins with space
+
+		if length of theString is 1 then return ""
+		set theString to text 2 thru end of theString
+
+	end repeat
+
+	-- trim trailing whitespace
+	repeat while theString ends with space
+
+		set theString to text 1 thru ((length of theString) - 1) of theString
+
+	end repeat
+
+	return theString
+
+end trimWhitespace
