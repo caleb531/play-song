@@ -17,7 +17,7 @@ compiled_config="$cache_dir/config.scpt"
 cached_config_md5file="$cache_dir/config.applescript.md5"
 
 # Retrieve md5sum of config files
-installed_config_md5sum=$(md5 "$installed_config" 2> /dev/null)
+installed_config_md5sum=$(md5 -q "$installed_config")
 cached_config_md5sum=$(< "$cached_config_md5file")
 
 # If cached md5sum does not match installed config's md5sum
