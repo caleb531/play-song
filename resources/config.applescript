@@ -7,72 +7,70 @@ property resultLimit : 9
 -- whether or not to retrieve album artwork for each result
 property albumArtEnabled : true
 
--- Workflow parameters (do not change these) --
+-- workflow parameters --
 
--- paths to important directories
 property homeFolder : (path to home folder as text)
 property libraryFolder : (path to library folder from user domain as text)
 property cacheFolder : (libraryFolder & "Caches:")
 property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred-2:Workflow Data:")
 property bundleId : "com.calebevans.playsong"
-property workflowDataFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
+property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 property artworkCacheFolderName : "Album Artwork"
-property artworkCachePath : (workflowDataFolder & artworkCacheFolderName & ":")
+property artworkCachePath : (workflowCacheFolder & artworkCacheFolderName & ":")
 property songArtworkNameSep : " | "
 property defaultIconName : "icon-noartwork.png"
 -- the name of the playlist this workflow uses for playing songs
 property workflowPlaylistName : "Alfred Play Song"
 -- the text used to determine if a track is an audio file
 property songDescriptor : "audio"
-
 -- list of Alfred results
 property resultList : {}
 
 -- replaces substring in string with another substring
-on replace(replaceThis, replaceWith, originalStr)
+on replace(replaceThis, replaceWith, theString)
 
 	set oldDelims to AppleScript's text item delimiters
 	set AppleScript's text item delimiters to replaceThis
-	set strItems to text items of originalStr
+	set strItems to text items of theString
 	set AppleScript's text item delimiters to replaceWith
-	set newStr to strItems as text
+	set newString to strItems as text
 	set AppleScript's text item delimiters to oldDelims
-	return newStr
+	return newString
 
 end replace
 
 -- encodes XML reserved characters in the given string
-on encodeXmlChars(str)
+on encodeXmlChars(theString)
 
-	set str to replace("&", "&amp;", str)
-	set str to replace("<", "&lt;", str)
-	set str to replace(">", "&gt;", str)
-	set str to replace("\"", "&quot;", str)
-	set str to replace("'", "&apos;", str)
-	return str
+	set theString to replace("&", "&amp;", theString)
+	set theString to replace("<", "&lt;", theString)
+	set theString to replace(">", "&gt;", theString)
+	set theString to replace("\"", "&quot;", theString)
+	set theString to replace("'", "&apos;", theString)
+	return theString
 
 end encodeXmlChars
 
 -- decodes XML reserved characters in the given string
-on decodeXmlChars(str)
+on decodeXmlChars(theString)
 
-	set str to replace("&amp;", "&", str)
-	set str to replace("&lt;", "<", str)
-	set str to replace("&gt;", ">", str)
-	set str to replace("&quot;", "\"", str)
-	set str to replace("&apos;", "'", str)
-	return str
+	set theString to replace("&amp;", "&", theString)
+	set theString to replace("&lt;", "<", theString)
+	set theString to replace("&gt;", ">", theString)
+	set theString to replace("&quot;", "\"", theString)
+	set theString to replace("&apos;", "'", theString)
+	return theString
 
 end decodeXmlChars
 
--- add result to result list
+-- adds result to result list
 on addResult(theResult)
 
 	copy theResult to the end of resultList
 
 end addResult
 
--- add item for "No Results" message
+-- adds item for "No Results" message
 on addNoResultsItem(query, queryType)
 
 	addResult({uid:"no-results", arg:"null", valid:"no", title:"No Results Found", subtitle:("No " & queryType & "s matching '" & query & "'"), icon:defaultIconName})
@@ -133,6 +131,7 @@ end getResultListXml
 on fileWrite(theFile, theContent)
 
 	try
+
 		set fileRef to open for access theFile with write permission
 		set eof of fileRef to 0
 		write theContent to fileRef starting at eof
@@ -197,42 +196,6 @@ on getSongArtworkPath(theSong)
 
 end getSongArtworkPath
 
--- creates folder for workflow data if it does not exist
-on createWorkflowDataFolder()
-
-	tell application "Finder"
-
-		if not (alias workflowDataFolder exists) then
-
-			make new folder in alfredWorkflowDataFolder with properties {name:bundleId}
-
-		end if
-
-	end tell
-
-end createWorkflowDataFolder
-
--- creates folder for album artwork cache if it does not exist
-on createArtworkCache()
-
-	createWorkflowDataFolder()
-
-	if albumArtEnabled is true then
-
-		tell application "Finder"
-
-			if not (alias artworkCachePath exists) then
-
-				make new folder in workflowDataFolder with properties {name:artworkCacheFolderName}
-
-			end if
-
-		end tell
-
-	end if
-
-end createArtworkCache
-
 -- creates album artwork cache
 on createWorkflowPlaylist()
 
@@ -248,7 +211,7 @@ on createWorkflowPlaylist()
 
 end createWorkflowPlaylist
 
--- empty song queue
+-- empties song queue
 on emptyQueue()
 
 	tell application "iTunes"
@@ -260,7 +223,7 @@ on emptyQueue()
 
 end emptyQueue
 
--- add songs to queue
+-- adds songs to queue
 on queueSongs(theSongs)
 
 	tell application "iTunes"
@@ -275,7 +238,7 @@ on queueSongs(theSongs)
 
 end queueSongs
 
--- play the queued songs
+-- plays the queued songs
 on playQueue()
 
 	tell application "iTunes"
@@ -291,7 +254,7 @@ on playQueue()
 
 end playQueue
 
--- bring queue into view in iTunes window
+-- brings queue into view in iTunes window
 on focusQueue()
 
 	tell application "iTunes"
@@ -480,21 +443,22 @@ on getSong(songId)
 
 end getSong
 
+-- retrieves a list of objects or names matching the given query and type
 on getResultsFromQuery(query, queryType)
 
 	set evalScript to run script "
 	script
 
-		on findResults(query, queryType, resultLimit)
+		on findResults(query, queryType, resultLimit, songDescriptor)
 
 			tell application \"iTunes\"
 
 				set theSongs to {}
-				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " starts with query)
-				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query)
-				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query))
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " starts with query and kind contains songDescriptor)
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query and kind contains songDescriptor)
+				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query) and kind contains songDescriptor)
 
-				if queryType equals \"name\" then
+				if queryType is \"name\" then
 
 					if length of theSongs > resultLimit then
 
@@ -533,6 +497,28 @@ on getResultsFromQuery(query, queryType)
 	end script
 	"
 
-	evalScript's findResults(query, queryType, resultLimit)
+	evalScript's findResults(query, queryType, resultLimit, songDescriptor)
 
 end getResultsFromQuery
+
+-- returns the given string with leading and trailing whitespace removed
+on trimWhitespace(theString)
+
+	-- trim leading whitespace
+	repeat while theString begins with space
+
+		if length of theString is 1 then return ""
+		set theString to text 2 thru end of theString
+
+	end repeat
+
+	-- trim trailing whitespace
+	repeat while theString ends with space
+
+		set theString to text 1 thru ((length of theString) - 1) of theString
+
+	end repeat
+
+	return theString
+
+end trimWhitespace

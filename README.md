@@ -1,6 +1,6 @@
 # Play Song
 
-*Copyright 2014 Caleb Evans*  
+*Copyright 2015 Caleb Evans*  
 *Released under the MIT license*
 
 Play Song is an [Alfred 2](http://www.alfredapp.com/) workflow designed to make playing songs in iTunes extremely quick and convenient.

@@ -14,6 +14,8 @@ on getAlbumResultListXml(query)
 
 	global config
 
+	set query to trimWhitespace(query) of config
+
 	-- search iTunes library for the given query
 	tell application "iTunes"
 
@@ -48,5 +50,4 @@ on getAlbumResultListXml(query)
 end getAlbumResultListXml
 
 set config to loadConfig()
-createArtworkCache() of config
 getAlbumResultListXml("{query}")

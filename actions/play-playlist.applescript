@@ -19,6 +19,7 @@ on playPlaylist(playlistId)
 	tell application "iTunes"
 
 		set thePlaylist to first user playlist whose id is playlistId
+		reveal thePlaylist
 		play thePlaylist
 
 	end tell
