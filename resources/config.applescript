@@ -453,10 +453,8 @@ on getResultsFromQuery(query, queryType)
 
 			tell application \"iTunes\"
 
-				set theSongs to {}
-				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " starts with query and kind contains songDescriptor)
+				set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query and kind contains songDescriptor)
 				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query and kind contains songDescriptor)
-				set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query) and kind contains songDescriptor)
 
 				if queryType is \"name\" then
 
