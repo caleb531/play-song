@@ -21,7 +21,17 @@ on getPlaylistResultListXml(query)
 
 		-- retrieve list of playlists matching query (ordered by relevance)
 		set thePlaylists to (get user playlists whose name starts with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
-		set thePlaylists to thePlaylists & (get user playlists whose name contains (space & query) and name does not start with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+		if length of thePlaylists < config's resultLimit then
+
+			set thePlaylists to thePlaylists & (get user playlists whose name contains (space & query) and name does not start with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+
+		end
+
+		if length of thePlaylists < config's resultLimit then
+
+			set thePlaylists to thePlaylists & (get user playlists whose name contains query and name does not start with query and name does not contain (space & query) and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+
+		end
 
 		-- inform user that no results were found
 		if length of thePlaylists is 0 then
@@ -32,11 +42,14 @@ on getPlaylistResultListXml(query)
 
 			set theIndex to 1
 
+			if length of thePlaylists > config's resultLimit then
+
+				set thePlaylists to items 1 thru resultLimit of thePlaylists
+
+			end if
+
 			-- loop through the results to create the XML data
 			repeat with thePlaylist in thePlaylists
-
-				-- limit number of results
-				if theIndex is greater than (resultLimit of config) then exit repeat
 
 				set playlistName to name of thePlaylist
 				set playlistId to id of thePlaylist
@@ -59,8 +72,6 @@ on getPlaylistResultListXml(query)
 
 				-- add song information to XML
 				addResult({uid:("playlist-" & playlistId) as text, arg:playlistId as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
-
-				set theIndex to theIndex + 1
 
 			end repeat
 
