@@ -282,9 +282,18 @@ on disableShuffle()
 
 	tell application "System Events"
 
-		tell process "iTunes"
+		tell menu bar 1 of process "iTunes"
 
-			click menu item 2 of menu 1 of menu item "Shuffle" of menu 1 of menu bar item "Controls" of menu bar 1
+			tell menu 1 of menu bar item (localized string of "Controls")
+
+				tell menu 1 of menu item (localized string of "Shuffle")
+
+					click menu item (localized string of "Off")
+					click menu item (localized string of "Songs")
+
+				end tell
+
+			end tell
 
 		end tell
 
