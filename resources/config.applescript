@@ -280,16 +280,20 @@ end playSongs
 -- disables shuffle mode for songs
 on disableShuffle()
 
+	set iTunesPath to "/Applications/iTunes.app" as POSIX file as alias
+	set contr to localized string "8d2vvyy7c7" in bundle iTunesPath
+	set shuf to localized string "atmqaez8y8" in bundle iTunesPath
+	set off to localized string "a6vt8uhdqz" in bundle iTunesPath
+
 	tell application "System Events"
 
 		tell menu bar 1 of process "iTunes"
 
-			tell menu 1 of menu bar item (localized string of "Controls")
+			tell menu 1 of menu bar item contr
 
-				tell menu 1 of menu item (localized string of "Shuffle")
+				tell menu 1 of menu item shuf
 
-					click menu item (localized string of "Off")
-					click menu item (localized string of "Songs")
+					click menu item off
 
 				end tell
 
