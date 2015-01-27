@@ -45,7 +45,7 @@ on getPlaylistResultListXml(query)
 
 			if length of thePlaylists > config's resultLimit then
 
-				set thePlaylists to items 1 thru resultLimit of thePlaylists
+				set thePlaylists to items 1 thru (config's resultLimit) of thePlaylists
 
 			end if
 

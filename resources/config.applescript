@@ -280,15 +280,27 @@ end playSongs
 -- disables shuffle mode for songs
 on disableShuffle()
 
-	tell application "System Events"
+	try
 
-		tell process "iTunes"
+		tell application "System Events"
 
-			click menu item 2 of menu 1 of menu item "Shuffle" of menu 1 of menu bar item "Controls" of menu bar 1
+			tell menu bar 1 of process "iTunes"
+
+				tell menu 1 of menu bar item "Controls"
+
+					tell menu 1 of menu item "Shuffle"
+
+						click menu item "Off"
+
+					end tell
+
+				end tell
+
+			end tell
 
 		end tell
 
-	end tell
+	end try
 
 end disableShuffle
 
