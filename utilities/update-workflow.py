@@ -8,17 +8,18 @@ import tempfile
 import shutil
 import subprocess
 import glob
-import hashlib
 import binascii
 import re
 
 DEVNULL = os.open(os.devnull, os.O_RDWR)
+
 
 # Returns the path to the filter script corresponding to a keyword
 def filter_path(keyword):
 	k = keyword[4:] + 's'
 
 	return 'filters/filter-{}.applescript'.format(k)
+
 
 # Returns the path to the action script based on a list keywords
 # for which the filter scripts are connected with the action script
@@ -29,11 +30,13 @@ def action_path(connected_keywords):
 		f = 'actions/play-{}.applescript'.format(k)
 		if os.path.exists(f):
 			return f
+		else:
+			raise IOError('Action script not found for keywords: {}'
+						  .format(connected_keywords))
 
-	raise IOError('Action script not found for keywords: {}'.format(connected_keywords))
 
-# Given a config dictionary and a file path updates the config with the file contents
-# Returns wether the file was updated
+# Given a config dict and file path, updates the config with file contents
+# Returns whether the file was updated
 def update_script(config, path):
 	config_script = config['script']
 
@@ -53,7 +56,8 @@ def update_script(config, path):
 			config['script'] = contents
 
 			if alias:
-				print 'Updated alias {} for {}'.format(config['keyword'], alias)
+				print 'Updated alias {} for {}'.format(
+					config['keyword'], alias)
 			else:
 				print 'Updated {}'.format(path)
 
@@ -61,16 +65,29 @@ def update_script(config, path):
 		else:
 			return False
 
+
 # Returns the path to the installed workflow or None if it can't be found
 def get_installation_dir(bundle_id):
-	ALFRED_PLIST = os.path.expanduser('~/Library/Preferences/com.runningwithcrayons.Alfred-Preferences.plist')
-	DEFAULT_ALFRED_PREFERENCE_DIR = os.path.expanduser('~/Library/Application Support/Alfred 2')
-	WORKFLOW_INFOS_GLOB = 'Alfred.alfredpreferences/workflows/user.workflow.*/info.plist'
+
+	ALFRED_PLIST_NAME = 'com.runningwithcrayons.Alfred-Preferences.plist'
+
+	ALFRED_PLIST = os.path.expanduser(os.path.join('~', 'Library',
+												   'Preferences',
+												   ALFRED_PLIST_NAME))
+
+	DEFAULT_ALFRED_PREFERENCE_DIR = os.path.expanduser(os.path.join(
+		'~', 'Library/Application Support/Alfred 2'))
+
+	WORKFLOW_INFOS_GLOB = os.path.join('Alfred.alfredpreferences',
+									   'workflows', 'user.workflow.*',
+									   'info.plist')
 
 	try:
 		# We need to read the plist with defaults
 		# as plistlib can't handle binary plists before Python 3.4
-		preference_dir = subprocess.check_output(['defaults', 'read', ALFRED_PLIST, 'syncfolder'], stderr=DEVNULL)
+		preference_dir = subprocess.check_output(['defaults', 'read',
+												 ALFRED_PLIST, 'syncfolder'],
+												 stderr=DEVNULL)
 
 		# Ensure ~ is expanded to full home folder path
 		# Also remove leading and trailing whitespace
@@ -81,10 +98,10 @@ def get_installation_dir(bundle_id):
 		preference_dir = DEFAULT_ALFRED_PREFERENCE_DIR
 
 	# Search for workflow dir
-	for f in glob.glob(preference_dir + '/' + WORKFLOW_INFOS_GLOB):
-		info = plistlib.readPlist(f)
+	for fname in glob.iglob(os.path.join(preference_dir, WORKFLOW_INFOS_GLOB)):
+		info = plistlib.readPlist(fname)
 		if info['bundleid'] == bundle_id:
-			workflow_dir = os.path.dirname(f)
+			workflow_dir = os.path.dirname(fname)
 			return workflow_dir
 
 	# Workflow not found
@@ -94,7 +111,7 @@ def get_installation_dir(bundle_id):
 script_path = os.path.dirname(os.path.realpath(__file__))
 
 # Path to the repository
-top_path = script_path + '/..'
+top_path = os.path.dirname(script_path)
 
 os.chdir(top_path)
 
@@ -105,7 +122,7 @@ workflow_bundle_id = 'com.calebevans.playsong'
 workflow_path = 'Play Song.alfredworkflow'
 
 # Path to resources
-resources_path ='resources'
+resources_path = 'resources'
 
 # Filename of the plist inside the workflow
 plist_name = 'info.plist'
@@ -135,8 +152,10 @@ for source_id, connections in data['connections'].iteritems():
 
 # Seperate filter and action scripts
 objects = data['objects']
-filters = filter(lambda o: o['type'] == 'alfred.workflow.input.scriptfilter', objects)
-actions = filter(lambda o: o['type'] == 'alfred.workflow.action.script', objects)
+filters = filter(lambda o: o['type'] == 'alfred.workflow.input.scriptfilter',
+				 objects)
+actions = filter(lambda o: o['type'] == 'alfred.workflow.action.script',
+				 objects)
 
 # Wether any scripts was changed
 scripts_updated = False
@@ -170,13 +189,13 @@ old_resource_files = set(file_hashes.keys())
 
 # Print out all files removed from resources
 for fname in old_resource_files - resource_files:
-	fpath = resources_path + '/' + fname
+	fpath = os.path.join(resources_path, fname)
 
 	print 'Removed {}'.format(fpath)
 
 # Copy and print out all files added to resources
 for fname in resource_files - old_resource_files:
-	fpath = resources_path + '/' + fname
+	fpath = os.path.join(resources_path, fname)
 
 	shutil.copy(fpath, tmp_dir)
 
@@ -185,8 +204,7 @@ for fname in resource_files - old_resource_files:
 # All files that existed in the old workflow should all be copied
 # Only print updated for those files that changed
 for fname in resource_files & old_resource_files:
-	fpath = resources_path + '/' + fname
-
+	fpath = os.path.join(resources_path, fname)
 
 	# Always copy the file even if it hasn't changed
 	shutil.copy(fpath, tmp_dir)
@@ -215,7 +233,7 @@ if not installation_dir:
 	# Delete the temporary directory
 	shutil.rmtree(tmp_dir)
 
-	print 'Workflow installation path couldn\'t be found. Is "Play Song" installed?'
+	print 'Workflow installation path not found. Is "Play Song" installed?'
 else:
 	# Delete the directory
 	shutil.rmtree(installation_dir)
