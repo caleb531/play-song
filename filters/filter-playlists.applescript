@@ -72,7 +72,7 @@ on getPlaylistResultListXml(query)
 				end if
 
 				-- add song information to XML
-				addResult({uid:("playlist-" & playlistId) as text, arg:playlistId as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
+				addResult({uid:("playlist-" & playlistId) as text, arg:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
 
 			end repeat
 

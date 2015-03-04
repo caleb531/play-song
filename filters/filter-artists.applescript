@@ -37,7 +37,7 @@ on getArtistResultListXml(query)
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
 				-- add song information to XML
-				addResult({uid:("artist-" & artistName), arg:artistName, valid:"yes", title:artistName, subtitle:"Artist", icon:songArtworkPath}) of config
+				addResult({uid:("artist-" & artistName), arg:("artist-" & artistName), valid:"yes", title:artistName, subtitle:"Artist", icon:songArtworkPath}) of config
 
 			end repeat
 
