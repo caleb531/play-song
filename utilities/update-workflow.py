@@ -16,9 +16,7 @@ DEVNULL = os.open(os.devnull, os.O_RDWR)
 
 # Returns the path to the filter script corresponding to a keyword
 def filter_path(keyword):
-    k = keyword[4:] + 's'
-
-    return 'filters/filter-{}.applescript'.format(k)
+    return 'filters/{}.applescript'.format(keyword)
 
 
 # Returns the path to the action script based on a list keywords
