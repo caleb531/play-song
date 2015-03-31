@@ -21,7 +21,7 @@ on playSong(songId)
 
 end playSong
 
--- plays songs belonging to the given album
+-- plays all songs belonging to the given album
 on playAlbum(albumName)
 
 	global config
@@ -49,7 +49,7 @@ on playArtist(artistName)
 
 end playArtist
 
--- plays all songs by the given genre
+-- plays all songs within the given genre
 on playGenre(genreName)
 
 	global config
@@ -63,7 +63,7 @@ on playGenre(genreName)
 
 end playGenre
 
--- plays songs in the given playlist
+-- plays all songs in the given playlist
 on playPlaylist(playlistId)
 
 	global config
@@ -81,32 +81,37 @@ on playPlaylist(playlistId)
 
 end playPlaylist
 
--- Given a query string splits it into the type and id
-on getTypeAndId(query)	set pos to offset of "-" in query
+-- parses the given query to retrieve type and id of item to play
+on parseQuery(query)
 
-	set type to text 1 thru (pos - 1) of query
-	set theId to text (pos + 1) thru -1 of query
-	return {type, theId}
-end getTypeAndId
+	set pos to offset of "-" in query
+	set theType to text 1 thru (pos - 1) of query
+	set theId to text (pos + 1) thru end of query
+	return {type:theType, id:theId}
 
+end parseQuery
+
+--
 on play(query)
-	set typeAndId to getTypeAndId(query)
-	set type to first item of typeAndId
-	set theId to last item of typeAndId
 
-	if type is equal to "song" then
+	set typeAndId to parseQuery(query)
+	set theType to type of typeAndId
+	set theId to id of typeAndId
+
+	if theType is "song" then
 		playSong(theId)
-	else if type is equal to "album" then
+	else if theType is "album" then
 		playAlbum(theId)
-	else if type is equal to "artist" then
+	else if theType is "artist" then
 		playArtist(theId)
-	else if type is equal to "genre" then
+	else if theType is "genre" then
 		playGenre(theId)
-	else if type is equal to "playlist" then
+	else if theType is "playlist" then
 		playPlaylist(theId)
 	else
-		log "Unknown type: " & type
-	end
+		log "Unknown type: " & theType
+	end if
+
 end play
 
 set config to loadConfig()
