@@ -4,7 +4,7 @@
 
 -- limit number of songs to improve efficiency
 property resultLimit : 9
--- whether or not to retrieve album artwork for each result
+-- whether or not to retrieve/display album artwork for each result
 property albumArtEnabled : true
 
 -- workflow parameters --
@@ -19,7 +19,7 @@ property artworkCacheFolderName : "Album Artwork"
 property artworkCachePath : (workflowCacheFolder & artworkCacheFolderName & ":")
 property songArtworkNameSep : " | "
 property defaultIconName : "icon-noartwork.png"
--- the name of the playlist this workflow uses for playing songs
+-- the name of the playlist used by the workflow for playing songs
 property workflowPlaylistName : "Alfred Play Song"
 -- the text used to determine if a track is an audio file
 property songDescriptor : "audio"
@@ -63,7 +63,7 @@ on decodeXmlChars(theString)
 
 end decodeXmlChars
 
--- adds result to result list
+-- adds Alfred result to result list
 on addResult(theResult)
 
 	copy theResult to the end of resultList
@@ -77,10 +77,15 @@ on addNoResultsItem(query, queryType)
 
 end addNoResultsItem
 
--- indicates if the result list is full
 on resultListIsFull()
 
 	return (length of resultList is resultLimit)
+
+end resultListIsFull
+
+on resultListIsEmpty()
+
+	return (length of resultList is 0)
 
 end resultListIsFull
 
@@ -213,19 +218,16 @@ on createWorkflowPlaylist()
 
 end createWorkflowPlaylist
 
--- empties song queue
 on emptyQueue()
 
 	tell application "iTunes"
 
-		-- empty queue
 		delete tracks of user playlist workflowPlaylistName
 
 	end tell
 
 end emptyQueue
 
--- adds songs to queue
 on queueSongs(theSongs)
 
 	tell application "iTunes"
@@ -240,12 +242,10 @@ on queueSongs(theSongs)
 
 end queueSongs
 
--- plays the queued songs
 on playQueue()
 
 	tell application "iTunes"
 
-		-- beginning playing songs in playlist if not empty
 		if number of tracks in user playlist workflowPlaylistName is not 0 then
 
 			play user playlist workflowPlaylistName
@@ -267,7 +267,6 @@ on focusQueue()
 
 end focusQueue
 
--- plays the given songs in the queue
 on playSongs(theSongs)
 
 	emptyQueue()
@@ -277,7 +276,7 @@ on playSongs(theSongs)
 
 end playSongs
 
--- disables shuffle mode for songs
+-- disables shuffle mode for songs within iTunes
 on disableShuffle()
 
 	try
