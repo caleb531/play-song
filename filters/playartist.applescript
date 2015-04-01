@@ -1,4 +1,4 @@
--- filters artists by the typed query --
+-- playartist filter --
 
 on loadConfig()
 

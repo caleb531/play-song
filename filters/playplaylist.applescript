@@ -1,4 +1,4 @@
--- filters playlists by the typed query --
+-- playplaylist filter --
 
 on loadConfig()
 

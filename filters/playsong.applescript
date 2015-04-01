@@ -1,4 +1,4 @@
--- filters songs by the typed query --
+-- playsong filter --
 
 on loadConfig()
 
@@ -25,8 +25,6 @@ on getSongResultListXml(query)
 			set songId to (get database ID of theSong)
 			set songName to name of theSong
 			set songArtist to artist of theSong
-			set songAlbum to album of theSong
-			set songKind to kind of theSong
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
 			addResult({uid:("song-" & songId), arg:("song-" & songId), valid:"yes", title:songName, subtitle:songArtist, icon:songArtworkPath}) of config

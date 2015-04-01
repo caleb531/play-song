@@ -1,4 +1,4 @@
--- filters genres by the typed query --
+-- playgenre filter --
 
 on loadConfig()
 

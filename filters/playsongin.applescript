@@ -1,4 +1,4 @@
--- filters albums by the typed query --
+-- playsongin filter --
 
 on loadConfig()
 

@@ -1,4 +1,4 @@
--- filters albums by the typed query --
+-- playalbum filter --
 
 on loadConfig()
 
