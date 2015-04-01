@@ -24,6 +24,7 @@ def filter_path(keyword):
 def action_path(connected_keywords):
     return "actions/play.applescript"
 
+
 # Given a config dict and file path, updates the config with file contents
 # Returns whether the file was updated
 def update_script(config, path):

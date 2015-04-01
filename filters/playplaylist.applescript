@@ -1,6 +1,5 @@
--- filters playlists by the typed query --
+-- playplaylist filter --
 
--- loads workflow configuration
 on loadConfig()
 
 	do shell script "./compile-config.sh"
@@ -9,14 +8,12 @@ on loadConfig()
 
 end loadConfig
 
--- constructs playlist result list as XML string
 on getPlaylistResultListXml(query)
 
 	global config
 
 	set query to trimWhitespace(query) of config
 
-	-- search iTunes library for the given query
 	tell application "iTunes"
 
 		-- retrieve list of playlists matching query (ordered by relevance)
@@ -34,47 +31,38 @@ on getPlaylistResultListXml(query)
 
 		end if
 
-		-- inform user that no results were found
-		if length of thePlaylists is 0 then
+		if length of thePlaylists > config's resultLimit then
 
-			addNoResultsItem(query, "playlist") of config
+			set thePlaylists to items 1 thru (config's resultLimit) of thePlaylists
 
-		else
+		end if
 
-			set theIndex to 1
+		repeat with thePlaylist in thePlaylists
 
-			if length of thePlaylists > config's resultLimit then
+			set playlistName to name of thePlaylist
+			set playlistId to id of thePlaylist
+			set songCount to number of tracks in thePlaylist
 
-				set thePlaylists to items 1 thru (config's resultLimit) of thePlaylists
+			set theSong to (first track in user playlist playlistName whose kind contains (songDescriptor of config))
+			set songArtworkPath to getSongArtworkPath(theSong) of config
+
+			if songCount is 1 then
+
+				set itemSubtitle to "1 song"
+
+			else
+
+				set itemSubtitle to (songCount & " songs") as text
 
 			end if
 
-			-- loop through the results to create the XML data
-			repeat with thePlaylist in thePlaylists
+			addResult({uid:("playlist-" & playlistId) as text, arg:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
 
-				set playlistName to name of thePlaylist
-				set playlistId to id of thePlaylist
+		end repeat
 
-				set theSong to (first track in user playlist playlistName whose kind contains (songDescriptor of config))
-				set songArtworkPath to getSongArtworkPath(theSong) of config
+		if config's resultListIsEmpty() then
 
-				-- determine number of songs in playlist
-				set songCount to number of tracks in thePlaylist
-
-				if songCount is 1 then
-
-					set itemSubtitle to "1 song"
-
-				else
-
-					set itemSubtitle to (songCount & " songs") as text
-
-				end if
-
-				-- add song information to XML
-				addResult({uid:("playlist-" & playlistId) as text, arg:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
-
-			end repeat
+			addNoResultsItem(query, "playlist") of config
 
 		end if
 

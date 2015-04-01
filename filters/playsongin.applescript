@@ -1,4 +1,4 @@
--- playalbumby filter --
+-- playsongin filter --
 
 on loadConfig()
 
@@ -16,21 +16,21 @@ on getAlbumResultListXml(query)
 
 	tell application "iTunes"
 
-		set theArtists to getResultsFromQuery(query, "artist") of config
+		set theAlbums to getResultsFromQuery(query, "album") of config
 
-		repeat with artistName in theArtists
+		repeat with albumName in theAlbums
 
-			set artistAlbums to getArtistAlbums(artistName) of config
+			set albumSongs to getAlbumSongs(albumName) of config
 
-			repeat with albumName in artistAlbums
+			repeat with theSong in albumSongs
 
 				if config's resultListIsFull() then exit repeat
 
-				set albumName to albumName as text
-				set theSong to (first track of playlist 2 whose album is albumName and kind contains (songDescriptor of config))
+				set songId to (get database ID of theSong)
+				set songName to name of theSong
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
-				addResult({uid:("album-" & albumName), arg:("album-" & albumName), valid:"yes", title:albumName, subtitle:artist of theSong, icon:songArtworkPath}) of config
+				addResult({uid:("song-" & songId), arg:("song-" & songId), valid:"yes", title:songName, subtitle:artist of theSong, icon:songArtworkPath}) of config
 
 			end repeat
 
@@ -40,7 +40,7 @@ on getAlbumResultListXml(query)
 
 		if config's resultListIsEmpty() then
 
-			addNoResultsItem(query, "album") of config
+			addNoResultsItem(query, "song") of config
 
 		end if
 
