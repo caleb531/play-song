@@ -218,7 +218,7 @@ on createWorkflowPlaylist()
 
 end createWorkflowPlaylist
 
-on emptyQueue()
+on clearQueue()
 
 	tell application "iTunes"
 
@@ -226,7 +226,7 @@ on emptyQueue()
 
 	end tell
 
-end emptyQueue
+end clearQueue
 
 on queueSongs(theSongs)
 
@@ -252,6 +252,8 @@ on playQueue()
 
 		end if
 
+		return number of tracks of user playlist workflowPlaylistName
+
 	end tell
 
 end playQueue
@@ -269,7 +271,7 @@ end focusQueue
 
 on playSongs(theSongs)
 
-	emptyQueue()
+	clearQueue()
 	queueSongs(theSongs)
 	focusQueue()
 	playQueue()
@@ -660,6 +662,14 @@ on queue(query)
 		log "Unknown type: " & theType
 	end if
 
-	return query
+	if theType is "song" then
+		tell application "iTunes"
+			set theName to name of first track of playlist 2 whose database ID is theId
+		end tell
+	else
+		set theName to theId
+	end if
+
+	return theName
 
 end queue

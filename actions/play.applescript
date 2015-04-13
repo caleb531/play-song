@@ -1,6 +1,5 @@
 -- plays selected result in iTunes --
 
--- loads workflow configuration
 on loadConfig()
 
 	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-2:Workflow Data:com.calebevans.playsong:config.scpt")
@@ -12,7 +11,7 @@ on play(query)
 
 	global config
 
-	emptyQueue() of config
+	clearQueue() of config
 	queue(query) of config
 	playQueue() of config
 
