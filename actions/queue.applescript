@@ -1,4 +1,4 @@
--- plays selected result in iTunes --
+-- queues selected result in iTunes --
 
 -- loads workflow configuration
 on loadConfig()
@@ -8,15 +8,5 @@ on loadConfig()
 
 end loadConfig
 
-on play(query)
-
-	global config
-
-	emptyQueue() of config
-	queue(query) of config
-	playQueue() of config
-
-end play
-
 set config to loadConfig()
-play("{query}")
+queue("{query}") of config
