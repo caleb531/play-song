@@ -222,7 +222,11 @@ on clearQueue()
 
 	tell application "iTunes"
 
-		delete tracks of user playlist workflowPlaylistName
+		if user playlist workflowPlaylistName exists then
+
+			delete tracks of user playlist workflowPlaylistName
+
+		end if
 
 	end tell
 
@@ -252,7 +256,7 @@ on playQueue()
 
 		end if
 
-		return number of tracks of user playlist workflowPlaylistName
+		return number of tracks in user playlist workflowPlaylistName
 
 	end tell
 
@@ -268,15 +272,6 @@ on focusQueue()
 	end tell
 
 end focusQueue
-
-on playSongs(theSongs)
-
-	clearQueue()
-	queueSongs(theSongs)
-	focusQueue()
-	playQueue()
-
-end playSongs
 
 -- disables shuffle mode for songs within iTunes
 on disableShuffle()
@@ -305,7 +300,7 @@ on disableShuffle()
 
 end disableShuffle
 
-on getPlaylistSongs()
+on getPlaylistSongs(playlistId)
 
 	tell application "iTunes"
 
@@ -314,7 +309,7 @@ on getPlaylistSongs()
 
 	end tell
 
-	return thePlaylist
+	return theSongs
 
 end getPlaylistSongs
 
@@ -563,72 +558,43 @@ end trimWhitespace
 -- queues the song with the given ID
 on queueSong(songId)
 
-	global config
-
-	createWorkflowPlaylist() of config
-	disableShuffle() of config
-
-	set theSong to getSong(songId) of config
-	queueSongs({theSong}) of config
+	set theSong to getSong(songId)
+	queueSongs({theSong})
 
 end queueSong
 
 -- queues all songs belonging to the given album
 on queueAlbum(albumName)
 
-	global config
-
-	createWorkflowPlaylist() of config
-	disableShuffle() of config
-
-	set albumName to decodeXmlChars(albumName) of config
-	set theSongs to getAlbumSongs(albumName) of config
-	queueSongs(theSongs) of config
+	set albumName to decodeXmlChars(albumName)
+	set theSongs to getAlbumSongs(albumName)
+	queueSongs(theSongs)
 
 end queueAlbum
 
 -- queues all songs by the given artist
 on queueArtist(artistName)
 
-	global config
-
-	createWorkflowPlaylist() of config
-	disableShuffle() of config
-
-	set artistName to decodeXmlChars(artistName) of config
-	set theSongs to getArtistSongs(artistName) of config
-	queueSongs(theSongs) of config
+	set artistName to decodeXmlChars(artistName)
+	set theSongs to getArtistSongs(artistName)
+	queueSongs(theSongs)
 
 end queueArtist
 
 -- queues all songs within the given genre
 on queueGenre(genreName)
 
-	global config
-
-	createWorkflowPlaylist() of config
-	disableShuffle() of config
-
-	set genreName to decodeXmlChars(genreName) of config
-	set theSongs to getGenreSongs(genreName) of config
-	queueSongs(theSongs) of config
+	set genreName to decodeXmlChars(genreName)
+	set theSongs to getGenreSongs(genreName)
+	queueSongs(theSongs)
 
 end queueGenre
 
 -- queues all songs in the given playlist
 on queuePlaylist(playlistId)
 
-	global config
-
-	createWorkflowPlaylist() of config
-	disableShuffle() of config
-
-	tell application "iTunes"
-
-		set thePlaylist to getPlaylistSongs(playlistName) of config
-		queueSongs()
-
-	end tell
+	set theSongs to getPlaylistSongs(playlistId)
+	queueSongs(theSongs)
 
 end queuePlaylist
 
@@ -648,6 +614,9 @@ on queue(query)
 	set theType to type of typeAndId
 	set theId to id of typeAndId
 
+	createWorkflowPlaylist()
+	disableShuffle()
+
 	if theType is "song" then
 		queueSong(theId)
 	else if theType is "album" then
@@ -662,6 +631,8 @@ on queue(query)
 		log "Unknown type: " & theType
 	end if
 
+	focusQueue()
+
 	if theType is "song" then
 		tell application "iTunes"
 			set theName to name of first track of playlist 2 whose database ID is theId
@@ -673,3 +644,12 @@ on queue(query)
 	return theName
 
 end queue
+
+on play(query)
+
+	clearQueue()
+	queue(query)
+	focusQueue()
+	playQueue()
+
+end play

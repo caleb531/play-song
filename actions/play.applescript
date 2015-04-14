@@ -7,15 +7,5 @@ on loadConfig()
 
 end loadConfig
 
-on play(query)
-
-	global config
-
-	clearQueue() of config
-	queue(query) of config
-	playQueue() of config
-
-end play
-
 set config to loadConfig()
-play("{query}")
+play("{query}") of config
