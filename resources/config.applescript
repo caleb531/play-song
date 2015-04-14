@@ -633,13 +633,17 @@ on queue(query)
 
 	focusQueue()
 
-	if theType is "song" then
-		tell application "iTunes"
+	tell application "iTunes"
+
+		if theType is "song" then
 			set theName to name of first track of playlist 2 whose database ID is theId
-		end tell
-	else
-		set theName to theId
-	end if
+		else if theType is "playlist" then
+			set theName to name of first user playlist whose id is theId
+		else
+			set theName to theId
+		end if
+
+	end tell
 
 	return theName
 
