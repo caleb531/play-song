@@ -256,8 +256,6 @@ on playQueue()
 
 		end if
 
-		return number of tracks in user playlist workflowPlaylistName
-
 	end tell
 
 end playQueue
@@ -632,20 +630,6 @@ on queue(query)
 	end if
 
 	focusQueue()
-
-	tell application "iTunes"
-
-		if theType is "song" then
-			set theName to name of first track of playlist 2 whose database ID is theId
-		else if theType is "playlist" then
-			set theName to name of first user playlist whose id is theId
-		else
-			set theName to theId
-		end if
-
-	end tell
-
-	return theName
 
 end queue
 
