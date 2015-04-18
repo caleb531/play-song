@@ -271,33 +271,6 @@ on focusQueue()
 
 end focusQueue
 
--- disables shuffle mode for songs within iTunes
-on disableShuffle()
-
-	try
-
-		tell application "System Events"
-
-			tell menu bar 1 of process "iTunes"
-
-				tell menu 1 of menu bar item "Controls"
-
-					tell menu 1 of menu item "Shuffle"
-
-						click menu item "Off"
-
-					end tell
-
-				end tell
-
-			end tell
-
-		end tell
-
-	end try
-
-end disableShuffle
-
 on getPlaylistSongs(playlistId)
 
 	tell application "iTunes"
@@ -613,7 +586,6 @@ on queue(query)
 	set theId to id of typeAndId
 
 	createWorkflowPlaylist()
-	disableShuffle()
 
 	if theType is "song" then
 		queueSong(theId)
