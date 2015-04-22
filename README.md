@@ -10,12 +10,8 @@ playing songs in iTunes extremely quick and convenient.
 
 ## Usage
 
-Play Song includes five keyword filters which allow you to search for and play
-songs in your iTunes library.
-
-In order for Play Song to function properly, it requires access to assistive
-devices. You can enable this for Alfred via the *Security & Privacy* pane of
-System Preferences.
+Play Song includes a number of keyword filters which allow you to search for and
+play songs in your iTunes library.
 
 ### Playing a song
 
@@ -60,6 +56,22 @@ an album from the list will play all songs from that album.
 To play a song in a particular album, use the `playsongin` keyword. Songs whose
 album names match your query will populate the list of results. Choosing a song
 from the list will play that song once.
+
+### Queueing songs
+
+For any of the above filters, choosing a result with the `cmd` key held down
+will queue the result (as opposed to playing it immediately). This allows you to
+queue up multiple songs before playing them.
+
+To play the songs you've queued, use the `playqueue` keyword. To clear the queue
+of all songs, use the `clearqueue` keyword.
+
+### A note about play order
+
+Play Song always respects the current shuffle mode within iTunes. For example,
+if shuffle is enabled, playing an album via Play Song will play the songs of the
+album in shuffled order. Therefore, if you desire Play Song to respect album
+order, simply disable shuffle within iTunes.
 
 ## Support
 
