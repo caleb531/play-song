@@ -13,6 +13,8 @@ import re
 
 DEVNULL = os.open(os.devnull, os.O_RDWR)
 
+NO_MODIFIERS = 0
+CMD_MODIFIER = 1048576
 
 # Returns the path to the filter script corresponding to a keyword
 def filter_path(keyword):
@@ -21,8 +23,19 @@ def filter_path(keyword):
 
 # Returns the path to the action script based on a list keywords
 # for which the filter scripts are connected with the action script
-def action_path(connected_keywords):
-    return "actions/play.applescript"
+def action_path(connections):
+    first = connections[0]
+    modifiers, keyword = first
+
+    if modifiers == CMD_MODIFIER:
+        name = 'queue'
+    else:
+        if keyword == 'playqueue' or keyword == 'clearqueue':
+            name = keyword
+        else:
+            name = 'play'
+
+    return 'actions/{}.applescript'.format(name)
 
 
 # Given a config dict and file path, updates the config with file contents
@@ -138,11 +151,12 @@ connections_to = collections.defaultdict(list)
 for source_id, connections in data['connections'].iteritems():
     for connection in connections:
         destination_id = connection['destinationuid']
-        connections_to[destination_id].append(source_id)
+        modifiers = connection['modifiers']
+        connections_to[destination_id].append((modifiers, source_id))
 
 # Seperate filter and action scripts
 objects = data['objects']
-filters = filter(lambda o: o['type'] == 'alfred.workflow.input.scriptfilter',
+filters = filter(lambda o: o['type'] == 'alfred.workflow.input.scriptfilter' or o['type'] == 'alfred.workflow.input.keyword',
                  objects)
 actions = filter(lambda o: o['type'] == 'alfred.workflow.action.script',
                  objects)
@@ -160,16 +174,17 @@ for obj in filters:
 
     filter_keywords[obj['uid']] = keyword
 
-    scripts_updated |= update_script(config, filter_path(keyword))
+    if obj['type'] == 'alfred.workflow.input.scriptfilter':
+        scripts_updated |= update_script(config, filter_path(keyword))
 
 # Update action scripts
 for obj in actions:
     config = obj['config']
 
     connections = connections_to[obj['uid']]
-    connected_keywords = map(lambda c: filter_keywords[c], connections)
+    connections_with_keywords = map(lambda c: (c[0], filter_keywords[c[1]]), connections)
 
-    scripts_updated |= update_script(config, action_path(connected_keywords))
+    scripts_updated |= update_script(config, action_path(connections_with_keywords))
 
 # Temporary directory to store workflow files
 tmp_dir = tempfile.mkdtemp()
