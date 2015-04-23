@@ -19,43 +19,42 @@ To play an individual song, use the `playsong` keyword. Songs whose names match
 your query will populate the list of results. Choosing a song from the list will
 play that song once.
 
+### Playing a song in a particular album
+
+To play a song in a particular album, use the `playsongin` keyword. Songs whose
+album names match your query will populate the list of results. Choosing a song
+from the list will play that song once.
+
 ### Playing an album
 
 To play all songs from a particular album, use the `playalbum` keyword. Albums
 whose names match your query will populate the list of results. Choosing an
-album from the list will play all songs from that album (ordered by track
-number).
+album from the list will play all songs from that album.
+
+#### Playing an album by a particular artist
+
+To play an album by a particular artist, use the `playalbum` keyword. Albums
+whose artist names match your query will populate the list of results. Choosing
+an album from the list will play all songs from that album.
 
 ### Playing an artist
 
 To play all songs by a particular artist, use the `playartist` keyword. Artists
 whose names match your query will populate the list of results. Choosing a
-artist from the list will play all songs by that artist (grouped by album).
+artist from the list will play all songs by that artist.
 
 ### Playing a genre
 
 To play all songs within a particular genre, use the `playgenre` keyword. Genres
 whose names match your query will populate the list of results. Choosing a genre
-from the list will play all songs within that genre (grouped by artist).
+from the list will play all songs within that genre.
 
 ### Playing a playlist
 
 To play all songs within a particular playlist, use the `playplaylist` keyword.
 Non-empty playlists whose names match your query will populate the list of
 results. Choosing a playlist from the list will play all songs within that
-playlist (according to playlist order).
-
-### Playing an album by a particular artist
-
-To play an album by a particular artist, use the `playalbum` keyword. Albums
-whose artist names match your query will populate the list of results. Choosing
-an album from the list will play all songs from that album.
-
-### Playing a song in a particular album
-
-To play a song in a particular album, use the `playsongin` keyword. Songs whose
-album names match your query will populate the list of results. Choosing a song
-from the list will play that song once.
+playlist.
 
 ### Queueing songs
 
