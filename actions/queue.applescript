@@ -1,4 +1,4 @@
--- plays selected result in iTunes --
+-- queues selected result in iTunes --
 
 on loadConfig()
 
@@ -8,4 +8,4 @@ on loadConfig()
 end loadConfig
 
 set config to loadConfig()
-play("{query}") of config
+queue("{query}") of config

@@ -218,15 +218,19 @@ on createWorkflowPlaylist()
 
 end createWorkflowPlaylist
 
-on emptyQueue()
+on clearQueue()
 
 	tell application "iTunes"
 
-		delete tracks of user playlist workflowPlaylistName
+		if user playlist workflowPlaylistName exists then
+
+			delete tracks of user playlist workflowPlaylistName
+
+		end if
 
 	end tell
 
-end emptyQueue
+end clearQueue
 
 on queueSongs(theSongs)
 
@@ -267,41 +271,18 @@ on focusQueue()
 
 end focusQueue
 
-on playSongs(theSongs)
+on getPlaylistSongs(playlistId)
 
-	emptyQueue()
-	queueSongs(theSongs)
-	focusQueue()
-	playQueue()
+	tell application "iTunes"
 
-end playSongs
+		set thePlaylist to first user playlist whose id is playlistId
+		set theSongs to every track of thePlaylist
 
--- disables shuffle mode for songs within iTunes
-on disableShuffle()
+	end tell
 
-	try
+	return theSongs
 
-		tell application "System Events"
-
-			tell menu bar 1 of process "iTunes"
-
-				tell menu 1 of menu bar item "Controls"
-
-					tell menu 1 of menu item "Shuffle"
-
-						click menu item "Off"
-
-					end tell
-
-				end tell
-
-			end tell
-
-		end tell
-
-	end try
-
-end disableShuffle
+end getPlaylistSongs
 
 -- retrieves list of artist names for the given genre
 on getGenreArtists(genreName)
@@ -544,3 +525,91 @@ on trimWhitespace(theString)
 	return theString
 
 end trimWhitespace
+
+-- queues the song with the given ID
+on queueSong(songId)
+
+	set theSong to getSong(songId)
+	queueSongs({theSong})
+
+end queueSong
+
+-- queues all songs belonging to the given album
+on queueAlbum(albumName)
+
+	set albumName to decodeXmlChars(albumName)
+	set theSongs to getAlbumSongs(albumName)
+	queueSongs(theSongs)
+
+end queueAlbum
+
+-- queues all songs by the given artist
+on queueArtist(artistName)
+
+	set artistName to decodeXmlChars(artistName)
+	set theSongs to getArtistSongs(artistName)
+	queueSongs(theSongs)
+
+end queueArtist
+
+-- queues all songs within the given genre
+on queueGenre(genreName)
+
+	set genreName to decodeXmlChars(genreName)
+	set theSongs to getGenreSongs(genreName)
+	queueSongs(theSongs)
+
+end queueGenre
+
+-- queues all songs in the given playlist
+on queuePlaylist(playlistId)
+
+	set theSongs to getPlaylistSongs(playlistId)
+	queueSongs(theSongs)
+
+end queuePlaylist
+
+-- parses the given result query to retrieve type and id of item to queue
+on parseResultQuery(query)
+
+	set pos to offset of "-" in query
+	set theType to text 1 thru (pos - 1) of query
+	set theId to text (pos + 1) thru end of query
+	return {type:theType, id:theId}
+
+end parseResultQuery
+
+on queue(query)
+
+	set typeAndId to parseResultQuery(query)
+	set theType to type of typeAndId
+	set theId to id of typeAndId
+
+	createWorkflowPlaylist()
+
+	if theType is "song" then
+		queueSong(theId)
+	else if theType is "album" then
+		queueAlbum(theId)
+	else if theType is "artist" then
+		queueArtist(theId)
+	else if theType is "genre" then
+		queueGenre(theId)
+	else if theType is "playlist" then
+		queuePlaylist(theId)
+	else
+		log "Unknown type: " & theType
+	end if
+
+	focusQueue()
+
+end queue
+
+on play(query)
+
+	clearQueue()
+	queue(query)
+	focusQueue()
+	playQueue()
+
+end play
