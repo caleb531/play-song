@@ -20,14 +20,12 @@ on getSongResultListXml(query)
 
 		repeat with theSong in theSongs
 
-			if config's resultListIsFull() then exit repeat
-
 			set songId to (get database ID of theSong)
 			set songName to name of theSong
 			set songArtist to artist of theSong
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
-			addResult({uid:("song-" & songId), arg:("song-" & songId), valid:"yes", title:songName, subtitle:songArtist, icon:songArtworkPath}) of config
+			addResult({uid:("song-" & songId), valid:"yes", title:songName, subtitle:songArtist, icon:songArtworkPath}) of config
 
 		end repeat
 

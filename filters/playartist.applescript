@@ -24,7 +24,7 @@ on getArtistResultListXml(query)
 			set theSong to (first track of playlist 2 whose artist is artistName and kind contains (songDescriptor of config))
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
-			addResult({uid:("artist-" & artistName), arg:("artist-" & artistName), valid:"yes", title:artistName, subtitle:"Artist", icon:songArtworkPath}) of config
+			addResult({uid:("artist-" & artistName), valid:"yes", title:artistName, subtitle:"Artist", icon:songArtworkPath}) of config
 
 		end repeat
 

@@ -56,7 +56,7 @@ on getPlaylistResultListXml(query)
 
 			end if
 
-			addResult({uid:("playlist-" & playlistId) as text, arg:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
+			addResult({uid:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
 
 		end repeat
 

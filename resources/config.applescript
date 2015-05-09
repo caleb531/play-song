@@ -73,7 +73,7 @@ end addResult
 -- adds item for "No Results" message
 on addNoResultsItem(query, queryType)
 
-	addResult({uid:"no-results", arg:"null", valid:"no", title:"No Results Found", subtitle:("No " & queryType & "s matching '" & query & "'"), icon:defaultIconName})
+	addResult({uid:"no-results", valid:"no", title:"No Results Found", subtitle:("No " & queryType & "s matching '" & query & "'"), icon:defaultIconName})
 
 end addNoResultsItem
 
@@ -94,7 +94,6 @@ on getResultXml(theResult)
 
 	-- encode reserved XML characters
 	set resultUid to encodeXmlChars(uid of theResult)
-	set resultArg to encodeXmlChars(arg of theResult)
 	set resultValid to (valid of theResult) as text
 	set resultTitle to encodeXmlChars(title of theResult)
 	set resultSubtitle to encodeXmlChars(subtitle of theResult)
@@ -109,7 +108,7 @@ on getResultXml(theResult)
 
 	end if
 
-	set xml to "<item uid='" & resultUid & "' arg='" & resultArg & "' valid='" & resultValid & "'>"
+	set xml to "<item uid='" & resultUid & "' arg='" & resultUid & "' valid='" & resultValid & "'>"
 	set xml to xml & "<title>" & resultTitle & "</title>"
 	set xml to xml & "<subtitle>" & resultSubtitle & "</subtitle>"
 	set xml to xml & "<icon>" & resultIcon & "</icon>"
