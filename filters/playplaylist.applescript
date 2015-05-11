@@ -42,19 +42,12 @@ on getPlaylistResultListXml(query)
 			set playlistName to name of thePlaylist
 			set playlistId to id of thePlaylist
 			set songCount to number of tracks in thePlaylist
+			set playlistDuration to time of thePlaylist
 
 			set theSong to (first track in user playlist playlistName whose kind contains (songDescriptor of config))
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
-			if songCount is 1 then
-
-				set itemSubtitle to "1 song"
-
-			else
-
-				set itemSubtitle to (songCount & " songs") as text
-
-			end if
+			set itemSubtitle to quantifyNumber(songCount, "song", "songs") & ", " & playlistDuration & " in length"
 
 			addResult({uid:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
 
