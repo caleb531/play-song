@@ -39,6 +39,23 @@ on replace(replaceThis, replaceWith, theString)
 
 end replace
 
+-- retrieve the plural/singular form of a quantity based on the given number
+on quantifyNumber(theNumber, quantityName, pluralQuantityName)
+
+	if theNumber is 1 then
+
+		set theString to (theNumber as text) & quantityName
+
+	else
+
+		set theString to (theNumber as text) & pluralQuantityName
+
+	end if
+
+	return theString
+
+end quantifyNumber
+
 -- encodes XML reserved characters in the given string
 on encodeXmlChars(theString)
 
