@@ -9,3 +9,4 @@ end loadConfig
 
 set config to loadConfig()
 playQueue() of config
+focusQueue() of config
