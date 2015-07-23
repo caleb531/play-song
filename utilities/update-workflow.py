@@ -1,20 +1,31 @@
 #!/usr/bin/env python
+from __future__ import print_function
+import binascii
+import collections
+import glob
 import os
 import os.path
-import collections
 import plistlib
-import zipfile
-import tempfile
+import re
 import shutil
 import subprocess
-import glob
-import binascii
-import re
+import tempfile
+import zipfile
+
 
 DEVNULL = os.open(os.devnull, os.O_RDWR)
 
 NO_MODIFIERS = 0
 CMD_MODIFIER = 1048576
+
+ALFRED_PLIST_NAME = 'com.runningwithcrayons.Alfred-Preferences.plist'
+ALFRED_PLIST = os.path.expanduser(
+    os.path.join('~', 'Library', 'Preferences', ALFRED_PLIST_NAME))
+DEFAULT_ALFRED_PREFERENCE_DIR = os.path.expanduser(os.path.join(
+    '~', 'Library', 'Application Support', 'Alfred 2'))
+WORKFLOW_INFOS_GLOB = os.path.join(
+    'Alfred.alfredpreferences', 'workflows', 'user.workflow.*', 'info.plist')
+
 
 # Returns the path to the filter script corresponding to a keyword
 def filter_path(keyword):
@@ -59,10 +70,10 @@ def update_script(config, path):
             config['script'] = contents
 
             if alias:
-                print 'Updated alias {} for {}'.format(
-                    config['keyword'], alias)
+                print('Updated alias {} for {}'.format(
+                    config['keyword'], alias))
             else:
-                print 'Updated {}'.format(path)
+                print('Updated {}'.format(path))
 
             return True
         else:
@@ -71,19 +82,6 @@ def update_script(config, path):
 
 # Returns the path to the installed workflow or None if it can't be found
 def get_installation_dir(bundle_id):
-
-    ALFRED_PLIST_NAME = 'com.runningwithcrayons.Alfred-Preferences.plist'
-
-    ALFRED_PLIST = os.path.expanduser(os.path.join('~', 'Library',
-                                                   'Preferences',
-                                                   ALFRED_PLIST_NAME))
-
-    DEFAULT_ALFRED_PREFERENCE_DIR = os.path.expanduser(os.path.join(
-        '~', 'Library/Application Support/Alfred 2'))
-
-    WORKFLOW_INFOS_GLOB = os.path.join('Alfred.alfredpreferences',
-                                       'workflows', 'user.workflow.*',
-                                       'info.plist')
 
     try:
         # We need to read the plist with defaults
@@ -156,7 +154,8 @@ for source_id, connections in data['connections'].iteritems():
 
 # Seperate filter and action scripts
 objects = data['objects']
-filters = filter(lambda o: o['type'] == 'alfred.workflow.input.scriptfilter' or o['type'] == 'alfred.workflow.input.keyword',
+filters = filter(lambda o: o['type'] == 'alfred.workflow.input.scriptfilter'
+                 or o['type'] == 'alfred.workflow.input.keyword',
                  objects)
 actions = filter(lambda o: o['type'] == 'alfred.workflow.action.script',
                  objects)
@@ -182,9 +181,11 @@ for obj in actions:
     config = obj['config']
 
     connections = connections_to[obj['uid']]
-    connections_with_keywords = map(lambda c: (c[0], filter_keywords[c[1]]), connections)
+    connections_with_keywords = map(
+        lambda c: (c[0], filter_keywords[c[1]]), connections)
 
-    scripts_updated |= update_script(config, action_path(connections_with_keywords))
+    scripts_updated |= update_script(
+        config, action_path(connections_with_keywords))
 
 # Temporary directory to store workflow files
 tmp_dir = tempfile.mkdtemp()
@@ -196,7 +197,7 @@ old_resource_files = set(file_hashes.keys())
 for fname in old_resource_files - resource_files:
     fpath = os.path.join(resources_path, fname)
 
-    print 'Removed {}'.format(fpath)
+    print('Removed {}'.format(fpath))
 
 # Copy and print out all files added to resources
 for fname in resource_files - old_resource_files:
@@ -204,7 +205,7 @@ for fname in resource_files - old_resource_files:
 
     shutil.copy(fpath, tmp_dir)
 
-    print 'Added {}'.format(fpath)
+    print('Added {}'.format(fpath))
 
 # All files that existed in the old workflow should all be copied
 # Only print updated for those files that changed
@@ -219,13 +220,13 @@ for fname in resource_files & old_resource_files:
 
         crc = binascii.crc32(contents) & 0xffffffff
         if crc != file_hashes[fname]:
-            print 'Updated {}'.format(fpath)
+            print('Updated {}'.format(fpath))
 
 # Save data back to plist
-plistlib.writePlist(data, tmp_dir + '/' + plist_name)
+plistlib.writePlist(data, os.path.join(tmp_dir, plist_name))
 
 if scripts_updated:
-    print 'Updated {}'.format(plist_name)
+    print('Updated {}'.format(plist_name))
 
 # Zip the temporary directory and save as the workflow
 with zipfile.ZipFile(workflow_path, 'w') as workflow:
@@ -238,7 +239,7 @@ if not installation_dir:
     # Delete the temporary directory
     shutil.rmtree(tmp_dir)
 
-    print 'Workflow installation path not found. Is "Play Song" installed?'
+    print('Workflow installation path not found. Is "Play Song" installed?')
 else:
     # Delete the directory
     shutil.rmtree(installation_dir)
@@ -246,6 +247,6 @@ else:
     # Move the temporary directory to the installation directory
     os.rename(tmp_dir, installation_dir)
 
-    print 'Updated installed workflow'
+    print('Updated installed workflow')
 
-print 'Successfully updated the Alfred workflow.'
+print('Successfully updated the Alfred workflow.')
