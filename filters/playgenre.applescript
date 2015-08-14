@@ -24,7 +24,7 @@ on getGenreResultListXml(query)
 			set theSong to (first track of playlist 2 whose genre is genreName and kind contains (songDescriptor of config))
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
-			addResult({uid:("genre-" & genreName), arg:("genre-" & genreName), valid:"yes", title:genreName, subtitle:"Genre", icon:songArtworkPath}) of config
+			addResult({uid:("genre-" & genreName), valid:"yes", title:genreName, subtitle:"Genre", icon:songArtworkPath}) of config
 
 		end repeat
 

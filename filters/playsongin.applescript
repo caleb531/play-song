@@ -30,7 +30,7 @@ on getAlbumResultListXml(query)
 				set songName to name of theSong
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
-				addResult({uid:("song-" & songId), arg:("song-" & songId), valid:"yes", title:songName, subtitle:artist of theSong, icon:songArtworkPath}) of config
+				addResult({uid:("song-" & songId), valid:"yes", title:songName, subtitle:artist of theSong, icon:songArtworkPath}) of config
 
 			end repeat
 
