@@ -3,8 +3,10 @@
 *Copyright 2015 Caleb Evans*  
 *Released under the MIT license*
 
-Play Song is an [Alfred 2](http://www.alfredapp.com/) workflow designed to make
-playing songs in iTunes extremely quick and convenient.
+Play Song is an [Alfred](http://www.alfredapp.com/) workflow designed to make
+playing music in iTunes extremely quick and convenient.
+
+The workflow will be solely supporting Alfred 3 going forward, but the latest Alfred 2-compatible release (v3.3.1) will remain available here for your convenience.
 
 ![Play Song in action](screenshot.png)
 
