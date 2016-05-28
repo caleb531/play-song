@@ -120,7 +120,7 @@ os.chdir(top_path)
 workflow_bundle_id = 'com.calebevans.playsong'
 
 # Path to the workflow file
-workflow_path = 'Play Song.alfredworkflow'
+workflow_path = 'Play Song (Alfred 3).alfredworkflow'
 
 # Path to resources
 resources_path = 'resources'
