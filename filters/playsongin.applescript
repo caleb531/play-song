@@ -3,7 +3,7 @@
 on loadConfig()
 
 	do shell script "./compile-config.sh"
-	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-2:Workflow Data:com.calebevans.playsong:config.scpt")
+	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-3:Workflow Data:com.calebevans.playsong:config.scpt")
 	return config
 
 end loadConfig
