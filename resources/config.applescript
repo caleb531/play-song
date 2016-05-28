@@ -12,7 +12,7 @@ property albumArtEnabled : true
 property homeFolder : (path to home folder as text)
 property libraryFolder : (path to library folder from user domain as text)
 property cacheFolder : (libraryFolder & "Caches:")
-property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred-2:Workflow Data:")
+property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred-3:Workflow Data:")
 property bundleId : "com.calebevans.playsong"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 property artworkCacheFolderName : "Album Artwork"
