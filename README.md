@@ -1,10 +1,12 @@
 # Play Song
 
-*Copyright 2015 Caleb Evans*  
+*Copyright 2016 Caleb Evans*  
 *Released under the MIT license*
 
-Play Song is an [Alfred 2](http://www.alfredapp.com/) workflow designed to make
-playing songs in iTunes extremely quick and convenient.
+Play Song is an [Alfred](http://www.alfredapp.com/) workflow designed to make
+playing music in iTunes extremely quick and convenient.
+
+The workflow will be solely supporting Alfred 3 going forward, but the latest Alfred 2-compatible release (v3.3.1) will remain available here for your convenience.
 
 ![Play Song in action](screenshot.png)
 
@@ -64,6 +66,12 @@ queue up multiple songs before playing them.
 
 To play the songs you've queued, use the `playqueue` keyword. To clear the queue
 of all songs, use the `clearqueue` keyword.
+
+### Clearing the cache
+
+Play Song stores a local cache containing album artwork (from displayed
+results), as well as the compiled workflow configuration. If you experience any
+issues with Play Song, you can clear this cache via the `clearcache` keyword.
 
 ### A note about play order
 

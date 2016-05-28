@@ -18,11 +18,11 @@ DEVNULL = os.open(os.devnull, os.O_RDWR)
 NO_MODIFIERS = 0
 CMD_MODIFIER = 1048576
 
-ALFRED_PLIST_NAME = 'com.runningwithcrayons.Alfred-Preferences.plist'
+ALFRED_PLIST_NAME = 'com.runningwithcrayons.Alfred-Preferences-3.plist'
 ALFRED_PLIST = os.path.expanduser(
     os.path.join('~', 'Library', 'Preferences', ALFRED_PLIST_NAME))
 DEFAULT_ALFRED_PREFERENCE_DIR = os.path.expanduser(os.path.join(
-    '~', 'Library', 'Application Support', 'Alfred 2'))
+    '~', 'Library', 'Application Support', 'Alfred 3'))
 WORKFLOW_INFOS_GLOB = os.path.join(
     'Alfred.alfredpreferences', 'workflows', 'user.workflow.*', 'info.plist')
 
@@ -41,7 +41,7 @@ def action_path(connections):
     if modifiers == CMD_MODIFIER:
         name = 'queue'
     else:
-        if keyword == 'playqueue' or keyword == 'clearqueue':
+        if keyword in {'playqueue', 'clearqueue', 'clearcache'}:
             name = keyword
         else:
             name = 'play'
@@ -120,7 +120,7 @@ os.chdir(top_path)
 workflow_bundle_id = 'com.calebevans.playsong'
 
 # Path to the workflow file
-workflow_path = 'Play Song.alfredworkflow'
+workflow_path = 'Play Song (Alfred 3).alfredworkflow'
 
 # Path to resources
 resources_path = 'resources'

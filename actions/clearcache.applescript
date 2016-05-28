@@ -1,4 +1,4 @@
--- plays selected result in iTunes --
+-- clears workflow cache, including album artwork and compiled scripts --
 
 on loadConfig()
 
@@ -8,4 +8,8 @@ on loadConfig()
 end loadConfig
 
 set config to loadConfig()
-play("{query}") of config
+try
+	tell application "Finder"
+		delete folder (workflowCacheFolder of config)
+	end tell
+end try

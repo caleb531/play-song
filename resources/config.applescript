@@ -12,7 +12,7 @@ property albumArtEnabled : true
 property homeFolder : (path to home folder as text)
 property libraryFolder : (path to library folder from user domain as text)
 property cacheFolder : (libraryFolder & "Caches:")
-property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred-2:Workflow Data:")
+property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred-3:Workflow Data:")
 property bundleId : "com.calebevans.playsong"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 property artworkCacheFolderName : "Album Artwork"
@@ -153,17 +153,13 @@ end getResultListXml
 -- writes the given content to the given file
 on fileWrite(theFile, theContent)
 
+	set fileRef to open for access theFile with write permission
 	try
-
-		set fileRef to open for access theFile with write permission
 		set eof of fileRef to 0
 		write theContent to fileRef starting at eof
 		close access fileRef
-
 	on error
-
 		close access fileRef
-
 	end try
 
 end fileWrite
@@ -410,21 +406,26 @@ on sortSongsByAlbumOrder(theSongs)
 		if length of theSongs is greater than 1 then
 
 			set trackCount to track count of (item 1 of theSongs)
+			set discCount to disc count of (item 1 of theSongs)
 
-			if trackCount is not 0 then
+			if trackCount is not 0 and discCount is not 0 then
 
 				set theSongsSorted to {} as list
 
-				repeat with songIndex from 1 to trackCount
+				repeat with discIndex from 1 to discCount
 
-					repeat with theSong in theSongs
+					repeat with songIndex from 1 to trackCount
 
-						if track number of theSong is songIndex then
+						repeat with theSong in theSongs
 
-							set nextSong to theSong
-							copy nextSong to the end of theSongsSorted
+							if disc number of theSong is discIndex and track number of theSong is songIndex then
 
-						end if
+								set nextSong to theSong
+								copy nextSong to the end of theSongsSorted
+
+							end if
+
+						end repeat
 
 					end repeat
 
