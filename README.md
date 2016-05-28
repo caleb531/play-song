@@ -67,6 +67,12 @@ queue up multiple songs before playing them.
 To play the songs you've queued, use the `playqueue` keyword. To clear the queue
 of all songs, use the `clearqueue` keyword.
 
+### Clearing the cache
+
+Play Song stores a local cache containing album artwork (from displayed
+results), as well as the compiled workflow configuration. If you experience any
+issues with Play Song, you can clear this cache via the `clearcache` keyword.
+
 ### A note about play order
 
 Play Song always respects the current shuffle mode within iTunes. For example,
