@@ -41,7 +41,7 @@ def action_path(connections):
     if modifiers == CMD_MODIFIER:
         name = 'queue'
     else:
-        if keyword == 'playqueue' or keyword == 'clearqueue':
+        if keyword in {'playqueue', 'clearqueue', 'clearcache'}:
             name = keyword
         else:
             name = 'play'
