@@ -153,17 +153,13 @@ end getResultListXml
 -- writes the given content to the given file
 on fileWrite(theFile, theContent)
 
+	set fileRef to open for access theFile with write permission
 	try
-
-		set fileRef to open for access theFile with write permission
 		set eof of fileRef to 0
 		write theContent to fileRef starting at eof
 		close access fileRef
-
 	on error
-
 		close access fileRef
-
 	end try
 
 end fileWrite
