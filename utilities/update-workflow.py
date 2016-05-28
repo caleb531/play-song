@@ -18,11 +18,11 @@ DEVNULL = os.open(os.devnull, os.O_RDWR)
 NO_MODIFIERS = 0
 CMD_MODIFIER = 1048576
 
-ALFRED_PLIST_NAME = 'com.runningwithcrayons.Alfred-Preferences.plist'
+ALFRED_PLIST_NAME = 'com.runningwithcrayons.Alfred-Preferences-3.plist'
 ALFRED_PLIST = os.path.expanduser(
     os.path.join('~', 'Library', 'Preferences', ALFRED_PLIST_NAME))
 DEFAULT_ALFRED_PREFERENCE_DIR = os.path.expanduser(os.path.join(
-    '~', 'Library', 'Application Support', 'Alfred 2'))
+    '~', 'Library', 'Application Support', 'Alfred 3'))
 WORKFLOW_INFOS_GLOB = os.path.join(
     'Alfred.alfredpreferences', 'workflows', 'user.workflow.*', 'info.plist')
 
