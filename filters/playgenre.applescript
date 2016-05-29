@@ -8,7 +8,7 @@ on loadConfig()
 
 end loadConfig
 
-on getGenreResultListXml(query)
+on getGenreResultListFeedback(query)
 
 	global config
 
@@ -36,9 +36,9 @@ on getGenreResultListXml(query)
 
 	end tell
 
-	return getResultListXml() of config
+	return getResultListFeedback() of config
 
-end getGenreResultListXml
+end getGenreResultListFeedback
 
 set config to loadConfig()
-getGenreResultListXml("{query}")
+getGenreResultListFeedback("{query}")

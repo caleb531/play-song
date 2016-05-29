@@ -8,7 +8,7 @@ on loadConfig()
 
 end loadConfig
 
-on getSongResultListXml(query)
+on getSongResultListFeedback(query)
 
 	global config
 
@@ -37,9 +37,9 @@ on getSongResultListXml(query)
 
 	end tell
 
-	return getResultListXml() of config
+	return getResultListFeedback() of config
 
-end getSongResultListXml
+end getSongResultListFeedback
 
 set config to loadConfig()
-getSongResultListXml("{query}")
+getSongResultListFeedback("{query}")

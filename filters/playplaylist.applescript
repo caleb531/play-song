@@ -8,7 +8,7 @@ on loadConfig()
 
 end loadConfig
 
-on getPlaylistResultListXml(query)
+on getPlaylistResultListFeedback(query)
 
 	global config
 
@@ -61,9 +61,9 @@ on getPlaylistResultListXml(query)
 
 	end tell
 
-	return getResultListXml() of config
+	return getResultListFeedback() of config
 
-end getPlaylistResultListXml
+end getPlaylistResultListFeedback
 
 set config to loadConfig()
-getPlaylistResultListXml("{query}")
+getPlaylistResultListFeedback("{query}")

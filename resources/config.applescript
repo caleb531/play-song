@@ -57,7 +57,7 @@ on quantifyNumber(theNumber, quantityName, pluralQuantityName)
 end quantifyNumber
 
 -- encodes XML reserved characters in the given string
-on encodeXmlChars(theString)
+on encodeFeedbackChars(theString)
 
 	set theString to replace("&", "&amp;", theString)
 	set theString to replace("<", "&lt;", theString)
@@ -66,10 +66,10 @@ on encodeXmlChars(theString)
 	set theString to replace("'", "&apos;", theString)
 	return theString
 
-end encodeXmlChars
+end encodeFeedbackChars
 
 -- decodes XML reserved characters in the given string
-on decodeXmlChars(theString)
+on decodeFeedbackChars(theString)
 
 	set theString to replace("&amp;", "&", theString)
 	set theString to replace("&lt;", "<", theString)
@@ -78,7 +78,7 @@ on decodeXmlChars(theString)
 	set theString to replace("&apos;", "'", theString)
 	return theString
 
-end decodeXmlChars
+end decodeFeedbackChars
 
 -- adds Alfred result to result list
 on addResult(theResult)
@@ -107,17 +107,17 @@ on resultListIsEmpty()
 end resultListIsFull
 
 -- builds Alfred result item as XML
-on getResultXml(theResult)
+on getResultFeedback(theResult)
 
 	-- encode reserved XML characters
-	set resultUid to encodeXmlChars(uid of theResult)
+	set resultUid to encodeFeedbackChars(uid of theResult)
 	set resultValid to (valid of theResult) as text
-	set resultTitle to encodeXmlChars(title of theResult)
-	set resultSubtitle to encodeXmlChars(subtitle of theResult)
+	set resultTitle to encodeFeedbackChars(title of theResult)
+	set resultSubtitle to encodeFeedbackChars(subtitle of theResult)
 
 	if (icon of theResult) contains ":" then
 
-		set resultIcon to encodeXmlChars(POSIX path of icon of theResult)
+		set resultIcon to encodeFeedbackChars(POSIX path of icon of theResult)
 
 	else
 
@@ -132,23 +132,23 @@ on getResultXml(theResult)
 	set xml to xml & "</item>"
 	return xml
 
-end getResultXml
+end getResultFeedback
 
 -- retrieves XML document for Alfred results
-on getResultListXml()
+on getResultListFeedback()
 
 	set xml to "<?xml version='1.0'?><items>"
 
 	repeat with theResult in resultList
 
-		set xml to xml & getResultXml(theResult)
+		set xml to xml & getResultFeedback(theResult)
 
 	end repeat
 
 	set xml to xml & "</items>"
 	return xml
 
-end getResultListXml
+end getResultListFeedback
 
 -- writes the given content to the given file
 on fileWrite(theFile, theContent)
@@ -554,7 +554,7 @@ end queueSong
 -- queues all songs belonging to the given album
 on queueAlbum(albumName)
 
-	set albumName to decodeXmlChars(albumName)
+	set albumName to decodeFeedbackChars(albumName)
 	set theSongs to getAlbumSongs(albumName)
 	queueSongs(theSongs)
 
@@ -563,7 +563,7 @@ end queueAlbum
 -- queues all songs by the given artist
 on queueArtist(artistName)
 
-	set artistName to decodeXmlChars(artistName)
+	set artistName to decodeFeedbackChars(artistName)
 	set theSongs to getArtistSongs(artistName)
 	queueSongs(theSongs)
 
@@ -572,7 +572,7 @@ end queueArtist
 -- queues all songs within the given genre
 on queueGenre(genreName)
 
-	set genreName to decodeXmlChars(genreName)
+	set genreName to decodeFeedbackChars(genreName)
 	set theSongs to getGenreSongs(genreName)
 	queueSongs(theSongs)
 
