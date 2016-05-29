@@ -56,26 +56,20 @@ on quantifyNumber(theNumber, quantityName, pluralQuantityName)
 
 end quantifyNumber
 
--- encodes XML reserved characters in the given string
+-- encodes JSON reserved characters in the given string
 on encodeFeedbackChars(theString)
 
-	set theString to replace("&", "&amp;", theString)
-	set theString to replace("<", "&lt;", theString)
-	set theString to replace(">", "&gt;", theString)
-	set theString to replace("\"", "&quot;", theString)
-	set theString to replace("'", "&apos;", theString)
+	set theString to replace("\\", "\\\\", theString)
+	set theString to replace("\"", "\\\"", theString)
 	return theString
 
 end encodeFeedbackChars
 
--- decodes XML reserved characters in the given string
+-- decodes JSON reserved characters in the given string
 on decodeFeedbackChars(theString)
 
-	set theString to replace("&amp;", "&", theString)
-	set theString to replace("&lt;", "<", theString)
-	set theString to replace("&gt;", ">", theString)
-	set theString to replace("&quot;", "\"", theString)
-	set theString to replace("&apos;", "'", theString)
+	set theString to replace("\\\\", "\\", theString)
+	set theString to replace("\\\"", "\"", theString)
 	return theString
 
 end decodeFeedbackChars
@@ -106,10 +100,10 @@ on resultListIsEmpty()
 
 end resultListIsFull
 
--- builds Alfred result item as XML
+-- builds Alfred result item as JSON
 on getResultFeedback(theResult)
 
-	-- encode reserved XML characters
+	-- encode reserved JSON characters
 	set resultUid to encodeFeedbackChars(uid of theResult)
 	set resultValid to (valid of theResult) as text
 	set resultTitle to encodeFeedbackChars(title of theResult)
@@ -125,28 +119,34 @@ on getResultFeedback(theResult)
 
 	end if
 
-	set xml to "<item uid='" & resultUid & "' arg='" & resultUid & "' valid='" & resultValid & "'>"
-	set xml to xml & "<title>" & resultTitle & "</title>"
-	set xml to xml & "<subtitle>" & resultSubtitle & "</subtitle>"
-	set xml to xml & "<icon>" & resultIcon & "</icon>"
-	set xml to xml & "</item>"
-	return xml
+	set json to "{"
+	set json to json & "\"uid\":\"" & resultUid & "\","
+	set json to json & "\"arg\":\"" & resultUid & "\","
+	set json to json & "\"valid\":\"" & resultValid & "\","
+	set json to json & "\"title\":\"" & resultTitle & "\","
+	set json to json & "\"subtitle\":\"" & resultSubtitle & "\","
+	set json to json & "\"icon\":{\"path\":\"" & resultIcon & "\"}"
+	set json to json & "}"
+	return json
 
 end getResultFeedback
 
--- retrieves XML document for Alfred results
+-- retrieves JSON document for Alfred results
 on getResultListFeedback()
 
-	set xml to "<?xml version='1.0'?><items>"
+	set json to "{\"items\": ["
 
 	repeat with theResult in resultList
 
-		set xml to xml & getResultFeedback(theResult)
+		set json to json & getResultFeedback(theResult)
+		set json to json & ","
 
 	end repeat
 
-	set xml to xml & "</items>"
-	return xml
+	-- remove trailing comma after last item
+	set json to text 1 thru (length of json - 1) of json
+	set json to json & "]}"
+	return json
 
 end getResultListFeedback
 
