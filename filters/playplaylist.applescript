@@ -47,7 +47,7 @@ on getPlaylistResultListFeedback(query)
 			set theSong to (first track in user playlist playlistName whose kind contains (songDescriptor of config))
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
-			set itemSubtitle to quantifyNumber(songCount, "song", "songs") & ", " & playlistDuration & " in length"
+			set itemSubtitle to (quantifyNumber(songCount, "song", "songs") of config) & ", " & playlistDuration & " in length"
 
 			addResult({uid:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
 
