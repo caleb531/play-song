@@ -8,7 +8,7 @@ on loadConfig()
 
 end loadConfig
 
-on getPlaylistResultListXml(query)
+on getPlaylistResultListFeedback(query)
 
 	global config
 
@@ -47,7 +47,7 @@ on getPlaylistResultListXml(query)
 			set theSong to (first track in user playlist playlistName whose kind contains (songDescriptor of config))
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
-			set itemSubtitle to quantifyNumber(songCount, "song", "songs") & ", " & playlistDuration & " in length"
+			set itemSubtitle to (quantifyNumber(songCount, "song", "songs") of config) & ", " & playlistDuration & " in length"
 
 			addResult({uid:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
 
@@ -61,9 +61,9 @@ on getPlaylistResultListXml(query)
 
 	end tell
 
-	return getResultListXml() of config
+	return getResultListFeedback() of config
 
-end getPlaylistResultListXml
+end getPlaylistResultListFeedback
 
 set config to loadConfig()
-getPlaylistResultListXml("{query}")
+getPlaylistResultListFeedback("{query}")

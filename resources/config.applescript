@@ -56,29 +56,23 @@ on quantifyNumber(theNumber, quantityName, pluralQuantityName)
 
 end quantifyNumber
 
--- encodes XML reserved characters in the given string
-on encodeXmlChars(theString)
+-- encodes JSON reserved characters in the given string
+on encodeFeedbackChars(theString)
 
-	set theString to replace("&", "&amp;", theString)
-	set theString to replace("<", "&lt;", theString)
-	set theString to replace(">", "&gt;", theString)
-	set theString to replace("\"", "&quot;", theString)
-	set theString to replace("'", "&apos;", theString)
+	set theString to replace("\\", "\\\\", theString)
+	set theString to replace("\"", "\\\"", theString)
 	return theString
 
-end encodeXmlChars
+end encodeFeedbackChars
 
--- decodes XML reserved characters in the given string
-on decodeXmlChars(theString)
+-- decodes JSON reserved characters in the given string
+on decodeFeedbackChars(theString)
 
-	set theString to replace("&amp;", "&", theString)
-	set theString to replace("&lt;", "<", theString)
-	set theString to replace("&gt;", ">", theString)
-	set theString to replace("&quot;", "\"", theString)
-	set theString to replace("&apos;", "'", theString)
+	set theString to replace("\\\\", "\\", theString)
+	set theString to replace("\\\"", "\"", theString)
 	return theString
 
-end decodeXmlChars
+end decodeFeedbackChars
 
 -- adds Alfred result to result list
 on addResult(theResult)
@@ -106,18 +100,18 @@ on resultListIsEmpty()
 
 end resultListIsFull
 
--- builds Alfred result item as XML
-on getResultXml(theResult)
+-- builds Alfred result item as JSON
+on getResultFeedback(theResult)
 
-	-- encode reserved XML characters
-	set resultUid to encodeXmlChars(uid of theResult)
+	-- encode reserved JSON characters
+	set resultUid to encodeFeedbackChars(uid of theResult)
 	set resultValid to (valid of theResult) as text
-	set resultTitle to encodeXmlChars(title of theResult)
-	set resultSubtitle to encodeXmlChars(subtitle of theResult)
+	set resultTitle to encodeFeedbackChars(title of theResult)
+	set resultSubtitle to encodeFeedbackChars(subtitle of theResult)
 
 	if (icon of theResult) contains ":" then
 
-		set resultIcon to encodeXmlChars(POSIX path of icon of theResult)
+		set resultIcon to encodeFeedbackChars(POSIX path of icon of theResult)
 
 	else
 
@@ -125,30 +119,36 @@ on getResultXml(theResult)
 
 	end if
 
-	set xml to "<item uid='" & resultUid & "' arg='" & resultUid & "' valid='" & resultValid & "'>"
-	set xml to xml & "<title>" & resultTitle & "</title>"
-	set xml to xml & "<subtitle>" & resultSubtitle & "</subtitle>"
-	set xml to xml & "<icon>" & resultIcon & "</icon>"
-	set xml to xml & "</item>"
-	return xml
+	set json to "{"
+	set json to json & "\"uid\":\"" & resultUid & "\","
+	set json to json & "\"arg\":\"" & resultUid & "\","
+	set json to json & "\"valid\":\"" & resultValid & "\","
+	set json to json & "\"title\":\"" & resultTitle & "\","
+	set json to json & "\"subtitle\":\"" & resultSubtitle & "\","
+	set json to json & "\"icon\":{\"path\":\"" & resultIcon & "\"}"
+	set json to json & "}"
+	return json
 
-end getResultXml
+end getResultFeedback
 
--- retrieves XML document for Alfred results
-on getResultListXml()
+-- retrieves JSON document for Alfred results
+on getResultListFeedback()
 
-	set xml to "<?xml version='1.0'?><items>"
+	set json to "{\"items\": ["
 
 	repeat with theResult in resultList
 
-		set xml to xml & getResultXml(theResult)
+		set json to json & getResultFeedback(theResult)
+		set json to json & ","
 
 	end repeat
 
-	set xml to xml & "</items>"
-	return xml
+	-- remove trailing comma after last item
+	set json to text 1 thru (length of json - 1) of json
+	set json to json & "]}"
+	return json
 
-end getResultListXml
+end getResultListFeedback
 
 -- writes the given content to the given file
 on fileWrite(theFile, theContent)
@@ -554,7 +554,7 @@ end queueSong
 -- queues all songs belonging to the given album
 on queueAlbum(albumName)
 
-	set albumName to decodeXmlChars(albumName)
+	set albumName to decodeFeedbackChars(albumName)
 	set theSongs to getAlbumSongs(albumName)
 	queueSongs(theSongs)
 
@@ -563,7 +563,7 @@ end queueAlbum
 -- queues all songs by the given artist
 on queueArtist(artistName)
 
-	set artistName to decodeXmlChars(artistName)
+	set artistName to decodeFeedbackChars(artistName)
 	set theSongs to getArtistSongs(artistName)
 	queueSongs(theSongs)
 
@@ -572,7 +572,7 @@ end queueArtist
 -- queues all songs within the given genre
 on queueGenre(genreName)
 
-	set genreName to decodeXmlChars(genreName)
+	set genreName to decodeFeedbackChars(genreName)
 	set theSongs to getGenreSongs(genreName)
 	queueSongs(theSongs)
 
