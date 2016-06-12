@@ -44,11 +44,11 @@ on quantifyNumber(theNumber, quantityName, pluralQuantityName)
 
 	if theNumber is 1 then
 
-		set theString to (theNumber as text) & quantityName
+		set theString to (theNumber as text) & space & quantityName
 
 	else
 
-		set theString to (theNumber as text) & pluralQuantityName
+		set theString to (theNumber as text) & space & pluralQuantityName
 
 	end if
 
