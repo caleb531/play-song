@@ -7,5 +7,7 @@ on loadConfig()
 
 end loadConfig
 
-set config to loadConfig()
-queue("{query}") of config
+on run query
+	set config to loadConfig()
+	queue(query as text) of config
+end run

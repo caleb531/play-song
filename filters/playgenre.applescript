@@ -40,5 +40,7 @@ on getGenreResultListFeedback(query)
 
 end getGenreResultListFeedback
 
-set config to loadConfig()
-getGenreResultListFeedback("{query}")
+on run query
+	set config to loadConfig()
+	getGenreResultListFeedback(query as text)
+end run

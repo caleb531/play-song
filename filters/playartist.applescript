@@ -40,5 +40,7 @@ on getArtistResultListFeedback(query)
 
 end getArtistResultListFeedback
 
-set config to loadConfig()
-getArtistResultListFeedback("{query}")
+on run query
+	set config to loadConfig()
+	getArtistResultListFeedback(query as text)
+end run

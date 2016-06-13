@@ -41,5 +41,7 @@ on getSongResultListFeedback(query)
 
 end getSongResultListFeedback
 
-set config to loadConfig()
-getSongResultListFeedback("{query}")
+on run query
+	set config to loadConfig()
+	getSongResultListFeedback(query as text)
+end run

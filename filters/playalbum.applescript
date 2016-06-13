@@ -40,5 +40,7 @@ on getAlbumResultListFeedback(query)
 
 end getAlbumResultListFeedback
 
-set config to loadConfig()
-getAlbumResultListFeedback("{query}")
+on run query
+	set config to loadConfig()
+	getAlbumResultListFeedback(query as text)
+end run

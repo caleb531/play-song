@@ -68,5 +68,7 @@ on getPlaylistResultListFeedback(query)
 
 end getPlaylistResultListFeedback
 
-set config to loadConfig()
-getPlaylistResultListFeedback("{query}")
+on run query
+	set config to loadConfig()
+	getPlaylistResultListFeedback(query as text)
+end run
