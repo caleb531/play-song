@@ -18,7 +18,7 @@ property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as te
 property artworkCacheFolderName : "Album Artwork"
 property artworkCachePath : (workflowCacheFolder & artworkCacheFolderName & ":")
 property songArtworkNameSep : " | "
-property defaultIconName : "icon-noartwork.png"
+property defaultIconName : "resources/icon-noartwork.png"
 -- the name of the playlist used by the workflow for playing songs
 property workflowPlaylistName : "Alfred Play Song"
 -- the text used to determine if a track is an audio file

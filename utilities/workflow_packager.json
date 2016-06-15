@@ -1,0 +1,11 @@
+{
+  "alfred_version": 3,
+  "exported_workflow": "Play Song (Alfred 3).alfredworkflow",
+  "workflow_bundle_id": "com.calebevans.playsong",
+  "workflow_resources": [
+      "icon.png",
+      "resources/*",
+      "filters/*",
+      "actions/*"
+  ]
+}
