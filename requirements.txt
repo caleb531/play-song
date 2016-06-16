@@ -1,0 +1,5 @@
+-e git+https://github.com/caleb531/alfred-workflow-packager.git@4e4ba1b6eda4d6a40a0ccf800ba66ef966ded378#egg=alfred_workflow_packager-master
+biplist==1.0.1
+functools32==3.2.3.post2
+jsonschema==2.5.1
+wheel==0.24.0

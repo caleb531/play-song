@@ -7,5 +7,7 @@ on loadConfig()
 
 end loadConfig
 
-set config to loadConfig()
-play("{query}") of config
+on run query
+	set config to loadConfig()
+	play(query as text) of config
+end run

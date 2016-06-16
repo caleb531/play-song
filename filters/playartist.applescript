@@ -2,7 +2,7 @@
 
 on loadConfig()
 
-	do shell script "./compile-config.sh"
+	do shell script "./resources/compile-config.sh"
 	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-3:Workflow Data:com.calebevans.playsong:config.scpt")
 	return config
 
@@ -40,5 +40,7 @@ on getArtistResultListFeedback(query)
 
 end getArtistResultListFeedback
 
-set config to loadConfig()
-getArtistResultListFeedback("{query}")
+on run query
+	set config to loadConfig()
+	getArtistResultListFeedback(query as text)
+end run

@@ -7,9 +7,11 @@ on loadConfig()
 
 end loadConfig
 
-set config to loadConfig()
-try
-	tell application "Finder"
-		delete folder (workflowCacheFolder of config)
-	end tell
-end try
+on run query
+	set config to loadConfig()
+	try
+		tell application "Finder"
+			delete folder (workflowCacheFolder of config)
+		end tell
+	end try
+end run
