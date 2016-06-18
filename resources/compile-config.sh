@@ -27,4 +27,4 @@ if [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then
 fi
 
 # Output path to compiled config file for use by workflow scripts
-echo "$HOME/Library/Caches/com.runningwithcrayons.Alfred-3/Workflow Data/com.calebevans.playsong/config.scpt"
+echo "$cache_dir/config.scpt"
