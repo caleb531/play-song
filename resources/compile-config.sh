@@ -12,7 +12,7 @@ mkdir -p "$cache_dir"
 mkdir -p "$cache_dir/Album Artwork"
 
 # Get paths to configuration file
-installed_config="$installed_config_dir/resources/config.applescript"
+installed_config="$installed_config_dir/config.applescript"
 compiled_config="$cache_dir/config.scpt"
 cached_config_md5file="$cache_dir/config.applescript.md5"
 
