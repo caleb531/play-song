@@ -69,6 +69,11 @@ queue up multiple songs before playing them.
 To play the songs you've queued, use the `playqueue` keyword. To clear the queue
 of all songs, use the `clearqueue` keyword.
 
+## Searching songs on Google
+
+For any of the above filters, choosing a result with the `ctrl` key held down
+will search the result on Google.
+
 ### Clearing the cache
 
 Play Song stores a local cache containing album artwork (from displayed

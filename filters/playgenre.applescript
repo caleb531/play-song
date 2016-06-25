@@ -1,11 +1,7 @@
 -- playgenre filter --
 
 on loadConfig()
-
-	do shell script "./compile-config.sh"
-	set config to load script alias ((path to library folder from user domain as text) & "Caches:com.runningwithcrayons.Alfred-3:Workflow Data:com.calebevans.playsong:config.scpt")
-	return config
-
+	return (load script POSIX file (do shell script "./resources/compile-config.sh"))
 end loadConfig
 
 on getGenreResultListFeedback(query)
@@ -40,5 +36,7 @@ on getGenreResultListFeedback(query)
 
 end getGenreResultListFeedback
 
-set config to loadConfig()
-getGenreResultListFeedback("{query}")
+on run query
+	set config to loadConfig()
+	getGenreResultListFeedback(query as text)
+end run
