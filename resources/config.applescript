@@ -498,7 +498,7 @@ on getResultsFromQuery(query, queryType)
 
 						repeat with theSong in theSongs
 
-							if theSong is searchSong then
+							if (database ID of theSong) is (database ID of searchSong) then
 
 								set duplicateSong to true
 								exit repeat
