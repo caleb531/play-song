@@ -478,42 +478,17 @@ on getResultsFromQuery(query, queryType)
 
 				end if
 
-				if length of theSongs < resultLimit then
-
-					set searchSongs to {}
+				if length of theSongs is 0 then
 
 					if queryType is \"name\" then
 
-						set searchSongs to (search playlist 2 for query only songs)
+						set theSongs to theSongs & (search playlist 2 for query only songs)
 
 					else if queryType is not \"genre\" then
 
-						set searchSongs to (search playlist 2 for query only " & queryType & "s)
+						set theSongs to theSongs & (search playlist 2 for query only " & queryType & "s)
 
 					end if
-
-					repeat with searchSong in searchSongs
-
-						set duplicateSong to false
-
-						repeat with theSong in theSongs
-
-							if (database ID of theSong) is (database ID of searchSong) then
-
-								set duplicateSong to true
-								exit repeat
-
-							end if
-
-						end repeat
-
-						if duplicateSong is false then
-
-							copy searchSong to end of theSongs
-
-						end if
-
-					end repeat
 
 				end if
 
