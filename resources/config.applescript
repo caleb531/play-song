@@ -478,6 +478,20 @@ on getResultsFromQuery(query, queryType)
 
 				end if
 
+				if length of theSongs is 0 then
+
+					if queryType is \"name\" then
+
+						set theSongs to theSongs & (search playlist 2 for query only songs)
+
+					else if queryType is not \"genre\" then
+
+						set theSongs to theSongs & (search playlist 2 for query only " & queryType & "s)
+
+					end if
+
+				end if
+
 				if queryType is \"name\" then
 
 					if length of theSongs > resultLimit then
