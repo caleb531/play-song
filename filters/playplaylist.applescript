@@ -41,7 +41,7 @@ on getPlaylistResultListFeedback(query)
 			set playlistDuration to time of thePlaylist
 
 			try
-				set theSong to (first track in playlist playlistName whose kind contains (songDescriptor of config))
+				set theSong to (first track in thePlaylist whose kind contains (songDescriptor of config))
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
 				set itemSubtitle to (quantifyNumber(songCount, "track", "tracks") of config) & ", " & playlistDuration & " in length"
