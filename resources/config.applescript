@@ -287,7 +287,7 @@ on getPlaylistSongs(playlistId)
 
 	tell application "iTunes"
 
-		set thePlaylist to first user playlist whose id is playlistId
+		set thePlaylist to first playlist whose id is playlistId
 		set theSongs to every track of thePlaylist
 
 	end tell
