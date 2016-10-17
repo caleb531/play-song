@@ -13,7 +13,20 @@ on run query
     set theId to id of typeAndId
 
 	tell application "iTunes"
-    	set theSong to getSong(theId) of config
-		play theSong
+
+    	if theType is "song" then
+
+    		set theSong to getSong(theId) of config
+			play theSong
+			reveal theSong
+
+		else if theType is "playlist" then
+
+			set thePlaylist to getPlaylist(theId) of config
+			play thePlaylist
+			reveal thePlaylist
+
+    	end if
+
 	end tell
 end run

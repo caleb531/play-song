@@ -283,11 +283,21 @@ on focusQueue()
 
 end focusQueue
 
+on getPlaylist(playlistId)
+
+	tell application "iTunes"
+
+		return (first playlist whose id is playlistId)
+
+	end tell
+
+end getPlaylist
+
 on getPlaylistSongs(playlistId)
 
 	tell application "iTunes"
 
-		set thePlaylist to first playlist whose id is playlistId
+		set thePlaylist to getPlaylist(playlistId) of me
 		set theSongs to every track of thePlaylist
 
 	end tell
