@@ -1,5 +1,5 @@
--- plays selected song directly (the Play Song v1 behavior)
--- this behavior continues playing music after the selected song finishes
+-- plays selected song or playlist directly (the Play Song v1 behavior)
+-- for songs, this behavior continues playing music after the song finishes
 
 on loadConfig()
     return (load script POSIX file (do shell script "./resources/compile-config.sh"))
