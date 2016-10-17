@@ -87,6 +87,12 @@ if shuffle is enabled, playing an album via Play Song will play the songs of the
 album in shuffled order. Therefore, if you desire Play Song to respect album
 order, simply disable shuffle within iTunes.
 
+### Playing a song directly (the Play Song v1 behavior)
+
+If you are a longtime Play Song user who prefers the v1 behavior for playing
+songs (where music continues playing after the song finishes), you can do so via
+the `shift` modifier. Note that this only works for the `playsong` filter.
+
 ## Support
 
 If you have a bug to report or a feature to request, please [submit an issue on
