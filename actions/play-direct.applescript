@@ -18,13 +18,11 @@ on run query
 
 			set theSong to getSong(theId) of config
 			play theSong
-			reveal theSong
 
 		else if theType is "playlist" then
 
 			set thePlaylist to getPlaylist(theId) of config
 			play thePlaylist
-			reveal thePlaylist
 
 		end if
 
