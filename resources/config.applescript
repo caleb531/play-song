@@ -272,17 +272,6 @@ on playQueue()
 
 end playQueue
 
--- brings queue into view in iTunes window
-on focusQueue()
-
-	tell application "iTunes"
-
-		reveal user playlist workflowPlaylistName
-
-	end tell
-
-end focusQueue
-
 on getPlaylist(playlistId)
 
 	tell application "iTunes"
@@ -642,15 +631,12 @@ on queue(query)
 		log "Unknown type: " & theType
 	end if
 
-	focusQueue()
-
 end queue
 
 on play(query)
 
 	clearQueue()
 	queue(query)
-	focusQueue()
 	playQueue()
 
 end play
