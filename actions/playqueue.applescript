@@ -7,5 +7,4 @@ end loadConfig
 on run query
 	set config to loadConfig()
 	playQueue() of config
-	focusQueue() of config
 end run

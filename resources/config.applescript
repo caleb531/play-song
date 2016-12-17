@@ -272,22 +272,21 @@ on playQueue()
 
 end playQueue
 
--- brings queue into view in iTunes window
-on focusQueue()
+on getPlaylist(playlistId)
 
 	tell application "iTunes"
 
-		reveal user playlist workflowPlaylistName
+		return (first playlist whose id is playlistId)
 
 	end tell
 
-end focusQueue
+end getPlaylist
 
 on getPlaylistSongs(playlistId)
 
 	tell application "iTunes"
 
-		set thePlaylist to first user playlist whose id is playlistId
+		set thePlaylist to getPlaylist(playlistId) of me
 		set theSongs to every track of thePlaylist
 
 	end tell
@@ -632,15 +631,12 @@ on queue(query)
 		log "Unknown type: " & theType
 	end if
 
-	focusQueue()
-
 end queue
 
 on play(query)
 
 	clearQueue()
 	queue(query)
-	focusQueue()
 	playQueue()
 
 end play

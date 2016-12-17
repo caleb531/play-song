@@ -13,17 +13,17 @@ on getPlaylistResultListFeedback(query)
 	tell application "iTunes"
 
 		-- retrieve list of playlists matching query (ordered by relevance)
-		set thePlaylists to (get user playlists whose name starts with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+		set thePlaylists to (get playlists whose name starts with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
 
 		if length of thePlaylists < config's resultLimit then
 
-			set thePlaylists to thePlaylists & (get user playlists whose name contains (space & query) and name does not start with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+			set thePlaylists to thePlaylists & (get playlists whose name contains (space & query) and name does not start with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
 
 		end if
 
 		if length of thePlaylists < config's resultLimit then
 
-			set thePlaylists to thePlaylists & (get user playlists whose name contains query and name does not start with query and name does not contain (space & query) and name is not config's workflowPlaylistName and special kind is none and size is not 0)
+			set thePlaylists to thePlaylists & (get playlists whose name contains query and name does not start with query and name does not contain (space & query) and name is not config's workflowPlaylistName and special kind is none and size is not 0)
 
 		end if
 
@@ -41,7 +41,7 @@ on getPlaylistResultListFeedback(query)
 			set playlistDuration to time of thePlaylist
 
 			try
-				set theSong to (first track in user playlist playlistName whose kind contains (songDescriptor of config))
+				set theSong to (first track in thePlaylist whose kind contains (songDescriptor of config))
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
 				set itemSubtitle to (quantifyNumber(songCount, "track", "tracks") of config) & ", " & playlistDuration & " in length"
