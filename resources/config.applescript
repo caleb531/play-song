@@ -417,7 +417,7 @@ on sortSongsByAlbumOrder(theSongs)
 
 						repeat with theSong in theSongs
 
-							if disc number of theSong is discIndex and track number of theSong is songIndex then
+							if (disc number of theSong is discIndex or (disc number of theSong is 0 and discIndex is 1)) and track number of theSong is songIndex then
 
 								set nextSong to theSong
 								copy nextSong to the end of theSongsSorted
