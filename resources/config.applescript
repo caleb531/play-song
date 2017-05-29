@@ -402,37 +402,37 @@ on sortSongsByAlbumOrder(theSongs)
 
 		set theSongsSorted to theSongs
 
-		if length of theSongs is greater than 1 then
+		if length of theSongs is not greater than 1 then
+			return theSongsSorted
+		end if
 
-			set trackCount to track count of (item 1 of theSongs)
-			set discCount to disc count of (item 1 of theSongs)
+		set trackCount to track count of (item 1 of theSongs)
+		set discCount to disc count of (item 1 of theSongs)
 
-			if trackCount is not 0 and discCount is not 0 then
+		if trackCount is 0 or discCount is 0 then
+			return theSongsSorted
+		end if
 
-				set theSongsSorted to {} as list
+		set theSongsSorted to {} as list
 
-				repeat with discIndex from 1 to discCount
+		repeat with discIndex from 1 to discCount
 
-					repeat with songIndex from 1 to trackCount
+			repeat with songIndex from 1 to trackCount
 
-						repeat with theSong in theSongs
+				repeat with theSong in theSongs
 
-							if (disc number of theSong is discIndex or (disc number of theSong is 0 and discIndex is 1)) and track number of theSong is songIndex then
+					if (disc number of theSong is discIndex or (disc number of theSong is 0 and discIndex is 1)) and track number of theSong is songIndex then
 
-								set nextSong to theSong
-								copy nextSong to the end of theSongsSorted
+						set nextSong to theSong
+						copy nextSong to the end of theSongsSorted
 
-							end if
-
-						end repeat
-
-					end repeat
+					end if
 
 				end repeat
 
-			end if
+			end repeat
 
-		end if
+		end repeat
 
 	end tell
 
