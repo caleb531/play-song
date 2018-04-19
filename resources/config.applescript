@@ -370,7 +370,6 @@ on getArtistSongs(artistName)
 		repeat with albumName in albumNames
 
 			set albumSongs to (every track of playlist 2 whose artist is artistName and album is albumName and kind contains songDescriptor)
-			set albumSongs to sortSongsByAlbumOrder(albumSongs) of me
 			set theSongs to theSongs & albumSongs
 
 		end repeat
@@ -387,56 +386,12 @@ on getAlbumSongs(albumName)
 	tell application "iTunes"
 
 		set theSongs to every track of playlist 2 whose album is albumName and kind contains songDescriptor
-		set theSongs to sortSongsByAlbumOrder(theSongs) of me
 
 	end tell
 
 	return theSongs
 
 end getAlbumSongs
-
--- sorts songs from the same album by track number
-on sortSongsByAlbumOrder(theSongs)
-
-	tell application "iTunes"
-
-		if length of theSongs is not greater than 1 then
-			return theSongs
-		end if
-
-		set trackCount to track count of (item 1 of theSongs)
-		set discCount to disc count of (item 1 of theSongs)
-
-		if trackCount is 0 or discCount is 0 then
-			return theSongs
-		end if
-
-		set theSongsSorted to {} as list
-
-		repeat with discIndex from 1 to discCount
-
-			repeat with songIndex from 1 to trackCount
-
-				repeat with theSong in theSongs
-
-					if (disc number of theSong is discIndex or (disc number of theSong is 0 and discIndex is 1)) and track number of theSong is songIndex then
-
-						set nextSong to theSong
-						copy nextSong to the end of theSongsSorted
-
-					end if
-
-				end repeat
-
-			end repeat
-
-		end repeat
-
-	end tell
-
-	return theSongsSorted
-
-end sortSongsByAlbumOrder
 
 -- retrieves the song with the given ID
 on getSong(songId)
