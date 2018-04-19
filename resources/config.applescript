@@ -287,11 +287,11 @@ on getPlaylistSongs(playlistId)
 	tell application "iTunes"
 
 		set thePlaylist to getPlaylist(playlistId) of me
-		set theSongs to every track of thePlaylist
+		set playlistSongs to every track of thePlaylist
 
 	end tell
 
-	return theSongs
+	return playlistSongs
 
 end getPlaylistSongs
 
@@ -300,10 +300,10 @@ on getGenreArtists(genreName)
 
 	tell application "iTunes"
 
-		set theSongs to every track of playlist 2 whose genre is genreName and kind contains songDescriptor
+		set genreSongs to every track of playlist 2 whose genre is genreName and kind contains songDescriptor
 		set artistNames to {}
 
-		repeat with theSong in theSongs
+		repeat with theSong in genreSongs
 
 			if (artist of theSong) is not in artistNames then
 
@@ -323,15 +323,15 @@ end getGenreArtists
 on getGenreSongs(genreName)
 
 	set artistNames to getGenreArtists(genreName) of me
-	set theSongs to {}
+	set genreSongs to {}
 
 	repeat with artistName in artistNames
 
-		set theSongs to theSongs & getArtistSongs(artistName) of me
+		set genreSongs to genreSongs & getArtistSongs(artistName) of me
 
 	end repeat
 
-	return theSongs
+	return genreSongs
 
 end getGenreSongs
 
@@ -340,10 +340,10 @@ on getArtistAlbums(artistName)
 
 	tell application "iTunes"
 
-		set theSongs to every track of playlist 2 whose artist is artistName and kind contains songDescriptor
+		set artistSongs to every track of playlist 2 whose artist is artistName and kind contains songDescriptor
 		set albumNames to {}
 
-		repeat with theSong in theSongs
+		repeat with theSong in artistSongs
 
 			if (album of theSong) is not in albumNames then
 
@@ -365,18 +365,18 @@ on getArtistSongs(artistName)
 	tell application "iTunes"
 
 		set albumNames to getArtistAlbums(artistName) of me
-		set theSongs to {}
+		set artistSongs to {}
 
 		repeat with albumName in albumNames
 
 			set albumSongs to (every track of playlist 2 whose artist is artistName and album is albumName and kind contains songDescriptor)
-			set theSongs to theSongs & albumSongs
+			set artistSongs to artistSongs & albumSongs
 
 		end repeat
 
 	end tell
 
-	return theSongs
+	return artistSongs
 
 end getArtistSongs
 
@@ -385,11 +385,11 @@ on getAlbumSongs(albumName)
 
 	tell application "iTunes"
 
-		set theSongs to every track of playlist 2 whose album is albumName and kind contains songDescriptor
+		set albumSongs to every track of playlist 2 whose album is albumName and kind contains songDescriptor
 
 	end tell
 
-	return theSongs
+	return albumSongs
 
 end getAlbumSongs
 
@@ -521,8 +521,8 @@ end queueSong
 on queueAlbum(albumName)
 
 	set albumName to decodeFeedbackChars(albumName)
-	set theSongs to getAlbumSongs(albumName)
-	queueSongs(theSongs)
+	set albumSongs to getAlbumSongs(albumName)
+	queueSongs(albumSongs)
 
 end queueAlbum
 
@@ -530,8 +530,8 @@ end queueAlbum
 on queueArtist(artistName)
 
 	set artistName to decodeFeedbackChars(artistName)
-	set theSongs to getArtistSongs(artistName)
-	queueSongs(theSongs)
+	set artistSongs to getArtistSongs(artistName)
+	queueSongs(artistSongs)
 
 end queueArtist
 
@@ -539,16 +539,16 @@ end queueArtist
 on queueGenre(genreName)
 
 	set genreName to decodeFeedbackChars(genreName)
-	set theSongs to getGenreSongs(genreName)
-	queueSongs(theSongs)
+	set genreSongs to getGenreSongs(genreName)
+	queueSongs(genreSongs)
 
 end queueGenre
 
 -- queues all songs in the given playlist
 on queuePlaylist(playlistId)
 
-	set theSongs to getPlaylistSongs(playlistId)
-	queueSongs(theSongs)
+	set playlistSongs to getPlaylistSongs(playlistId)
+	queueSongs(playlistSongs)
 
 end queuePlaylist
 
