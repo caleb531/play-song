@@ -400,17 +400,15 @@ on sortSongsByAlbumOrder(theSongs)
 
 	tell application "iTunes"
 
-		set theSongsSorted to theSongs
-
 		if length of theSongs is not greater than 1 then
-			return theSongsSorted
+			return theSongs
 		end if
 
 		set trackCount to track count of (item 1 of theSongs)
 		set discCount to disc count of (item 1 of theSongs)
 
 		if trackCount is 0 or discCount is 0 then
-			return theSongsSorted
+			return theSongs
 		end if
 
 		set theSongsSorted to {} as list
