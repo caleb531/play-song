@@ -17,7 +17,6 @@ property bundleId : "com.calebevans.playsong"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 property artworkCacheFolderName : "Album Artwork"
 property artworkCachePath : (workflowCacheFolder & artworkCacheFolderName & ":")
-property songArtworkNameSep : " | "
 property defaultIconName : "resources/icon-noartwork.png"
 -- the name of the playlist used by the workflow for playing songs
 property workflowPlaylistName : "Alfred Play Song"
@@ -150,6 +149,17 @@ on getResultListFeedback()
 
 end getResultListFeedback
 
+-- create a folder with the given name in the given containing folder, silently
+-- failing if the folder already exists
+on createFolder(containingFolder, folderName)
+	tell application "Finder"
+		set folderPath to (containingFolder & folderName & ":") as text
+		if not (folderPath exists) then
+			make new folder in containingFolder with properties {name:folderName}
+		end if
+	end tell
+end createFolder
+
 -- writes the given content to the given file
 on fileWrite(theFile, theContent)
 
@@ -173,13 +183,10 @@ on getSongArtworkPath(theSong)
 
 		set songArtist to artist of theSong
 		set songAlbum to album of theSong
-		-- generate a unique identifier for that album
-		set songArtworkName to (songArtist & songArtworkNameSep & songAlbum) as text
 		-- remove forbidden path characters
-		set songArtworkName to replace(":", "", songArtworkName) of me
-		set songArtworkName to replace("/", "", songArtworkName) of me
-		set songArtworkName to replace(".", "", songArtworkName) of me
-		set songArtworkPath to (artworkCachePath & songArtworkName & ".jpg")
+		set songArtist to replace(":", "", songArtist) of me
+		set songAlbum to replace(":", "", songAlbum) of me
+		set songArtworkPath to (artworkCachePath & songArtist & ":" & songAlbum & ".jpg")
 
 	end tell
 
@@ -201,6 +208,7 @@ on getSongArtworkPath(theSong)
 
 					-- save artwork to file
 					set songArtwork to data of (item 1 of songArtworks)
+					createFolder(artworkCachePath, songArtist) of me
 					fileWrite(songArtworkPath, songArtwork) of me
 
 				end if
