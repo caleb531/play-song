@@ -177,8 +177,6 @@ on getSongArtworkPath(theSong)
 		set songArtworkName to (songArtist & songArtworkNameSep & songAlbum) as text
 		-- remove forbidden path characters
 		set songArtworkName to replace(":", "", songArtworkName) of me
-		set songArtworkName to replace("/", "", songArtworkName) of me
-		set songArtworkName to replace(".", "", songArtworkName) of me
 		set songArtworkPath to (artworkCachePath & songArtworkName & ".jpg")
 
 	end tell
