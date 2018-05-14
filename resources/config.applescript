@@ -3,7 +3,7 @@
 -- configurable options --
 
 -- limit number of songs to improve efficiency
-property resultLimit : 25
+property resultLimit : 15
 -- whether or not to retrieve/display album artwork for each result
 property albumArtEnabled : true
 
