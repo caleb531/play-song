@@ -19,7 +19,7 @@ on run query
 			set theSong to getSong(theId) of config
 			play theSong
 
-		else if theType is "playlist" then
+		else if theType ends with "playlist" then
 
 			set thePlaylist to getPlaylist(theId) of config
 			play thePlaylist
