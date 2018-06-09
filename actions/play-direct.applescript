@@ -26,7 +26,7 @@ on run query
 
 		else
 
-			log "Unknown type: " & theType
+			log "Unsupported type: " & theType
 
 		end if
 

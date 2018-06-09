@@ -579,7 +579,7 @@ on queue(query)
 	else if theType is "playlist" then
 		queuePlaylist(theId)
 	else
-		log "Unknown type: " & theType
+		log "Unsupported type: " & theType
 	end if
 
 end queue
