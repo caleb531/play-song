@@ -24,6 +24,10 @@ on run query
 			set thePlaylist to getPlaylist(theId) of config
 			play thePlaylist
 
+		else
+
+			log "Unknown type: " & theType
+
 		end if
 
 	end tell
