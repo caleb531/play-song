@@ -41,12 +41,25 @@ on getPlaylistResultListFeedback(query)
 			set playlistDuration to time of thePlaylist
 
 			try
+
 				set theSong to (first track in thePlaylist whose kind contains (songDescriptor of config))
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
 				set itemSubtitle to (quantifyNumber(songCount, "track", "tracks") of config) & ", " & playlistDuration & " in length"
 
-				addResult({uid:("playlist-" & playlistId) as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
+				-- Play Song does not support queueing Apple Music playlists
+				-- because they can contain songs which the user has not added
+				-- to their library (and such non-library songs cannot be
+				-- programmatically added to a non-Apple Music playlist);
+				-- therefore, we need to separate Apple Music playlists from
+				-- other types of playlists
+				if class of thePlaylist is subscription playlist then
+					set prefixedPlaylistId to "subscription_playlist-" & playlistId
+				else
+					set prefixedPlaylistId to "playlist-" & playlistId
+				end if
+				addResult({uid:prefixedPlaylistId as text, valid:"yes", title:playlistName, subtitle:itemSubtitle, icon:songArtworkPath}) of config
+
 			on error number -1728
 			end try
 
