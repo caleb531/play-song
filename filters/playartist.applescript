@@ -17,7 +17,7 @@ on getArtistResultListFeedback(query)
 		repeat with artistName in theArtists
 
 			set artistName to artistName as text
-			set theSong to (first track of playlist 2 whose artist is artistName and kind contains (songDescriptor of config))
+			set theSong to (first track of playlist 2 whose artist is artistName)
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
 			addResult({uid:("artist-" & artistName), valid:"yes", title:artistName, subtitle:genre of theSong, icon:songArtworkPath}) of config

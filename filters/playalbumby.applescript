@@ -23,7 +23,7 @@ on getAlbumResultListFeedback(query)
 				if config's resultListIsFull() then exit repeat
 
 				set albumName to albumName as text
-				set theSong to (first track of playlist 2 whose album is albumName and kind contains (songDescriptor of config))
+				set theSong to (first track of playlist 2 whose album is albumName)
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
 				addResult({uid:("album-" & albumName), valid:"yes", title:albumName, subtitle:artist of theSong, icon:songArtworkPath}) of config

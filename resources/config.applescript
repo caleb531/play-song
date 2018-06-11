@@ -21,8 +21,6 @@ property songArtworkNameSep : " | "
 property defaultIconName : "resources/icon-noartwork.png"
 -- the name of the playlist used by the workflow for playing songs
 property workflowPlaylistName : "Alfred Play Song"
--- the text used to determine if a track is an audio file
-property songDescriptor : "audio"
 -- list of Alfred results
 property resultList : {}
 
@@ -298,7 +296,7 @@ on getGenreArtists(genreName)
 
 	tell application "iTunes"
 
-		set genreSongs to every track of playlist 2 whose genre is genreName and kind contains songDescriptor
+		set genreSongs to every track of playlist 2 whose genre is genreName
 		set artistNames to {}
 
 		repeat with theSong in genreSongs
@@ -338,7 +336,7 @@ on getArtistAlbums(artistName)
 
 	tell application "iTunes"
 
-		set artistSongs to every track of playlist 2 whose artist is artistName and kind contains songDescriptor
+		set artistSongs to every track of playlist 2 whose artist is artistName
 		set albumNames to {}
 
 		repeat with theSong in artistSongs
@@ -367,7 +365,7 @@ on getArtistSongs(artistName)
 
 		repeat with albumName in albumNames
 
-			set albumSongs to (every track of playlist 2 whose artist is artistName and album is albumName and kind contains songDescriptor)
+			set albumSongs to (every track of playlist 2 whose artist is artistName and album is albumName)
 			set artistSongs to artistSongs & albumSongs
 
 		end repeat
@@ -383,7 +381,7 @@ on getAlbumSongs(albumName)
 
 	tell application "iTunes"
 
-		set albumSongs to every track of playlist 2 whose album is albumName and kind contains songDescriptor
+		set albumSongs to every track of playlist 2 whose album is albumName
 
 	end tell
 
@@ -396,7 +394,7 @@ on getSong(songId)
 
 	tell application "iTunes"
 
-		set theSong to first track of playlist 2 whose database ID is songId and kind contains songDescriptor
+		set theSong to first track of playlist 2 whose database ID is songId
 
 	end tell
 
@@ -410,21 +408,21 @@ on getResultsFromQuery(query, queryType)
 	set evalScript to run script "
 	script
 
-		on findResults(query, queryType, resultLimit, songDescriptor)
+		on findResults(query, queryType, resultLimit)
 
 			tell application \"iTunes\"
 
-				set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query and kind contains songDescriptor)
+				set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query)
 
 				if length of theSongs < resultLimit then
 
-					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query and kind contains songDescriptor)
+					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query)
 
 				end if
 
 				if length of theSongs < resultLimit then
 
-					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query) and kind contains songDescriptor)
+					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query))
 
 				end if
 
@@ -481,7 +479,7 @@ on getResultsFromQuery(query, queryType)
 	end script
 	"
 
-	evalScript's findResults(query, queryType, resultLimit, songDescriptor)
+	evalScript's findResults(query, queryType, resultLimit)
 
 end getResultsFromQuery
 
