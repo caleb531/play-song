@@ -42,7 +42,7 @@ on getPlaylistResultListFeedback(query)
 
 			try
 
-				set theSong to (first track in thePlaylist whose media kind is song)
+				set theSong to first track in thePlaylist
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
 				set itemSubtitle to (quantifyNumber(songCount, "track", "tracks") of config) & ", " & playlistDuration & " in length"

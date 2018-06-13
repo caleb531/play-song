@@ -296,7 +296,7 @@ on getGenreArtists(genreName)
 
 	tell application "iTunes"
 
-		set genreSongs to every track of playlist 2 whose genre is genreName and media kind is song
+		set genreSongs to every track of playlist 2 whose genre is genreName
 		set artistNames to {}
 
 		repeat with theSong in genreSongs
@@ -336,7 +336,7 @@ on getArtistAlbums(artistName)
 
 	tell application "iTunes"
 
-		set artistSongs to every track of playlist 2 whose artist is artistName and media kind is song
+		set artistSongs to every track of playlist 2 whose artist is artistName
 		set albumNames to {}
 
 		repeat with theSong in artistSongs
@@ -365,7 +365,7 @@ on getArtistSongs(artistName)
 
 		repeat with albumName in albumNames
 
-			set albumSongs to (every track of playlist 2 whose artist is artistName and album is albumName and media kind is song)
+			set albumSongs to (every track of playlist 2 whose artist is artistName and album is albumName)
 			set artistSongs to artistSongs & albumSongs
 
 		end repeat
@@ -381,7 +381,7 @@ on getAlbumSongs(albumName)
 
 	tell application "iTunes"
 
-		set albumSongs to every track of playlist 2 whose album is albumName and media kind is song
+		set albumSongs to every track of playlist 2 whose album is albumName
 
 	end tell
 
@@ -394,7 +394,7 @@ on getSong(songId)
 
 	tell application "iTunes"
 
-		set theSong to first track of playlist 2 whose database ID is songId and media kind is song
+		set theSong to first track of playlist 2 whose database ID is songId
 
 	end tell
 
@@ -412,17 +412,17 @@ on getResultsFromQuery(query, queryType)
 
 			tell application \"iTunes\"
 
-				set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query and media kind is song)
+				set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query)
 
 				if length of theSongs < resultLimit then
 
-					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query and media kind is song)
+					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query)
 
 				end if
 
 				if length of theSongs < resultLimit then
 
-					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query) and media kind is song)
+					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query))
 
 				end if
 

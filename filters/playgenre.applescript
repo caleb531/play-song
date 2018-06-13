@@ -17,7 +17,7 @@ on getGenreResultListFeedback(query)
 		repeat with genreName in theGenres
 
 			set genreName to genreName as text
-			set theSong to (first track of playlist 2 whose genre is genreName and media kind is song)
+			set theSong to (first track of playlist 2 whose genre is genreName)
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
 			addResult({uid:("genre-" & genreName), valid:"yes", title:genreName, subtitle:"Genre", icon:songArtworkPath}) of config
