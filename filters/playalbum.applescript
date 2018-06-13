@@ -17,7 +17,7 @@ on getAlbumResultListFeedback(query)
 		repeat with albumName in theAlbums
 
 			set albumName to albumName as text
-			set theSong to (first track of playlist 2 whose album is albumName)
+			set theSong to (first track of playlist 2 whose album is albumName and media kind is song)
 			set songArtworkPath to getSongArtworkPath(theSong) of config
 
 			addResult({uid:("album-" & albumName), valid:"yes", title:albumName, subtitle:artist of theSong, icon:songArtworkPath}) of config
