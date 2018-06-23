@@ -15,50 +15,55 @@ convenience.
 ## Usage
 
 Play Song includes a number of keyword filters which allow you to search for and
-play songs in your iTunes library.
+play songs in your iTunes library. For example:
 
 ### Playing a song
 
-To play an individual song, use the `playsong` keyword. Songs whose names match
-your query will populate the list of results. Choosing a song from the list will
-play that song once.
+```
+playsong hey jude
+```
 
 ### Playing a song in a particular album
 
-To play a song in a particular album, use the `playsongin` keyword. Songs whose
-album names match your query will populate the list of results. Choosing a song
-from the list will play that song once.
+```
+playsongin abbey road
+```
+
+#### Playing a song by a particular artist
+
+```
+playsongby beatles
+```
 
 ### Playing an album
 
-To play all songs from a particular album, use the `playalbum` keyword. Albums
-whose names match your query will populate the list of results. Choosing an
-album from the list will play all songs from that album.
+```
+playalbum pet sounds
+```
 
 #### Playing an album by a particular artist
 
-To play an album by a particular artist, use the `playalbum` keyword. Albums
-whose artist names match your query will populate the list of results. Choosing
-an album from the list will play all songs from that album.
+```
+playalbumby beach boys
+```
 
 ### Playing an artist
 
-To play all songs by a particular artist, use the `playartist` keyword. Artists
-whose names match your query will populate the list of results. Choosing a
-artist from the list will play all songs by that artist.
+```
+playartist killers
+```
 
 ### Playing a genre
 
-To play all songs within a particular genre, use the `playgenre` keyword. Genres
-whose names match your query will populate the list of results. Choosing a genre
-from the list will play all songs within that genre.
+```
+playgenre alternative
+```
 
 ### Playing a playlist
 
-To play all songs within a particular playlist, use the `playplaylist` keyword.
-Non-empty playlists whose names match your query will populate the list of
-results. Choosing a playlist from the list will play all songs within that
-playlist.
+```
+playplaylist favorites
+```
 
 ### Queueing songs
 
