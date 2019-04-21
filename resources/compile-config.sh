@@ -18,7 +18,7 @@ installed_config_md5sum=$(md5 -q "$installed_config")
 cached_config_md5sum=$(< "$cached_config_md5file")
 
 # If cached md5sum does not match installed config's md5sum
-if [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then
+if [ ! -f "$compiled_config" ] || [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then
 
 	# Cache installed config's md5sum
 	echo "$installed_config_md5sum" > "$cached_config_md5file"
@@ -27,4 +27,4 @@ if [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then
 fi
 
 # Output path to compiled config file for use by workflow scripts
-echo "$cache_dir/config.scpt"
+echo "$compiled_config"
