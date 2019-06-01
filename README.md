@@ -26,7 +26,7 @@ play songs in your iTunes library. For example:
 playsong hey jude
 ```
 
-### Playing a song in a particular album
+#### Playing a song in a particular album
 
 ```
 playsongin abbey road
