@@ -12,6 +12,9 @@ convenience.
 
 ![Play Song in action](screenshot.png)
 
+Special thanks to [@Tyilo](https://github.com/Tyilo) for his invaluable feedback
+and code contributions.
+
 ## Usage
 
 Play Song includes a number of keyword filters which allow you to search for and
@@ -105,8 +108,3 @@ the `shift` modifier. Note that this only works for the `playsong` filter.
 
 If you have a bug to report or a feature to request, please [submit an issue on
 GitHub](https://github.com/caleb531/play-song/issues).
-
-## Credits
-
-Special thanks to [Asger Drewsen](https://github.com/Tyilo) for his invaluable
-feedback and code contributions.
