@@ -1,3 +1,5 @@
+### NOTE: Support for macOS 10.15 (Catalina) will be added as soon as Catalina is officially released.
+
 # Play Song
 
 *Copyright 2013-2019 Caleb Evans*  
