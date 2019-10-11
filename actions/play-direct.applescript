@@ -11,8 +11,9 @@ on run query
 	set typeAndId to parseResultQuery(query as text) of config
 	set theType to type of typeAndId
 	set theId to id of typeAndId
+	set musicApplication to musicApplication of config
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		if theType is "song" then
 

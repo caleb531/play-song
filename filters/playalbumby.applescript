@@ -9,8 +9,9 @@ on getAlbumResultListFeedback(query)
 	global config
 
 	set query to trimWhitespace(query) of config
+	set musicApplication to musicApplication of config
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set theArtists to getResultsFromQuery(query, "artist") of config
 

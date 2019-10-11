@@ -9,8 +9,9 @@ on getGenreResultListFeedback(query)
 	global config
 
 	set query to trimWhitespace(query) of config
+	set musicApplication to musicApplication of config
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set theGenres to getResultsFromQuery(query, "genre") of config
 

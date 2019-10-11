@@ -9,8 +9,9 @@ on run query
 	set typeAndId to parseResultQuery(query as text) of config
 	set theType to type of typeAndId
 	set theId to id of typeAndId
+	set musicApplication to musicApplication of config
 	if theType is "song" then
-		tell application "iTunes"
+		tell application musicApplication
 			set theSong to getSong(theId) of config
 			set songName to name of theSong
 			set songArtist to artist of theSong

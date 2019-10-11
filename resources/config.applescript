@@ -1,4 +1,10 @@
 -- core configuration --
+set os_version to do shell script "sw_vers -productVersion"
+if os_version >= 10.15 then
+	set musicApplication to "Music"
+else
+	set musicApplication to "iTunes"
+end if
 
 -- configurable options --
 
@@ -167,7 +173,7 @@ on getSongArtworkPath(theSong)
 
 	if albumArtEnabled is false then return defaultIconName
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set songArtist to artist of theSong
 		set songAlbum to album of theSong
@@ -184,7 +190,7 @@ on getSongArtworkPath(theSong)
 		-- cache artwork if it's not already cached
 		if not (songArtworkPath exists) then
 
-			tell application "iTunes"
+			tell application musicApplication
 
 				set songArtworks to artworks of theSong
 				-- only save artwork if artwork exists for this song
@@ -214,7 +220,7 @@ end getSongArtworkPath
 -- creates album artwork cache
 on createWorkflowPlaylist()
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		if not (user playlist workflowPlaylistName exists) then
 
@@ -228,7 +234,7 @@ end createWorkflowPlaylist
 
 on clearQueue()
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		if user playlist workflowPlaylistName exists then
 
@@ -242,7 +248,7 @@ end clearQueue
 
 on queueSongs(theSongs)
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		repeat with theSong in theSongs
 
@@ -256,7 +262,7 @@ end queueSongs
 
 on playQueue()
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		if number of tracks in user playlist workflowPlaylistName is not 0 then
 
@@ -270,7 +276,7 @@ end playQueue
 
 on getPlaylist(playlistId)
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		return (first playlist whose id is playlistId)
 
@@ -280,7 +286,7 @@ end getPlaylist
 
 on getPlaylistSongs(playlistId)
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set thePlaylist to getPlaylist(playlistId) of me
 		set playlistSongs to every track of thePlaylist
@@ -294,7 +300,7 @@ end getPlaylistSongs
 -- retrieves list of artist names for the given genre
 on getGenreArtists(genreName)
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set genreSongs to every track of playlist 2 whose genre is genreName
 		set artistNames to {}
@@ -334,7 +340,7 @@ end getGenreSongs
 -- retrieves list of album names for the given artist
 on getArtistAlbums(artistName)
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set artistSongs to every track of playlist 2 whose artist is artistName
 		set albumNames to {}
@@ -358,7 +364,7 @@ end getArtistAlbums
 -- retrieves list of songs by the given artist, sorted by album
 on getArtistSongs(artistName)
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set albumNames to getArtistAlbums(artistName) of me
 		set artistSongs to {}
@@ -379,7 +385,7 @@ end getArtistSongs
 -- retrieves list of songs in the given album
 on getAlbumSongs(albumName)
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set albumSongs to every track of playlist 2 whose album is albumName
 
@@ -392,7 +398,7 @@ end getAlbumSongs
 -- retrieves the song with the given ID
 on getSong(songId)
 
-	tell application "iTunes"
+	tell application musicApplication
 
 		set theSong to first track of playlist 2 whose database ID is songId
 
@@ -410,7 +416,7 @@ on getResultsFromQuery(query, queryType)
 
 		on findResults(query, queryType, resultLimit)
 
-			tell application \"iTunes\"
+			tell application musicApplication
 
 				set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query)
 
