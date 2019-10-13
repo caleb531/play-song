@@ -165,56 +165,70 @@ end fileWrite
 -- builds path to album art for the given song
 on getSongArtworkPath(theSong)
 
-	if albumArtEnabled is false then return defaultIconName
+	try
 
-	tell application "iTunes"
+		if albumArtEnabled is false then return defaultIconName
 
-		set songArtist to artist of theSong
-		set songAlbum to album of theSong
-		-- generate a unique identifier for that album
-		set songArtworkName to (songArtist & songArtworkNameSep & songAlbum) as text
-		-- remove forbidden path characters
-		set songArtworkName to replace(":", "", songArtworkName) of me
-		set songArtworkPath to (artworkCachePath & songArtworkName & ".jpg")
+		tell application "Music"
 
-	end tell
+			set songArtist to artist of theSong
+			set songAlbum to album of theSong
+			-- generate a unique identifier for that album
+			set songArtworkName to (songArtist & songArtworkNameSep & songAlbum) as text
+			-- remove forbidden path characters
+			set songArtworkName to replace(":", "", songArtworkName) of me
+			set songArtworkPath to (artworkCachePath & songArtworkName & ".jpg")
 
-	tell application "Finder"
+		end tell
 
-		-- cache artwork if it's not already cached
-		if not (songArtworkPath exists) then
+		tell application "Finder"
 
-			tell application "iTunes"
+			-- cache artwork if it's not already cached
+			if not (songArtworkPath exists) then
 
-				set songArtworks to artworks of theSong
-				-- only save artwork if artwork exists for this song
-				if (length of songArtworks) is 0 then
+				tell application "Music"
 
-					-- use default iTunes icon if song has no artwork
-					set songArtworkPath to defaultIconName
+					set songArtworks to artworks of theSong
+					-- only save artwork if artwork exists for this song
+					if (length of songArtworks) is 0 then
 
-				else
+						-- use default Music.app icon if song has no artwork
+						set songArtworkPath to defaultIconName
 
-					-- save artwork to file
-					set songArtwork to data of (item 1 of songArtworks)
-					fileWrite(songArtworkPath, songArtwork) of me
+					else
 
-				end if
+						-- save artwork to file
+						set songArtwork to data of (item 1 of songArtworks)
+						fileWrite(songArtworkPath, songArtwork) of me
 
-			end tell
+					end if
 
-		end if
+				end tell
 
-	end tell
+			end if
 
-	return songArtworkPath
+		end tell
+
+		return songArtworkPath
+
+	on error number -50
+
+		-- in macOS Catalina (10.15), a parameter error (-50) is always thrown
+		-- when attempting to access any property on a non-downloaded track's
+		-- artwork. In other words, the track must have been downloaded to the
+		-- user's library in order for the artwork to be downloadable/cacheable
+		-- by AppleScript; there is no known workaround, so in the meantime,
+		-- catch this error and return the default icon ;(
+		return "icon.png"
+
+	end try
 
 end getSongArtworkPath
 
 -- creates album artwork cache
 on createWorkflowPlaylist()
 
-	tell application "iTunes"
+	tell application "Music"
 
 		if not (user playlist workflowPlaylistName exists) then
 
@@ -228,7 +242,7 @@ end createWorkflowPlaylist
 
 on clearQueue()
 
-	tell application "iTunes"
+	tell application "Music"
 
 		if user playlist workflowPlaylistName exists then
 
@@ -242,7 +256,7 @@ end clearQueue
 
 on queueSongs(theSongs)
 
-	tell application "iTunes"
+	tell application "Music"
 
 		repeat with theSong in theSongs
 
@@ -256,7 +270,7 @@ end queueSongs
 
 on playQueue()
 
-	tell application "iTunes"
+	tell application "Music"
 
 		if number of tracks in user playlist workflowPlaylistName is not 0 then
 
@@ -270,7 +284,7 @@ end playQueue
 
 on getPlaylist(playlistId)
 
-	tell application "iTunes"
+	tell application "Music"
 
 		return (first playlist whose id is playlistId)
 
@@ -280,7 +294,7 @@ end getPlaylist
 
 on getPlaylistSongs(playlistId)
 
-	tell application "iTunes"
+	tell application "Music"
 
 		set thePlaylist to getPlaylist(playlistId) of me
 		set playlistSongs to every track of thePlaylist
@@ -294,7 +308,7 @@ end getPlaylistSongs
 -- retrieves list of artist names for the given genre
 on getGenreArtists(genreName)
 
-	tell application "iTunes"
+	tell application "Music"
 
 		set genreSongs to every track of playlist 2 whose genre is genreName
 		set artistNames to {}
@@ -334,7 +348,7 @@ end getGenreSongs
 -- retrieves list of album names for the given artist
 on getArtistAlbums(artistName)
 
-	tell application "iTunes"
+	tell application "Music"
 
 		set artistSongs to every track of playlist 2 whose artist is artistName
 		set albumNames to {}
@@ -358,7 +372,7 @@ end getArtistAlbums
 -- retrieves list of songs by the given artist, sorted by album
 on getArtistSongs(artistName)
 
-	tell application "iTunes"
+	tell application "Music"
 
 		set albumNames to getArtistAlbums(artistName) of me
 		set artistSongs to {}
@@ -379,7 +393,7 @@ end getArtistSongs
 -- retrieves list of songs in the given album
 on getAlbumSongs(albumName)
 
-	tell application "iTunes"
+	tell application "Music"
 
 		set albumSongs to every track of playlist 2 whose album is albumName
 
@@ -392,7 +406,7 @@ end getAlbumSongs
 -- retrieves the song with the given ID
 on getSong(songId)
 
-	tell application "iTunes"
+	tell application "Music"
 
 		set theSong to first track of playlist 2 whose database ID is songId
 
@@ -410,7 +424,7 @@ on getResultsFromQuery(query, queryType)
 
 		on findResults(query, queryType, resultLimit)
 
-			tell application \"iTunes\"
+			tell application \"Music\"
 
 				set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query)
 

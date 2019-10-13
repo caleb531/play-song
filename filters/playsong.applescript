@@ -10,10 +10,10 @@ on getSongResultListFeedback(query)
 
 	set query to trimWhitespace(query) of config
 
-	tell application "iTunes"
+	tell application "Music"
 
 		set theSongs to getResultsFromQuery(query, "name") of config
-
+		--
 		repeat with theSong in theSongs
 
 			set songId to (get database ID of theSong)

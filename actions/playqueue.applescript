@@ -1,4 +1,4 @@
--- plays workflow queue in iTunes --
+-- plays workflow queue in Music.app --
 
 on loadConfig()
 	return (load script POSIX file (do shell script "./resources/compile-config.sh"))

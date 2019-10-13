@@ -1,4 +1,4 @@
--- queues selected result in iTunes --
+-- queues selected result in Music.app --
 
 on loadConfig()
 	return (load script POSIX file (do shell script "./resources/compile-config.sh"))
