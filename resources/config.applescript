@@ -219,7 +219,7 @@ on getSongArtworkPath(theSong)
 		-- user's library in order for the artwork to be downloadable/cacheable
 		-- by AppleScript; there is no known workaround, so in the meantime,
 		-- catch this error and return the default icon ;(
-		return "icon.png"
+		return defaultIconName
 
 	end try
 
