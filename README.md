@@ -1,4 +1,6 @@
-### NOTE: Support for macOS 10.15 (Catalina) will be added as soon as Catalina is officially released.
+### NOTE: Support for macOS 10.15 (Catalina) is in development; you can download the beta at the link below:
+
+https://github.com/caleb531/play-song/releases/tag/v7.0.0-beta.1
 
 # Play Song
 
