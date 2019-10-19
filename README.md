@@ -1,6 +1,7 @@
-### NOTE: Support for macOS 10.15 (Catalina) is in development; you can download the beta at the link below:
+### NOTE: Play Song now supports macOS Catalina!
 
-https://github.com/caleb531/play-song/releases/tag/v7.0.0-beta.1
+Please see the file list above for the workflow compatible with your version of
+Alfred.
 
 # Play Song
 
