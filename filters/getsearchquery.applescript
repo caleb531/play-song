@@ -10,7 +10,7 @@ on run query
 	set theType to type of typeAndId
 	set theId to id of typeAndId
 	if theType is "song" then
-		tell application "iTunes"
+		tell application "Music"
 			set theSong to getSong(theId) of config
 			set songName to name of theSong
 			set songArtist to artist of theSong

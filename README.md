@@ -8,7 +8,7 @@ https://github.com/caleb531/play-song/releases/tag/v7.0.0-beta.1
 *Released under the MIT license*
 
 Play Song is an [Alfred](http://www.alfredapp.com/) workflow designed to make
-playing music in iTunes extremely quick and convenient.
+playing music in Music.app extremely quick and convenient.
 
 The workflow will be solely supporting Alfred 4 going forward, but the latest
 Alfred 3 and Alfred 2-compatible releases will remain available here for your
@@ -22,7 +22,7 @@ and code contributions.
 ## Usage
 
 Play Song includes a number of keyword filters which allow you to search for and
-play songs in your iTunes library. For example:
+play songs in your Music.app library. For example:
 
 ### Playing a song
 
@@ -97,10 +97,10 @@ issues with Play Song, you can clear this cache via the `clearcache` keyword.
 
 ### A note about play order
 
-Play Song always respects the current shuffle mode within iTunes. For example,
+Play Song always respects the current shuffle mode within Music.app. For example,
 if shuffle is enabled, playing an album via Play Song will play the songs of the
 album in shuffled order. Therefore, if you desire Play Song to respect album
-order, simply disable shuffle within iTunes.
+order, simply disable shuffle within Music.app.
 
 ### Playing a song directly (the Play Song v1 behavior)
 

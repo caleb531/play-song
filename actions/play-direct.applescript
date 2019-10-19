@@ -12,7 +12,7 @@ on run query
 	set theType to type of typeAndId
 	set theId to id of typeAndId
 
-	tell application "iTunes"
+	tell application "Music"
 
 		if theType is "song" then
 

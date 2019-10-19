@@ -10,7 +10,7 @@ on getPlaylistResultListFeedback(query)
 
 	set query to trimWhitespace(query) of config
 
-	tell application "iTunes"
+	tell application "Music"
 
 		-- retrieve list of playlists matching query (ordered by relevance)
 		set thePlaylists to (get playlists whose name starts with query and name is not config's workflowPlaylistName and special kind is none and size is not 0)
