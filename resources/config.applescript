@@ -15,8 +15,8 @@ property cacheFolder : (libraryFolder & "Caches:")
 property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred:Workflow Data:")
 property bundleId : "com.calebevans.playsong"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
-property artworkCacheFolderName : "Album Artwork"
-property artworkCachePath : (workflowCacheFolder & artworkCacheFolderName & ":")
+property artworkDocsFolder : ((get path to library folder from user domain as text) & "Containers:com.apple.AMPArtworkAgent:Data:Documents")
+property artworkImageFolder : (artworkDocsFolder & ":artwork:")
 property songArtworkNameSep : " | "
 property defaultIconName : "resources/icon-noartwork.png"
 -- the name of the playlist used by the workflow for playing songs
@@ -162,7 +162,7 @@ on fileWrite(theFile, theContent)
 
 end fileWrite
 
--- builds path to album art for the given song
+-- query path to artwork image file cached natively by Music.app in Catalina
 on getSongArtworkPath(theSong)
 
 	try
@@ -171,59 +171,31 @@ on getSongArtworkPath(theSong)
 
 		tell application "Music"
 
-			set songArtist to artist of theSong
-			set songAlbum to album of theSong
-			-- generate a unique identifier for that album
-			set songArtworkName to (songArtist & songArtworkNameSep & songAlbum) as text
-			-- remove forbidden path characters
-			set songArtworkName to replace(":", "", songArtworkName) of me
-			set songArtworkPath to (artworkCachePath & songArtworkName & ".jpg")
+			-- get persistent ID of song and convert from hexadecimal to decimal (base-10)
+			set hexSongId to persistent ID of theSong
+			set decSongId to (do shell script "echo $((16#" & hexSongId & "))")
+
+			-- retrieve filename of cached artwork
+			set artworkName to (do shell script ("/usr/bin/sqlite3 " & (POSIX path of artworkDocsFolder) & "/artworkd.sqlite '" & ¬
+			"select ZHASHSTRING, ZKIND from ZIMAGEINFO where Z_PK = (" & ¬
+			"(select ZIMAGEINFO from ZSOURCEINFO where Z_PK = (" & ¬
+			"select ZSOURCEINFO from ZDATABASEITEMINFO where ZPERSISTENTID = " & ¬
+			decSongId & ")))' | " & ¬
+			"awk '{split($0,a,\"|\"); print a[1] \"_sk_\" a[2] \"_cid_1.jpeg\"}'"))
+
+			set artworkPath to (artworkImageFolder & artworkName)
 
 		end tell
 
-		tell application "Finder"
+		return artworkPath
 
-			-- cache artwork if it's not already cached
-			if not (songArtworkPath exists) then
+	on error errorMessage
 
-				tell application "Music"
-
-					set songArtworks to artworks of theSong
-					-- only save artwork if artwork exists for this song
-					if (length of songArtworks) is 0 then
-
-						-- use default Music.app icon if song has no artwork
-						set songArtworkPath to defaultIconName
-
-					else
-
-						-- save artwork to file
-						set songArtwork to data of (item 1 of songArtworks)
-						fileWrite(songArtworkPath, songArtwork) of me
-
-					end if
-
-				end tell
-
-			end if
-
-		end tell
-
-		return songArtworkPath
-
-	on error number -50
-
-		-- in macOS Catalina (10.15), a parameter error (-50) is always thrown
-		-- when attempting to access any property on a non-downloaded track's
-		-- artwork. In other words, the track must have been downloaded to the
-		-- user's library in order for the artwork to be downloadable/cacheable
-		-- by AppleScript; there is no known workaround, so in the meantime,
-		-- catch this error and return the default icon ;(
-		return defaultIconName
+		log errorMessage
 
 	end try
 
-end getSongArtworkPath
+end getNativeCachedArtworkPath
 
 -- creates album artwork cache
 on createWorkflowPlaylist()
