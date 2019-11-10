@@ -9,15 +9,18 @@ property albumArtEnabled : true
 
 -- workflow parameters --
 
-property homeFolder : (path to home folder as text)
+-- workflow folders
 property libraryFolder : (path to library folder from user domain as text)
 property cacheFolder : (libraryFolder & "Caches:")
 property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred:Workflow Data:")
 property bundleId : "com.calebevans.playsong"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
+
+-- album artwork folders
 property artworkDocsFolder : ((get path to library folder from user domain as text) & "Containers:com.apple.AMPArtworkAgent:Data:Documents")
 property artworkImageFolder : (artworkDocsFolder & ":artwork:")
-property songArtworkNameSep : " | "
+
+-- the default icon used for search results without album artwork
 property defaultIconName : "resources/icon-noartwork.png"
 -- the name of the playlist used by the workflow for playing songs
 property workflowPlaylistName : "Alfred Play Song"
