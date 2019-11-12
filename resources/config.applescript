@@ -198,7 +198,7 @@ on getSongArtworkPath(theSong)
 
 	end try
 
-end getNativeCachedArtworkPath
+end getSongArtworkPath
 
 -- creates album artwork cache
 on createWorkflowPlaylist()
