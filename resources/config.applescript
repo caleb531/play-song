@@ -16,8 +16,9 @@ property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfre
 property bundleId : "com.calebevans.playsong"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 
--- album artwork folders
+-- album artwork files and folders
 property artworkDocsFolder : ((get path to library folder from user domain as text) & "Containers:com.apple.AMPArtworkAgent:Data:Documents")
+property artworkDbPath : "/usr/bin/sqlite3 " & (POSIX path of artworkDocsFolder) & "/artworkd.sqlite"
 property artworkImageFolder : (artworkDocsFolder & ":artwork:")
 
 -- the default icon used for search results without album artwork
@@ -165,7 +166,7 @@ on getSongArtworkPath(theSong)
 			set decSongId to (do shell script "echo $((16#" & hexSongId & "))")
 
 			-- retrieve filename of cached artwork (without extension)
-			set artworkName to (do shell script ("/usr/bin/sqlite3 " & (POSIX path of artworkDocsFolder) & "/artworkd.sqlite '" & ¬
+			set artworkName to (do shell script (artworkDbPath & " '" & ¬
 			"select ZHASHSTRING, ZKIND from ZIMAGEINFO where Z_PK = (" & ¬
 			"(select ZIMAGEINFO from ZSOURCEINFO where Z_PK = (" & ¬
 			"select ZSOURCEINFO from ZDATABASEITEMINFO where ZPERSISTENTID = " & ¬
