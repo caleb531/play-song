@@ -178,19 +178,21 @@ on getSongArtworkPath(theSong)
 			set hexSongId to persistent ID of theSong
 			set decSongId to (do shell script "echo $((16#" & hexSongId & "))")
 
-			-- retrieve filename of cached artwork
+			-- retrieve filename of cached artwork (without extension)
 			set artworkName to (do shell script ("/usr/bin/sqlite3 " & (POSIX path of artworkDocsFolder) & "/artworkd.sqlite '" & ¬
 			"select ZHASHSTRING, ZKIND from ZIMAGEINFO where Z_PK = (" & ¬
 			"(select ZIMAGEINFO from ZSOURCEINFO where Z_PK = (" & ¬
 			"select ZSOURCEINFO from ZDATABASEITEMINFO where ZPERSISTENTID = " & ¬
 			decSongId & ")))' | " & ¬
-			"awk '{split($0,a,\"|\"); print a[1] \"_sk_\" a[2] \"_cid_1.jpeg\"}'"))
+			"awk '{split($0,a,\"|\"); print a[1] \"_sk_\" a[2] \"_cid_1\"}'"))
 
 			set artworkPath to (artworkImageFolder & artworkName)
 
 		end tell
 
-		return artworkPath
+		return selectFirstArtworkThatExists({ ¬
+			(artworkImageFolder & artworkName & ".jpeg"), ¬
+			(artworkImageFolder & artworkName & ".png")}) of me
 
 	on error errorMessage
 
@@ -199,6 +201,22 @@ on getSongArtworkPath(theSong)
 	end try
 
 end getSongArtworkPath
+
+-- select the first path (in the given set of artwork paths) that exists on the
+-- user's local system
+on selectFirstArtworkThatExists(artworkPaths)
+
+	tell application "Finder"
+		repeat with artworkPath in artworkPaths
+			if artworkPath exists then
+				return artworkPath as text
+			end if
+		end repeat
+	end tell
+
+	return defaultIconName
+
+end selectFirstArtworkThatExists
 
 -- creates album artwork cache
 on createWorkflowPlaylist()
