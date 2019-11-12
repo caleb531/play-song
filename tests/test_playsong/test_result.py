@@ -29,8 +29,8 @@ def test_valid():
     nose.assert_equal(results[0]['valid'], 'yes')
 
 
-def test_artwork():
-    """song result should display correct artwork as icon"""
+def test_artwork_jpeg():
+    """song result should display correct JPEG artwork as icon"""
     results = run_filter('playsong', 'waterloo')
     nose.assert_true(
         os.path.isabs(results[0]['icon']['path']),
@@ -38,3 +38,20 @@ def test_artwork():
     nose.assert_true(
         os.path.exists(results[0]['icon']['path']),
         'artwork path does not exist')
+    nose.assert_equal(
+        os.path.splitext(results[0]['icon']['path'])[1],
+        '.jpeg')
+
+
+def test_artwork_png():
+    """song result should display correct PNG artwork as icon"""
+    results = run_filter('playsong', 'receives')
+    nose.assert_true(
+        os.path.isabs(results[0]['icon']['path']),
+        'artwork path is not an absolute path')
+    nose.assert_true(
+        os.path.exists(results[0]['icon']['path']),
+        'artwork path does not exist')
+    nose.assert_equal(
+        os.path.splitext(results[0]['icon']['path'])[1],
+        '.png')
