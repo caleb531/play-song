@@ -151,20 +151,6 @@ on getResultListFeedback()
 
 end getResultListFeedback
 
--- writes the given content to the given file
-on fileWrite(theFile, theContent)
-
-	set fileRef to open for access theFile with write permission
-	try
-		set eof of fileRef to 0
-		write theContent to fileRef starting at eof
-		close access fileRef
-	on error
-		close access fileRef
-	end try
-
-end fileWrite
-
 -- query path to artwork image file cached natively by Music.app in Catalina
 on getSongArtworkPath(theSong)
 
