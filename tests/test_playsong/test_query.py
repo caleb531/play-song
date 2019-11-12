@@ -15,6 +15,6 @@ def test_ignore_case():
 
 
 def test_partial():
-    """should match partial queries"""
+    """should match partial queries when querying songs"""
     results = run_filter('playsong', 'blue sky')
     nose.assert_equal(results[0]['title'], 'Mr. Blue Sky')
