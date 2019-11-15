@@ -18,7 +18,7 @@ property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as te
 
 -- album artwork files and folders
 property artworkDocsFolder : ((get path to library folder from user domain as text) & "Containers:com.apple.AMPArtworkAgent:Data:Documents")
-property artworkDbPath : "/usr/bin/sqlite3 " & (POSIX path of artworkDocsFolder) & "/artworkd.sqlite"
+property artworkDbPath : "/usr/bin/sqlite3 -list -noheader " & (POSIX path of artworkDocsFolder) & "/artworkd.sqlite"
 property artworkImageFolder : (artworkDocsFolder & ":artwork:")
 
 -- the default icon used for search results without album artwork
