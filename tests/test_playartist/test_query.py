@@ -10,7 +10,7 @@ from tests.utils import run_filter
 
 def test_ignore_case():
     """should ignore case when querying artists"""
-    results = run_filter('playartist', 'beatl')
+    results = run_filter('playartist', 'BeatL')
     nose.assert_equal(results[0]['title'], 'The Beatles')
 
 
