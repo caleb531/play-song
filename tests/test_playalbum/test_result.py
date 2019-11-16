@@ -29,8 +29,8 @@ def test_valid():
     nose.assert_equal(results[0]['valid'], 'yes')
 
 
-def test_artwork_jpeg():
-    """album result should display correct JPEG artwork as icon"""
+def test_artwork():
+    """album result should display correct artwork as icon"""
     results = run_filter('playalbum', 'abbey road')
     nose.assert_true(
         os.path.isabs(results[0]['icon']['path']),

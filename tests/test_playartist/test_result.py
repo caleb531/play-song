@@ -29,8 +29,8 @@ def test_valid():
     nose.assert_equal(results[0]['valid'], 'yes')
 
 
-def test_artwork_jpeg():
-    """artist result should display correct JPEG artwork as icon"""
+def test_artwork():
+    """artist result should display correct artwork as icon"""
     results = run_filter('playartist', 'light o')
     nose.assert_true(
         os.path.isabs(results[0]['icon']['path']),
