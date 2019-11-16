@@ -16,5 +16,5 @@ def test_ignore_case():
 
 def test_partial():
     """should match partial queries when querying albums"""
-    results = run_filter('playalbum', 'ease me')
+    results = run_filter('playalbum', 'ease m')
     nose.assert_equal(results[0]['title'], 'Please Please Me')
