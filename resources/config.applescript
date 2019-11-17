@@ -16,11 +16,6 @@ property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfre
 property bundleId : "com.calebevans.playsong"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 
--- album artwork files and folders
-property artworkDocsFolder : ((get path to library folder from user domain as text) & "Containers:com.apple.AMPArtworkAgent:Data:Documents")
-property artworkDbPath : "/usr/bin/sqlite3 -list -noheader " & (POSIX path of artworkDocsFolder) & "/artworkd.sqlite"
-property artworkImageFolder : (artworkDocsFolder & ":artwork:")
-
 -- the default icon used for search results without album artwork
 property defaultIconName : "resources/icon-noartwork.png"
 -- the name of the playlist used by the workflow for playing songs
@@ -161,25 +156,14 @@ on getSongArtworkPath(theSong)
 
 		tell application "Music"
 
-			-- get persistent ID of song and convert from hexadecimal to decimal (base-10)
-			set hexSongId to persistent ID of theSong
-			set decSongId to (do shell script "echo $((16#" & hexSongId & "))")
-
-			-- retrieve filename of cached artwork (without extension)
-			set artworkName to (do shell script (artworkDbPath & " '" & ¬
-			"select ZHASHSTRING, ZKIND from ZIMAGEINFO where Z_PK = (" & ¬
-			"(select ZIMAGEINFO from ZSOURCEINFO where Z_PK = (" & ¬
-			"select ZSOURCEINFO from ZDATABASEITEMINFO where ZPERSISTENTID = " & ¬
-			decSongId & ")))' | " & ¬
-			"awk '{split($0,a,\"|\"); print a[1] \"_sk_\" a[2] \"_cid_1\"}'"))
-
-			set artworkPath to (artworkImageFolder & artworkName)
+			-- get persistent ID of song and use it to fetch album artwork
+			set songId to persistent ID of theSong
+			-- the base path to the artwork file (without extension)
+			set artworkPath to (do shell script "./resources/get-song-artwork-path.sh" & space & songId & space & defaultIconName)
 
 		end tell
 
-		return selectFirstArtworkThatExists({ ¬
-			(artworkImageFolder & artworkName & ".jpeg"), ¬
-			(artworkImageFolder & artworkName & ".png")}) of me
+		return artworkPath
 
 	on error errorMessage
 
@@ -188,22 +172,6 @@ on getSongArtworkPath(theSong)
 	end try
 
 end getSongArtworkPath
-
--- select the first path (in the given set of artwork paths) that exists on the
--- user's local system
-on selectFirstArtworkThatExists(artworkPaths)
-
-	tell application "Finder"
-		repeat with artworkPath in artworkPaths
-			if artworkPath exists then
-				return artworkPath as text
-			end if
-		end repeat
-	end tell
-
-	return defaultIconName
-
-end selectFirstArtworkThatExists
 
 -- creates album artwork cache
 on createWorkflowPlaylist()
