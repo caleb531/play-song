@@ -14,6 +14,12 @@ def test_ignore_case():
     nose.assert_equal(results[0]['title'], 'Ultimate Survivor')
 
 
+def test_trim_whitespace():
+    """should trim whitespace when querying albums by an artist"""
+    results = run_filter('playalbumby', '   survivor   ')
+    nose.assert_equal(results[0]['title'], 'Ultimate Survivor')
+
+
 def test_partial():
     """should match partial queries when querying albums by an artist"""
     results = run_filter('playalbumby', 'urviv')

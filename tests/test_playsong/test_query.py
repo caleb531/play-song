@@ -14,6 +14,12 @@ def test_ignore_case():
     nose.assert_equal(results[0]['title'], 'Mr. Blue Sky')
 
 
+def test_trim_whitespace():
+    """should trim whitespace when querying songs"""
+    results = run_filter('playsong', '   mr blue sky   ')
+    nose.assert_equal(results[0]['title'], 'Mr. Blue Sky')
+
+
 def test_partial():
     """should match partial queries when querying songs"""
     results = run_filter('playsong', 'blue sky')

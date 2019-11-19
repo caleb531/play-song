@@ -14,6 +14,12 @@ def test_ignore_case():
     nose.assert_equal(results[0]['title'], 'The Lion Sleeps Tonight (Wimoweh)')
 
 
+def test_trim_whitespace():
+    """should trim whitespace when querying songs by an artist"""
+    results = run_filter('playsongby', '   tokens   ')
+    nose.assert_equal(results[0]['title'], 'The Lion Sleeps Tonight (Wimoweh)')
+
+
 def test_partial():
     """should match partial queries when querying songs by an artist"""
     results = run_filter('playsongby', 'oken')
