@@ -11,25 +11,43 @@ import nose.tools as nose
 from tests.utils import run_filter
 
 
-def test_title():
+def test_query_ignore_case():
+    """should ignore case when querying songs"""
+    results = run_filter('playsong', 'mr Blue SKY')
+    nose.assert_equal(results[0]['title'], 'Mr. Blue Sky')
+
+
+def test_query_trim_whitespace():
+    """should trim whitespace when querying songs"""
+    results = run_filter('playsong', '   mr blue sky   ')
+    nose.assert_equal(results[0]['title'], 'Mr. Blue Sky')
+
+
+def test_query_partial():
+    """should match partial queries when querying songs"""
+    results = run_filter('playsong', 'blue sky')
+    nose.assert_equal(results[0]['title'], 'Mr. Blue Sky')
+
+
+def test_result_title():
     """song result should display song name in title"""
     results = run_filter('playsong', 'mr blue sky')
     nose.assert_equal(results[0]['title'], 'Mr. Blue Sky')
 
 
-def test_subtitle():
+def test_result_subtitle():
     """song result should display artist name in subtitle"""
     results = run_filter('playsong', 'here comes the sun')
     nose.assert_equal(results[0]['subtitle'], 'The Beatles')
 
 
-def test_valid():
+def test_result_valid():
     """song result should be actionable"""
     results = run_filter('playsong', 'how great is our god')
     nose.assert_equal(results[0]['valid'], 'yes')
 
 
-def test_artwork_jpeg():
+def test_result_artwork_jpeg():
     """song result should display correct JPEG artwork as icon"""
     results = run_filter('playsong', 'waterloo')
     nose.assert_true(
@@ -43,7 +61,7 @@ def test_artwork_jpeg():
         '.jpeg')
 
 
-def test_artwork_png():
+def test_result_artwork_png():
     """song result should display correct PNG artwork as icon"""
     results = run_filter('playsong', 'receives')
     nose.assert_true(

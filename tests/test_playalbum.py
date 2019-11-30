@@ -11,25 +11,43 @@ import nose.tools as nose
 from tests.utils import run_filter
 
 
-def test_title():
+def test_query_ignore_case():
+    """should ignore case when querying albums"""
+    results = run_filter('playalbum', 'Please PLEASE me')
+    nose.assert_equal(results[0]['title'], 'Please Please Me')
+
+
+def test_query_trim_whitespace():
+    """should trim whitespace when querying albums"""
+    results = run_filter('playalbum', '    please please me    ')
+    nose.assert_equal(results[0]['title'], 'Please Please Me')
+
+
+def test_query_partial():
+    """should match partial queries when querying albums"""
+    results = run_filter('playalbum', 'ease m')
+    nose.assert_equal(results[0]['title'], 'Please Please Me')
+
+
+def test_result_title():
     """album result should display album name in title"""
     results = run_filter('playalbum', 'shriek')
     nose.assert_equal(results[0]['title'], 'Shriek')
 
 
-def test_subtitle():
+def test_result_subtitle():
     """album result should display artist name in subtitle"""
     results = run_filter('playalbum', 'shriek')
     nose.assert_equal(results[0]['subtitle'], 'Wye Oak')
 
 
-def test_valid():
+def test_result_valid():
     """album result should be actionable"""
     results = run_filter('playalbum', 'please p')
     nose.assert_equal(results[0]['valid'], 'yes')
 
 
-def test_artwork():
+def test_result_artwork():
     """album result should display correct artwork as icon"""
     results = run_filter('playalbum', 'abbey road')
     nose.assert_true(

@@ -11,25 +11,43 @@ import nose.tools as nose
 from tests.utils import run_filter
 
 
-def test_title():
+def test_query_ignore_case():
+    """should ignore case when querying songs by an artist"""
+    results = run_filter('playsongby', 'tokens')
+    nose.assert_equal(results[0]['title'], 'The Lion Sleeps Tonight (Wimoweh)')
+
+
+def test_query_trim_whitespace():
+    """should trim whitespace when querying songs by an artist"""
+    results = run_filter('playsongby', '   tokens   ')
+    nose.assert_equal(results[0]['title'], 'The Lion Sleeps Tonight (Wimoweh)')
+
+
+def test_query_partial():
+    """should match partial queries when querying songs by an artist"""
+    results = run_filter('playsongby', 'oken')
+    nose.assert_equal(results[0]['title'], 'The Lion Sleeps Tonight (Wimoweh)')
+
+
+def test_result_title():
     """songby result should display songby name in title"""
     results = run_filter('playsongby', 'tokens')
     nose.assert_equal(results[0]['title'], 'The Lion Sleeps Tonight (Wimoweh)')
 
 
-def test_subtitle():
+def test_result_subtitle():
     """songby result should display artist name in subtitle"""
     results = run_filter('playsongby', 'tokens')
     nose.assert_equal(results[0]['subtitle'], 'The Tokens')
 
 
-def test_valid():
+def test_result_valid():
     """songby result should be actionable"""
     results = run_filter('playsongby', 'beatl')
     nose.assert_equal(results[0]['valid'], 'yes')
 
 
-def test_artwork():
+def test_result_artwork():
     """songby result should display correct artwork as icon"""
     results = run_filter('playsongby', 'light o')
     nose.assert_true(

@@ -11,25 +11,43 @@ import nose.tools as nose
 from tests.utils import run_filter
 
 
-def test_title():
+def test_query_ignore_case():
+    """should ignore case when querying albums by an artist"""
+    results = run_filter('playalbumby', 'SurVivor')
+    nose.assert_equal(results[0]['title'], 'Ultimate Survivor')
+
+
+def test_query_trim_whitespace():
+    """should trim whitespace when querying albums by an artist"""
+    results = run_filter('playalbumby', '   survivor   ')
+    nose.assert_equal(results[0]['title'], 'Ultimate Survivor')
+
+
+def test_query_partial():
+    """should match partial queries when querying albums by an artist"""
+    results = run_filter('playalbumby', 'urviv')
+    nose.assert_equal(results[0]['title'], 'Ultimate Survivor')
+
+
+def test_result_title():
     """albumby result should display albumby name in title"""
     results = run_filter('playalbumby', 'survivor')
     nose.assert_equal(results[0]['title'], 'Ultimate Survivor')
 
 
-def test_subtitle():
+def test_result_subtitle():
     """albumby result should display artist name in subtitle"""
     results = run_filter('playalbumby', 'survivor')
     nose.assert_equal(results[0]['subtitle'], 'Survivor')
 
 
-def test_valid():
+def test_result_valid():
     """albumby result should be actionable"""
     results = run_filter('playalbumby', 'survivor')
     nose.assert_equal(results[0]['valid'], 'yes')
 
 
-def test_artwork():
+def test_result_artwork():
     """albumby result should display correct artwork as icon"""
     results = run_filter('playalbumby', 'survivor')
     nose.assert_true(

@@ -11,25 +11,43 @@ import nose.tools as nose
 from tests.utils import run_filter
 
 
-def test_title():
+def test_query_ignore_case():
+    """should ignore case when querying artists"""
+    results = run_filter('playartist', 'BeatL')
+    nose.assert_equal(results[0]['title'], 'The Beatles')
+
+
+def test_query_trim_whitespace():
+    """should trim whitespace when querying artists"""
+    results = run_filter('playartist', '   beatles   ')
+    nose.assert_equal(results[0]['title'], 'The Beatles')
+
+
+def test_query_partial():
+    """should match partial queries when querying artists"""
+    results = run_filter('playartist', 'light or')
+    nose.assert_equal(results[0]['title'], 'Electric Light Orchestra')
+
+
+def test_result_title():
     """artist result should display artist name in title"""
     results = run_filter('playartist', 'wye oak')
     nose.assert_equal(results[0]['title'], 'Wye Oak')
 
 
-def test_subtitle():
+def test_result_subtitle():
     """artist result should display genre name in subtitle"""
     results = run_filter('playartist', 'wye oak')
     nose.assert_equal(results[0]['subtitle'], 'Alternative')
 
 
-def test_valid():
+def test_result_valid():
     """artist result should be actionable"""
     results = run_filter('playartist', 'beatl')
     nose.assert_equal(results[0]['valid'], 'yes')
 
 
-def test_artwork():
+def test_result_artwork():
     """artist result should display correct artwork as icon"""
     results = run_filter('playartist', 'light o')
     nose.assert_true(
