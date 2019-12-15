@@ -5,9 +5,9 @@ ARTWORK_DB_DIR=~/Library/Containers/com.apple.AMPArtworkAgent/Data/Documents
 # Path to the directory of album artwork images
 ARTWORK_IMG_DIR="$ARTWORK_DB_DIR"/artwork
 
-# The persistent ID of the song; the ID initially supplied to this script is
-# formatted as a hexadecimal value (base-16), but must be converted to decimal
-# (base-10) to be used in the following database query
+# The persistent ID of the song; the ID is initially supplied to this script as
+# a hexadecimal value (base-16), however it must be converted to decimal
+# (base-10) to be used in the database query that follows
 song_persistent_id=$((0x$1))
 # The path of the fallback icon to use if no image artwork is available
 default_icon_path="$2"
