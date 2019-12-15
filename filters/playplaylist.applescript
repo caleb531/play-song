@@ -45,7 +45,7 @@ on getPlaylistResultListFeedback(query)
 				set theSong to first track in thePlaylist
 				set songArtworkPath to getSongArtworkPath(theSong) of config
 
-				set itemSubtitle to (quantifyNumber(songCount, "track", "tracks") of config) & ", " & playlistDuration & " in length"
+				set itemSubtitle to (quantifyNumber(songCount, "song", "songs") of config) & ", " & playlistDuration & " in length"
 
 				-- Play Song does not support queueing Apple Music playlists
 				-- because they can contain songs which the user has not added
