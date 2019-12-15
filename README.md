@@ -112,4 +112,5 @@ the `shift` modifier. Note that this only works for the `playsong` filter.
 ## Support
 
 If you have a bug to report or a feature to request, please [submit an issue on
-GitHub](https://github.com/caleb531/play-song/issues).
+GitHub](https://github.com/caleb531/play-song/issues). You can also [contact me
+directly](https://calebevans.me/contact/) via email.
