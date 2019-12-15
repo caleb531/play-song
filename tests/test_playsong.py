@@ -73,3 +73,14 @@ def test_result_artwork_png():
     nose.assert_equal(
         os.path.splitext(results[0]['icon']['path'])[1],
         '.png')
+
+
+def test_no_results():
+    """should return 'No Results Found' in the case of no song results"""
+    results = run_filter('playsong', 'zxy')
+    nose.assert_equal(results[0]['title'], 'No Results Found')
+    nose.assert_equal(results[0]['subtitle'], 'No songs matching \'zxy\'')
+    nose.assert_equal(results[0]['valid'], 'no')
+    nose.assert_equal(results[0]['icon']['path'],
+                      'resources/icon-noartwork.png')
+    nose.assert_equal(len(results), 1)

@@ -56,3 +56,14 @@ def test_result_artwork():
     nose.assert_true(
         os.path.exists(results[0]['icon']['path']),
         'artwork path does not exist')
+
+
+def test_no_results():
+    """should return 'No Results Found' in the case of no album results"""
+    results = run_filter('playalbum', 'zxy')
+    nose.assert_equal(results[0]['title'], 'No Results Found')
+    nose.assert_equal(results[0]['subtitle'], 'No albums matching \'zxy\'')
+    nose.assert_equal(results[0]['valid'], 'no')
+    nose.assert_equal(results[0]['icon']['path'],
+                      'resources/icon-noartwork.png')
+    nose.assert_equal(len(results), 1)
