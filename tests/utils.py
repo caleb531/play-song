@@ -15,20 +15,15 @@ def run_applescript(applescript_path, *args):
     ] + list(args))
 
 
-def run_filter(filter_name, filter_arg):
+def run_filter(filter_name, *filter_args):
 
-    raw_feedback = subprocess.check_output([
-        'osascript',
-        'filters/{}.applescript'.format(filter_name),
-        filter_arg
-    ])
+    raw_feedback = run_applescript(
+        'filters/{}'.format(filter_name),
+        *filter_args)
 
     return json.loads(raw_feedback)['items']
 
 
 def run_action(action_name):
 
-    subprocess.check_output([
-        'osascript',
-        'actions/{}.applescript'.format(action_name)
-    ])
+    run_applescript('actions/{}'.format(action_name))
