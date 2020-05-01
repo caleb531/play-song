@@ -115,7 +115,7 @@ issues with Play Song, you can clear this cache via the `clearcache` keyword.
 Play Song always respects the current shuffle mode within Music.app. For example,
 if shuffle is enabled, playing an album via Play Song will play the songs of the
 album in shuffled order. Therefore, if you desire Play Song to respect album
-order, simply disable shuffle within Music.app.
+order, run the `shuffleoff` command within Alfred.
 
 ### Playing a song directly (the Play Song v1 behavior)
 
