@@ -73,6 +73,20 @@ playgenre alternative
 playplaylist favorites
 ```
 
+### Controlling the Music app's global shuffle setting
+
+```
+shuffleon
+```
+
+```
+shuffleoff
+```
+
+```
+shuffletoggle
+```
+
 ### Queueing songs
 
 For any of the above filters, choosing a result with the `cmd` key held down
