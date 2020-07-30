@@ -1,5 +1,4 @@
--e git+https://github.com/caleb531/alfred-workflow-packager.git@33dd378109a918e097f1bc73f0a1ae93e3414545#egg=alfred_workflow_packager
-biplist==1.0.3
+-e git+https://github.com/caleb531/alfred-workflow-packager.git@e2f8e8c393432d0eca3f28a3c0afb9ccf4353a7d#egg=alfred_workflow_packager
 colorama==0.4.3
 flake8==3.8.3
 importlib-metadata==1.7.0
