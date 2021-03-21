@@ -253,43 +253,14 @@ on getPlaylistSongs(playlistId)
 
 end getPlaylistSongs
 
--- retrieves list of artist names for the given genre
-on getGenreArtists(genreName)
-
-	tell application "Music"
-
-		set genreSongs to every track of playlist 2 whose genre is genreName
-		set artistNames to {}
-
-		repeat with theSong in genreSongs
-
-			if (artist of theSong) is not in artistNames then
-
-				set artistNames to artistNames & (artist of theSong)
-
-			end if
-
-		end repeat
-
-	end tell
-
-	return artistNames
-
-end getGenreArtists
-
 -- retrieves list of songs within the given genre, sorted by artist
 on getGenreSongs(genreName)
 
-	set artistNames to getGenreArtists(genreName) of me
-	set genreSongs to {}
+	tell application "Music"
 
-	repeat with artistName in artistNames
+		return every track of playlist 2 whose genre is genreName
 
-		set genreSongs to genreSongs & getArtistSongs(artistName) of me
-
-	end repeat
-
-	return genreSongs
+	end tell
 
 end getGenreSongs
 
