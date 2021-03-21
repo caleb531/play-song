@@ -258,9 +258,11 @@ on getGenreSongs(genreName)
 
 	tell application "Music"
 
-		return every track of playlist 2 whose genre is genreName
+		set genreSongs to every track of playlist 2 whose genre is genreName
 
 	end tell
+
+	return genreSongs
 
 end getGenreSongs
 
