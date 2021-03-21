@@ -117,6 +117,17 @@ if shuffle is enabled, playing an album via Play Song will play the songs of the
 album in shuffled order. Therefore, if you desire Play Song to respect album
 order, run the `shuffleoff` command within Alfred.
 
+Additionally, Play Song will honor the column you are sorting by in Music.app to
+sort queued songs. This applies to keyword filters like `playartist`,
+`playalbum`, and `playgenre`. For example, if you are sorting by "Album by
+Artist" in your library, then Play Song will group artists together and group
+albums together when using `playgenre`. However, if you are sorting by "Title"
+in your library, then Play Song will disregard album groupings and simply play
+songs in alphabetical order.
+
+The `playplaylist` filter is the only Play Song filter where play order is
+guaranteed.
+
 ### Playing a song directly (the Play Song v1 behavior)
 
 If you are a longtime Play Song user who prefers the v1 behavior for playing
