@@ -266,6 +266,30 @@ on getGenreSongs(genreName)
 
 end getGenreSongs
 
+-- retrieves list of album names for the given artist
+on getArtistAlbums(artistName)
+
+    tell application "Music"
+
+        set artistSongs to every track of playlist 2 whose artist is artistName
+        set albumNames to {}
+
+        repeat with theSong in artistSongs
+
+            if (album of theSong) is not in albumNames then
+
+                set albumNames to albumNames & (album of theSong)
+
+            end if
+
+        end repeat
+
+    end tell
+
+    return albumNames
+
+end getArtistAlbums
+
 -- retrieves list of songs by the given artist, sorted by album
 on getArtistSongs(artistName)
 
