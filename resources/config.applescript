@@ -122,6 +122,10 @@ on getResultFeedback(theResult)
 	set json to json & "\"valid\":\"" & resultValid & "\","
 	set json to json & "\"title\":\"" & resultTitle & "\","
 	set json to json & "\"subtitle\":\"" & resultSubtitle & "\","
+	set json to json & "\"text\":{"
+	set json to json & "\"copy\":\"" & resultTitle & "\","
+	set json to json & "\"largetype\":\"" & resultTitle & "\""
+	set json to json & "},"
 	set json to json & "\"icon\":{\"path\":\"" & resultIcon & "\"}"
 	set json to json & "}"
 	return json
