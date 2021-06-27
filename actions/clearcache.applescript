@@ -10,5 +10,8 @@ on run query
 		tell application "Finder"
 			delete folder (workflowCacheFolder of config)
 		end tell
+		tell application "Music"
+			delete user playlist (workflowPlaylistName of config)
+		end tell
 	end try
 end run
