@@ -6,9 +6,9 @@
 Play Song is an [Alfred](http://www.alfredapp.com/) workflow designed to make
 playing music in Music.app extremely quick and convenient.
 
-The workflow will be solely supporting Alfred 4 going forward, but the latest
-Alfred 3 and Alfred 2-compatible releases will remain available here for your
-convenience.
+The workflow will be solely supporting Alfred 5 going forward, but the workflow
+versions last compatible with the previous versions of Alfred will remain
+available here for your convenience.
 
 ![Play Song in action](screenshot.png)
 
