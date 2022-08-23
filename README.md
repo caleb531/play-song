@@ -3,7 +3,7 @@
 *Copyright 2013-2022 Caleb Evans*  
 *Released under the MIT license*
 
-Play Song is an [Alfred](http://www.alfredapp.com/) workflow designed to make
+Play Song is an [Alfred](https://www.alfredapp.com/) workflow designed to make
 playing music in Music.app extremely quick and convenient.
 
 The workflow will be solely supporting Alfred 5 going forward, but the workflow
