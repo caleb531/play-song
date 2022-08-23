@@ -1,8 +1,3 @@
-### NOTE: Play Song now supports macOS Catalina!
-
-Please see the file list above for the workflow compatible with your version of
-Alfred.
-
 # Play Song
 
 *Copyright 2013-2022 Caleb Evans*  
