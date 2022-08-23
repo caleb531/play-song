@@ -1,10 +1,10 @@
 {
-  "export_file": "Play Song - Catalina (Alfred 4).alfredworkflow",
-  "bundle_id": "com.calebevans.playsong",
-  "resources": [
-      "icon.png",
-      "resources/*",
-      "filters/*",
-      "actions/*"
-  ]
+	"export_file": "Play Song - Catalina (Alfred 4).alfredworkflow",
+	"bundle_id": "com.calebevans.playsong",
+	"resources": [
+		"icon.png",
+		"resources/*",
+		"filters/*",
+		"actions/*"
+	]
 }
