@@ -1,4 +1,4 @@
-alfred-workflow-packager==3.0.0b9
+alfred-workflow-packager==3.0.0b12
 attrs==21.4.0
 biplist==1.0.3
 colorama==0.4.4
