@@ -105,6 +105,9 @@ on getResultFeedback(theResult)
 	set resultValid to (valid of theResult) as text
 	set resultTitle to encodeFeedbackChars(title of theResult)
 	set resultSubtitle to encodeFeedbackChars(subtitle of theResult)
+	set typeAndId to parseResultQuery(resultUid)
+	set resultType to type of typeAndId
+	set resultId to id of typeAndId
 
 	if (icon of theResult) contains ":" then
 
@@ -125,6 +128,35 @@ on getResultFeedback(theResult)
 	set json to json & "\"text\":{"
 	set json to json & "\"copy\":\"" & resultTitle & "\","
 	set json to json & "\"largetype\":\"" & resultTitle & "\""
+	set json to json & "},"
+	set json to json & "\"variables\":{"
+	if resultType is "playlist" or resultType is "subscription_playlist" then
+		set json to json & "\"action\":\"play_directly\","
+	else
+		set json to json & "\"action\":\"play\""
+	end if
+	set json to json & "},"
+	set json to json & "\"mods\":{"
+	set json to json & "\"cmd\":{"
+	set json to json & "\"subtitle\":\"Queue " & resultType & "\","
+	set json to json & "\"variables\":{"
+	set json to json & "\"action\":\"queue\""
+	set json to json & "}"
+	set json to json & "},"
+	if resultType is "song" then
+		set json to json & "\"shift\":{"
+		set json to json & "\"subtitle\":\"Play " & resultType & " directly (the v1 behavior)\","
+		set json to json & "\"variables\":{"
+		set json to json & "\"action\":\"play_directly\""
+		set json to json & "}"
+		set json to json & "},"
+	end if
+	set json to json & "\"ctrl\":{"
+	set json to json & "\"subtitle\":\"Search on web\","
+	set json to json & "\"variables\":{"
+	set json to json & "\"action\":\"search_on_web\""
+	set json to json & "}"
+	set json to json & "}"
 	set json to json & "},"
 	set json to json & "\"icon\":{\"path\":\"" & resultIcon & "\"}"
 	set json to json & "}"
