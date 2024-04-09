@@ -1,4 +1,4 @@
-alfred-workflow-packager==3.1.0
+alfred-workflow-packager==3.1.1
 attrs==21.4.0
 biplist==1.0.3
 flake8==4.0.1
