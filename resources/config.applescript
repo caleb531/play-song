@@ -138,7 +138,12 @@ on getResultFeedback(theResult)
 	set json to json & "},"
 	set json to json & "\"mods\":{"
 	set json to json & "\"cmd\":{"
-	set json to json & "\"subtitle\":\"Queue " & resultType & "\","
+	if resultType is "subscription_playlist" then
+		set json to json & "\"subtitle\":\"Queueing Apple Music playlists is not supported at this time\","
+		set json to json & "\"valid\":\"no\","
+	else
+		set json to json & "\"subtitle\":\"Queue " & resultType & "\","
+	end if
 	set json to json & "\"variables\":{"
 	set json to json & "\"action\":\"queue\""
 	set json to json & "}"
