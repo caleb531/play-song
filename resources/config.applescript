@@ -154,7 +154,12 @@ on getResultFeedback(theResult)
 	set json to json & "\"ctrl\":{"
 	set json to json & "\"subtitle\":\"Search on web\","
 	set json to json & "\"variables\":{"
-	set json to json & "\"action\":\"search_on_web\""
+	set json to json & "\"action\":\"search_on_web\","
+	if resultType is "artist" or resultType is "genre" then
+		set json to json & "\"search_query\":\"" & resultTitle & "\""
+	else
+		set json to json & "\"search_query\":\"" & resultTitle & space & "-" & space & resultSubtitle & "\""
+	end if
 	set json to json & "}"
 	set json to json & "}"
 	set json to json & "},"
