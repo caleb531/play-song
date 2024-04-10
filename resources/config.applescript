@@ -145,7 +145,7 @@ on getResultFeedback(theResult)
 	set json to json & "},"
 	if resultType is "song" then
 		set json to json & "\"shift\":{"
-		set json to json & "\"subtitle\":\"Play " & resultType & " directly (the v1 behavior)\","
+		set json to json & "\"subtitle\":\"Play" & space & resultType & space & "directly (the v1 behavior)\","
 		set json to json & "\"variables\":{"
 		set json to json & "\"action\":\"play_directly\""
 		set json to json & "}"
