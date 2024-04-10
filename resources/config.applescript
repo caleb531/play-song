@@ -131,7 +131,7 @@ on getResultFeedback(theResult)
 	set json to json & "},"
 	set json to json & "\"variables\":{"
 	if resultType is "playlist" or resultType is "subscription_playlist" then
-		set json to json & "\"action\":\"play_directly\","
+		set json to json & "\"action\":\"play_directly\""
 	else
 		set json to json & "\"action\":\"play\""
 	end if
