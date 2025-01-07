@@ -73,7 +73,7 @@ on getPlaylistResultListFeedback(query)
 
 	end tell
 
-	return getResultListFeedback() of config
+	return getResultListFeedback(query) of config
 
 end getPlaylistResultListFeedback
 

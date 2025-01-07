@@ -98,7 +98,7 @@ on resultListIsEmpty()
 end resultListIsFull
 
 -- builds Alfred result item as JSON
-on getResultFeedback(theResult)
+on getResultFeedback(theResult, query)
 
 	-- encode reserved JSON characters
 	set resultUid to encodeFeedbackChars(uid of theResult)
@@ -162,6 +162,8 @@ on getResultFeedback(theResult)
 	set json to json & "\"action\":\"search_on_web\","
 	if resultType is "artist" or resultType is "genre" then
 		set json to json & "\"search_query\":\"" & resultTitle & "\""
+	else if resultUid is "no-results" then
+		set json to json & "\"search_query\":\"" & query & "\""
 	else
 		set json to json & "\"search_query\":\"" & resultTitle & space & "-" & space & resultSubtitle & "\""
 	end if
@@ -175,13 +177,13 @@ on getResultFeedback(theResult)
 end getResultFeedback
 
 -- retrieves JSON document for Alfred results
-on getResultListFeedback()
+on getResultListFeedback(query)
 
 	set json to "{\"items\": ["
 
 	repeat with theResult in resultList
 
-		set json to json & getResultFeedback(theResult)
+		set json to json & getResultFeedback(theResult, query)
 		set json to json & ","
 
 	end repeat
