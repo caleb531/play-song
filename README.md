@@ -1,6 +1,6 @@
 # Play Song
 
-*Copyright 2013-2024 Caleb Evans*  
+*Copyright 2013-2025 Caleb Evans*  
 *Released under the MIT license*
 
 Play Song is an [Alfred](https://www.alfredapp.com/) workflow designed to make
