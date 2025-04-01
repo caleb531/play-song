@@ -2,7 +2,7 @@
 -- for songs, this behavior continues playing music after the song finishes
 
 on loadConfig()
-	return (load script POSIX file (do shell script "./resources/compile-config.sh"))
+	return (load script POSIX file (do shell script "bash ./resources/compile-config.sh"))
 end loadConfig
 
 on run query

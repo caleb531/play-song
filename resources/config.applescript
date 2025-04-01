@@ -207,7 +207,7 @@ on getSongArtworkPath(theSong)
 			-- get persistent ID of song and use it to fetch album artwork
 			set songId to persistent ID of theSong
 			-- the base path to the artwork file (without extension)
-			set artworkPath to (do shell script "./resources/get-song-artwork-path.sh" & space & songId & space & defaultIconName)
+			set artworkPath to (do shell script "sh ./resources/get-song-artwork-path.sh" & space & songId & space & defaultIconName)
 
 		end tell
 

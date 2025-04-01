@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 # Compiles configuration as AppleScript
 
-installed_config_dir="$(dirname "${BASH_SOURCE[0]}")"
+installed_config_dir="$(dirname "$0")"
 
 # Create necessary workflow cache directories if they don't exist
 cache_dir="$HOME/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.calebevans.playsong"
@@ -14,8 +14,8 @@ compiled_config="$cache_dir/config.scpt"
 cached_config_md5file="$cache_dir/config.applescript.md5"
 
 # Retrieve md5sum of config files
-installed_config_md5sum=$(md5 -q "$installed_config")
-cached_config_md5sum=$(< "$cached_config_md5file")
+installed_config_md5sum="$(md5 -q "$installed_config")"
+cached_config_md5sum="$(cat "$cached_config_md5file")"
 
 # If cached md5sum does not match installed config's md5sum
 if [ ! -f "$compiled_config" ] || [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then

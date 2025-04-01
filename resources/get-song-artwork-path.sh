@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 # Path to the directory containing the album artwork database
 ARTWORK_DB_DIR=~/Library/Containers/com.apple.AMPArtworkAgent/Data/Documents

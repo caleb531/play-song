@@ -1,7 +1,7 @@
 -- playgenre filter --
 
 on loadConfig()
-	return (load script POSIX file (do shell script "./resources/compile-config.sh"))
+	return (load script POSIX file (do shell script "bash ./resources/compile-config.sh"))
 end loadConfig
 
 on getGenreResultListFeedback(query)
