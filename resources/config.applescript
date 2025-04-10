@@ -189,7 +189,7 @@ on getResultListFeedback(query)
 	end repeat
 
 	-- remove trailing comma after last item
-	set json to text 1 thru (length of json - 1) of json
+	if last character of json is "," then set json to text 1 thru (length of json - 1) of json
 	set json to json & "]}"
 	return json
 
