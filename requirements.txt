@@ -1,10 +1,6 @@
-alfred-workflow-packager==3.1.1
-attrs==21.4.0
-biplist==1.0.3
-flake8==4.0.1
-jsonschema==4.4.0
-mccabe==0.6.1
-pycodestyle==2.8.0
-pyflakes==2.4.0
-pyrsistent==0.18.1
-termstyle==0.1.11
+alfred-workflow-packager==3.2.0
+attrs==25.3.0
+jsonschema==4.23.0
+jsonschema-specifications==2024.10.1
+referencing==0.36.2
+rpds-py==0.24.0
