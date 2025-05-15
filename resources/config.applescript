@@ -317,24 +317,20 @@ end getGenreSongs
 -- retrieves list of album names for the given artist
 on getArtistAlbums(artistName)
 
-    tell application "Music"
+	tell application "Music"
 
-        set artistSongs to every track of playlist 2 whose artist is artistName
-        set albumNames to {}
+		-- Get songs where any of the three fields match
+		set artistSongs to every track of playlist 2 whose artist is artistName or composer is artistName or album artist is artistName
+		set albumNames to {}
 
-        repeat with theSong in artistSongs
+		repeat with theSong in artistSongs
+			if (album of theSong) is not in albumNames then
+				set albumNames to albumNames & (album of theSong)
+			end if
+		end repeat
+	end tell
 
-            if (album of theSong) is not in albumNames then
-
-                set albumNames to albumNames & (album of theSong)
-
-            end if
-
-        end repeat
-
-    end tell
-
-    return albumNames
+	return albumNames
 
 end getArtistAlbums
 
@@ -343,7 +339,8 @@ on getArtistSongs(artistName)
 
 	tell application "Music"
 
-		set artistSongs to every track of playlist 2 whose artist is artistName
+		-- Get songs where any of the three fields match
+		set artistSongs to every track of playlist 2 whose artist is artistName or composer is artistName or album artist is artistName
 
 	end tell
 
@@ -380,81 +377,146 @@ end getSong
 -- retrieves a list of objects or names matching the given query and type
 on getResultsFromQuery(query, queryType)
 
-	set evalScript to run script "
-	script
+	-- Special handling for artist queries to search across multiple fields
+	if queryType is "artist" then
+		set evalScript to run script "
+		script
+			on findResults(query, resultLimit)
+				tell application \"Music\"
+					-- First, get tracks where any of the three fields start with query
+					set theSongs to (get every track in playlist 2 whose artist starts with query)
+					set theSongs to theSongs & (get every track in playlist 2 whose composer starts with query)
+					set theSongs to theSongs & (get every track in playlist 2 whose album artist starts with query)
 
-		on findResults(query, queryType, resultLimit)
-
-			tell application \"Music\"
-
-				set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query)
-
-				if length of theSongs < resultLimit then
-
-					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query)
-
-				end if
-
-				if length of theSongs < resultLimit then
-
-					set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query))
-
-				end if
-
-				if length of theSongs is 0 then
-
-					if queryType is \"name\" then
-
-						set theSongs to theSongs & (search playlist 2 for query only songs)
-
-					else if queryType is not \"genre\" then
-
-						set theSongs to theSongs & (search playlist 2 for query only " & queryType & "s)
-
+					if length of theSongs < resultLimit then
+						-- Then, get tracks where any of the three fields contain the query with a space before it
+						set theSongs to theSongs & (get every track in playlist 2 whose artist contains (space & query) and artist does not start with query)
+						set theSongs to theSongs & (get every track in playlist 2 whose composer contains (space & query) and composer does not start with query)
+						set theSongs to theSongs & (get every track in playlist 2 whose album artist contains (space & query) and album artist does not start with query)
 					end if
 
-				end if
-
-				if queryType is \"name\" then
-
-					if length of theSongs > resultLimit then
-
-						set theSongs to items 1 thru resultLimit of theSongs
-
+					if length of theSongs < resultLimit then
+						-- Finally, get tracks where any of the three fields contain the query anywhere
+						set theSongs to theSongs & (get every track in playlist 2 whose artist contains query and artist does not start with query and artist does not contain (space & query))
+						set theSongs to theSongs & (get every track in playlist 2 whose composer contains query and composer does not start with query and composer does not contain (space & query))
+						set theSongs to theSongs & (get every track in playlist 2 whose album artist contains query and album artist does not start with query and album artist does not contain (space & query))
 					end if
 
-					set theResults to theSongs
+					if length of theSongs is 0 then
+						-- Use search as a fallback
+						set theSongs to theSongs & (search playlist 2 for query only artists)
+					end if
 
-				else
-
+					-- Extract unique artist, composer, and album artist values
 					set theResults to {}
 
 					repeat with theSong in theSongs
-
 						if length of theResults is resultLimit then exit repeat
 
-						set theResult to " & queryType & " of theSong
+						-- Check artist field
+						set artistValue to artist of theSong
+						if artistValue is not in theResults and artistValue is not \"\" then
+							set theResults to theResults & artistValue
+						end if
 
-						if theResult is not in theResults then
+						-- Check composer field
+						set composerValue to composer of theSong
+						if composerValue is not in theResults and composerValue is not \"\" then
+							set theResults to theResults & composerValue
+						end if
 
-							set theResults to theResults & theResult
+						-- Check album artist field
+						set albumArtistValue to album artist of theSong
+						if albumArtistValue is not in theResults and albumArtistValue is not \"\" then
+							set theResults to theResults & albumArtistValue
+						end if
+					end repeat
+				end tell
+
+				return theResults
+			end findResults
+		end script
+		"
+
+		return evalScript's findResults(query, resultLimit)
+	else
+		-- Original implementation for other query types
+		set evalScript to run script "
+		script
+			on findResults(query, queryType, resultLimit)
+
+				tell application \"Music\"
+
+					set theSongs to (get every track in playlist 2 whose " & queryType & " starts with query)
+
+					if length of theSongs < resultLimit then
+
+						set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains (space & query) and " & queryType & " does not start with query)
+
+					end if
+
+					if length of theSongs < resultLimit then
+
+						set theSongs to theSongs & (get every track in playlist 2 whose " & queryType & " contains query and " & queryType & " does not start with query and " & queryType & " does not contain (space & query))
+
+					end if
+
+					if length of theSongs is 0 then
+
+						if queryType is \"name\" then
+
+							set theSongs to theSongs & (search playlist 2 for query only songs)
+
+						else if queryType is not \"genre\" then
+
+							set theSongs to theSongs & (search playlist 2 for query only " & queryType & "s)
 
 						end if
 
-					end repeat
+					end if
 
-				end if
+					if queryType is \"name\" then
 
-			end tell
+						if length of theSongs > resultLimit then
 
-			return theResults
+							set theSongs to items 1 thru resultLimit of theSongs
 
-		end findResults
+						end if
 
-	end script
-	"
+						set theResults to theSongs
 
-	evalScript's findResults(query, queryType, resultLimit)
+					else
+
+						set theResults to {}
+
+						repeat with theSong in theSongs
+
+							if length of theResults is resultLimit then exit repeat
+
+							set theResult to " & queryType & " of theSong
+
+							if theResult is not in theResults then
+
+								set theResults to theResults & theResult
+
+							end if
+
+						end repeat
+
+					end if
+
+				end tell
+
+				return theResults
+
+			end findResults
+
+		end script
+		"
+
+		return evalScript's findResults(query, queryType, resultLimit)
+
+	end if
 
 end getResultsFromQuery
 
