@@ -13,7 +13,7 @@ property albumArtEnabled : true
 property libraryFolder : (path to library folder from user domain as text)
 property cacheFolder : (libraryFolder & "Caches:")
 property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred:Workflow Data:")
-property bundleId : "com.calebevans.playsong"
+property bundleId : "com.calebevans.playsongmm"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 
 -- the default icon used for search results without album artwork

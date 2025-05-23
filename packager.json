@@ -2,7 +2,7 @@
 	"export_files": [
 		"Play Song (Alfred 5).alfredworkflow"
 	],
-	"bundle_id": "com.calebevans.playsong",
+	"bundle_id": "com.calebevans.playsongmm",
 	"resources": [
 		"icon.png",
 		"resources/*",
