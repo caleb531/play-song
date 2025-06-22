@@ -1,0 +1,35 @@
+[project]
+name = "play-song"
+version = "9.3.0"
+description = "An Alfred workflow for quickly playing music in Music.app."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    {name = "Caleb Evans", email = "caleb@calebevans.me"}
+]
+maintainers = [
+    {name = "Caleb Evans", email = "caleb@calebevans.me"}
+]
+license = "MIT"
+dependencies = []
+
+[dependency-groups]
+dev = []
+
+[tool.ruff]
+include = ["**/*.py"]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    "W",
+    # pyflakes
+    "F",
+    # isort
+    "I",
+    # perflint
+    "PERF",
+    # flake8-executable
+    "EXE"
+]
