@@ -30,6 +30,4 @@ select = [
     "I",
     # perflint
     "PERF",
-    # flake8-executable
-    "EXE"
 ]
