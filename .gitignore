@@ -1,4 +1,5 @@
 .DS_Store
 *.scpt
+.venv
 .virtualenv/
 nosetests.xml

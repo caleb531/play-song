@@ -1,6 +1,0 @@
-alfred-workflow-packager==3.2.0
-attrs==25.3.0
-jsonschema==4.23.0
-jsonschema-specifications==2024.10.1
-referencing==0.36.2
-rpds-py==0.24.0

@@ -14,7 +14,9 @@ license = "MIT"
 dependencies = []
 
 [dependency-groups]
-dev = []
+dev = [
+    "alfred-workflow-packager==3.2.0",
+]
 
 [tool.ruff]
 include = ["**/*.py"]
