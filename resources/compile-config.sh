@@ -4,7 +4,7 @@
 installed_config_dir="$(dirname "$0")"
 
 # Create necessary workflow cache directories if they don't exist
-cache_dir="$HOME/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.calebevans.playsong"
+cache_dir="$HOME/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/com.calebevans.playsongmm"
 mkdir -p "$cache_dir"
 mkdir -p "$cache_dir/Album Artwork"
 
