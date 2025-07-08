@@ -2,4 +2,4 @@
 *.scpt
 .virtualenv/
 nosetests.xml
-venv/
+.venv/
