@@ -20,13 +20,13 @@ on getArtistResultListFeedback(query)
 			-- Try to find a song with this artist name in any of the three fields
 			try
 				set theSong to (first track of playlist 2 whose artist is artistName)
-			on error
+			on error number -1728
 				try
 					set theSong to (first track of playlist 2 whose composer is artistName)
-				on error
+				on error number -1728
 					try
 						set theSong to (first track of playlist 2 whose album artist is artistName)
-					on error
+					on error number -1728
 						-- Skip this artist if no matching song is found
 						exit repeat
 					end try
