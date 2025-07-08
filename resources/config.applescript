@@ -3,7 +3,7 @@
 -- configurable options --
 
 -- limit number of songs to improve efficiency
-property resultLimit : 90
+property resultLimit : 15
 -- whether or not to retrieve/display album artwork for each result
 property albumArtEnabled : true
 
@@ -13,7 +13,7 @@ property albumArtEnabled : true
 property libraryFolder : (path to library folder from user domain as text)
 property cacheFolder : (libraryFolder & "Caches:")
 property alfredWorkflowDataFolder : (cacheFolder & "com.runningwithcrayons.Alfred:Workflow Data:")
-property bundleId : "com.calebevans.playsongmm"
+property bundleId : "com.calebevans.playsong"
 property workflowCacheFolder : (alfredWorkflowDataFolder & bundleId & ":") as text
 
 -- the default icon used for search results without album artwork
