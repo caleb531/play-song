@@ -3,4 +3,3 @@
 .venv
 .virtualenv/
 nosetests.xml
-.venv/
