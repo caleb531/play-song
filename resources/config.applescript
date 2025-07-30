@@ -348,7 +348,7 @@ on getArtistSongs(artistName)
 
 end getArtistSongs
 
--- retrieves list of songs in the given album
+-- retrieves list of songs in the given album, sorted by disc and track number
 on getAlbumSongs(albumName)
 
 	tell application "Music"
@@ -357,9 +357,70 @@ on getAlbumSongs(albumName)
 
 	end tell
 
-	return albumSongs
+	-- Sort tracks by disc number first, then track number
+	return sortTracksByDiscAndTrack(albumSongs)
 
 end getAlbumSongs
+
+-- sorts tracks by disc number first, then track number for proper album order
+on sortTracksByDiscAndTrack(trackList)
+
+	if length of trackList ≤ 1 then return trackList
+
+	script TrackSorter
+		on isLessThan(track1, track2)
+			tell application "Music"
+				set disc1 to disc number of track1
+				set disc2 to disc number of track2
+				set trackNum1 to track number of track1
+				set trackNum2 to track number of track2
+
+				-- Handle missing disc numbers (treat as disc 1)
+				if disc1 is missing value then set disc1 to 1
+				if disc2 is missing value then set disc2 to 1
+
+				-- Handle missing track numbers (treat as track 0)
+				if trackNum1 is missing value then set trackNum1 to 0
+				if trackNum2 is missing value then set trackNum2 to 0
+
+				-- Sort by disc number first
+				if disc1 < disc2 then
+					return true
+				else if disc1 > disc2 then
+					return false
+				else
+					-- Same disc, sort by track number
+					return trackNum1 < trackNum2
+				end if
+			end tell
+		end isLessThan
+	end script
+
+	return quickSortTracks(trackList, TrackSorter)
+
+end sortTracksByDiscAndTrack
+
+-- quick sort implementation for AppleScript
+on quickSortTracks(theList, comparisonScript)
+
+	if length of theList ≤ 1 then return theList
+
+	set pivot to item 1 of theList
+	set lessItems to {}
+	set greaterItems to {}
+
+	repeat with i from 2 to length of theList
+		set currentItem to item i of theList
+		if comparisonScript's isLessThan(currentItem, pivot) then
+			set lessItems to lessItems & {currentItem}
+		else
+			set greaterItems to greaterItems & {currentItem}
+		end if
+	end repeat
+
+	return (quickSortTracks(lessItems, comparisonScript)) & {pivot} & (quickSortTracks(greaterItems, comparisonScript))
+
+end quickSortTracks
 
 -- retrieves the song with the given ID
 on getSong(songId)
