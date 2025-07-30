@@ -14,23 +14,30 @@ on getAlbumResultListFeedback(query)
 
 		set theArtists to getResultsFromQuery(query, "artist") of config
 
+		set uniqueAlbums to {}
 		repeat with artistName in theArtists
 
 			set artistAlbums to getArtistAlbums(artistName) of config
 
 			repeat with albumName in artistAlbums
 
-				if config's resultListIsFull() then exit repeat
-
 				set albumName to albumName as text
-				set theSong to (first track of playlist 2 whose album is albumName)
-				set songArtworkPath to getSongArtworkPath(theSong) of config
-
-				addResult({uid:("album-" & albumName), valid:"yes", title:albumName, subtitle:artist of theSong, icon:songArtworkPath}) of config
+				if albumName is not in uniqueAlbums then
+					set uniqueAlbums to uniqueAlbums & albumName
+				end if
 
 			end repeat
 
+		end repeat
+
+		repeat with albumName in uniqueAlbums
+
 			if config's resultListIsFull() then exit repeat
+
+			set theSong to (first track of playlist 2 whose album is albumName)
+			set songArtworkPath to getSongArtworkPath(theSong) of config
+
+			addResult({uid:("album-" & albumName), valid:"yes", title:albumName, subtitle:artist of theSong, icon:songArtworkPath}) of config
 
 		end repeat
 
