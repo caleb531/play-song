@@ -2,8 +2,8 @@
 
 -- configurable options --
 
--- limit number of songs to improve efficiency
-property resultLimit : 15
+-- dynamic limit of result items (defaulted to 15, the original value, in workflow configuration)
+property resultLimit : (system attribute "result_limit") as number
 -- whether or not to retrieve/display album artwork for each result
 property albumArtEnabled : true
 
