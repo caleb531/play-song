@@ -1,6 +1,6 @@
 [project]
 name = "play-song"
-version = "9.6.0"
+version = "9.6.1"
 description = "An Alfred workflow for quickly playing music in Music.app."
 readme = "README.md"
 requires-python = ">=3.9"
