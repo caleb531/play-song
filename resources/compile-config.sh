@@ -1,4 +1,6 @@
 #!/bin/sh
+set -e
+
 # Compiles configuration as AppleScript
 
 installed_config_dir="$(dirname "$0")"
@@ -15,14 +17,18 @@ cached_config_md5file="$cache_dir/config.applescript.md5"
 
 # Retrieve md5sum of config files
 installed_config_md5sum="$(md5 -q "$installed_config")"
-cached_config_md5sum="$(cat "$cached_config_md5file")"
+cached_config_md5sum=""
+if [ -f "$cached_config_md5file" ]; then
+	cached_config_md5sum="$(cat "$cached_config_md5file")"
+fi
 
-# If cached md5sum does not match installed config's md5sum
-if [ ! -f "$compiled_config" ] || [ "$installed_config_md5sum" != "$cached_config_md5sum" ]; then
+# Recompile if the source changed or the cached script is invalid
+if [ ! -f "$compiled_config" ] ||
+	[ "$installed_config_md5sum" != "$cached_config_md5sum" ] ||
+	! osadecompile "$compiled_config" >/dev/null 2>&1; then
 
-	# Cache installed config's md5sum
-	echo "$installed_config_md5sum" > "$cached_config_md5file"
 	osacompile -o "$compiled_config" "$installed_config"
+	echo "$installed_config_md5sum" > "$cached_config_md5file"
 
 fi
 

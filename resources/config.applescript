@@ -3,7 +3,12 @@
 -- configurable options --
 
 -- dynamic limit of result items (defaulted to 15, the original value, in workflow configuration)
-property resultLimit : (system attribute "result_limit") as number
+on getResultLimit()
+	set configuredLimit to system attribute "result_limit"
+	if configuredLimit is "" then return 15
+	return configuredLimit as number
+end getResultLimit
+
 -- whether or not to retrieve/display album artwork for each result
 property albumArtEnabled : true
 
@@ -87,7 +92,7 @@ end addNoResultsItem
 
 on resultListIsFull()
 
-	return (length of resultList is resultLimit)
+	return (length of resultList is getResultLimit())
 
 end resultListIsFull
 
@@ -438,6 +443,8 @@ end getSong
 -- retrieves a list of objects or names matching the given query and type
 on getResultsFromQuery(query, queryType)
 
+	set theResultLimit to getResultLimit()
+
 	-- Special handling for artist queries to search across multiple fields
 	if queryType is "artist" then
 		set evalScript to run script "
@@ -480,7 +487,7 @@ on getResultsFromQuery(query, queryType)
 		end script
 		"
 
-		return evalScript's findResults(query, resultLimit)
+		return evalScript's findResults(query, theResultLimit)
 	else
 		-- Original implementation for other query types
 		set evalScript to run script "
@@ -530,7 +537,7 @@ on getResultsFromQuery(query, queryType)
 		end script
 		"
 
-		return evalScript's findResults(query, queryType, resultLimit)
+		return evalScript's findResults(query, queryType, theResultLimit)
 
 	end if
 
