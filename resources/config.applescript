@@ -438,6 +438,9 @@ end getSong
 -- retrieves a list of objects or names matching the given query and type
 on getResultsFromQuery(query, queryType)
 
+	-- Normalize query to NFC so it matches how Music.app stores Unicode strings.
+	set query to do shell script "python3 -c \"import unicodedata,sys; print(unicodedata.normalize('NFC', sys.argv[1]), end='')\" " & quoted form of query
+
 	-- Special handling for artist queries to search across multiple fields
 	if queryType is "artist" then
 		set evalScript to run script "
